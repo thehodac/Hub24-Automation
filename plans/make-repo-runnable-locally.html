@@ -124,5 +124,33 @@
   <h2>8. Approval</h2>
   <p>Per the planning workflow, this plan is presented for approval before any change is made.
   No file is edited until you confirm.</p>
+
+  <div class="note" style="background:#f6fbf6;border-left-color:#3a9d3a;">
+    <strong>✅ Status: Done — 2026-07-23.</strong> Approved and executed with the user driving every
+    command in their own terminal (this Cowork session cannot run installs on the real machine — see
+    §7). Evidence:
+    <ul>
+      <li><code>.env</code> → <code>JIRA_CREATE_TICKETS=false</code> confirmed via <code>findstr</code>
+        run directly on disk (not just the editor buffer).</li>
+      <li>Fixed along the way (not originally anticipated): PowerShell execution policy blocked
+        <code>npx</code> (<code>Set-ExecutionPolicy -Scope CurrentUser RemoteSigned</code>); Playwright
+        flagged a missing <code>msvcp140.dll</code> host dependency (VC++ Redistributable); Node was
+        installed but VS Code's integrated terminal had a stale PATH until VS Code itself was fully
+        restarted (a new terminal tab alone was not enough).</li>
+      <li><code>npx playwright install</code> — Chromium/Firefox/WebKit/ffmpeg downloaded successfully.</li>
+      <li><code>npx tsc --noEmit</code> and <code>npx playwright test --list</code> — both clean, 64
+        tests in 11 files, no config errors.</li>
+      <li><code>npm run test:saucedemo</code> (fast/headless variant — the <code>:demo</code> slow-mo
+        config was tried first but is meant for video recording, not verification) — 38/39 passed. The
+        1 failure (<code>TC_NAV_002 reset app state clears cart</code>) is a test-level timing/locator
+        issue in the demo-only SauceDemo suite, unrelated to environment setup — logged locally as
+        <code>[FAIL][ISSUE-01]</code> by the bug-report reporter, with <strong>no real Jira ticket
+        created</strong> (confirmed via <code>node scripts/check-ticket-env.mjs</code> → all 4
+        destinations off).</li>
+    </ul>
+    <p>Outcome: the framework is proven runnable end-to-end on this machine. The only unchanged blocker
+    is the real HUB24 <code>BASE_URL</code> + test credentials (backlog row 8), which stays with
+    Dev/Infra as before.</p>
+  </div>
 </body>
 </html>
