@@ -96,7 +96,6 @@ jobs:
         # CỔNG: chỉ chạy nếu e2e/api/accessibility VÀ Chromatic đều pass hết.
         # Dùng .outcome vì continue-on-error che 'failure' khỏi trạng thái job,
         # nhưng .outcome vẫn phản ánh kết quả thật của từng step.
-        if: ${{ steps.functional.outcome == 'success' && steps.chromatic.outcome == 'success' }}
         continue-on-error: true
         # Fail -> tự tạo ticket Jira [BrowserStack-Bug] (BUG_CATEGORY_OVERRIDE).
         uses: docker://node:20-bookworm
