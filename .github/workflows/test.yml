@@ -1,0 +1,64 @@
+﻿name: HUB24 Playwright Tests
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.49.0-jammy
+    env:
+      HOME: /root
+      CI: "true"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run e2e + api + accessibility (auto-create tickets)
+        id: functional
+        continue-on-error: true
+        env:
+          JIRA_CREATE_TICKETS: "false"
+          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+          JIRA_EMAIL: ${{ secrets.JIRA_EMAIL }}
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+          JIRA_PROJECT_KEY: ${{ secrets.JIRA_PROJECT_KEY }}
+          JIRA_PARENT_KEY: ${{ secrets.JIRA_PARENT_KEY }}
+        run: |
+          npm ci
+          npx playwright test --project=chromium --project=e2e --project=api --workers=1
+
+      - name: Visual regression + Chromatic
+        id: chromatic
+        continue-on-error: true
+        env:
+          CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          JIRA_CREATE_TICKETS: "false"
+          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+          JIRA_EMAIL: ${{ secrets.JIRA_EMAIL }}
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+          JIRA_PROJECT_KEY: ${{ secrets.JIRA_PROJECT_KEY }}
+          JIRA_PARENT_KEY: ${{ secrets.JIRA_PARENT_KEY }}
+        run: |
+          npm ci
+          npm run test:visual:chromatic
+
+      - name: Cross-browser on BrowserStack
+        if: steps.functional.outcome == 'success' && steps.chromatic.outcome == 'success'
+        continue-on-error: true
+        env:
+          BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
+          BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+          BUG_CATEGORY_OVERRIDE: browserstack
+          JIRA_CREATE_TICKETS: "false"
+          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+          JIRA_EMAIL: ${{ secrets.JIRA_EMAIL }}
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+          JIRA_PROJECT_KEY: ${{ secrets.JIRA_PROJECT_KEY }}
+          JIRA_PARENT_KEY: ${{ secrets.JIRA_PARENT_KEY }}
+        run: |
+          npm ci
+          npm run test:browserstack
