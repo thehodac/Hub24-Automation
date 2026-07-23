@@ -14,5 +14,7 @@ jobs:
         uses: docker://mcr.microsoft.com/playwright:v1.49.0-jammy
         shell: sh
         run: |
+          pwd
+          ls -la
           npm ci
           npm run test:saucedemo
