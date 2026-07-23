@@ -1,0 +1,18 @@
+apiVersion: automation.cloudbees.io/v1alpha1
+kind: workflow
+name: Hub24 Automation Tests
+
+on:
+  push:
+    branches:
+      - '**'
+
+jobs:
+  build:
+    steps:
+      - name: Install and run tests
+        uses: docker://mcr.microsoft.com/playwright:v1.49.0-jammy
+        shell: sh
+        run: |
+          npm ci
+          npm run test:saucedemo
