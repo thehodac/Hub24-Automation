@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Plan — SauceDemo: API + Accessibility + Chromatic (demo)</title>
+  <style>
+    body { font-family: Arial, Helvetica, sans-serif; max-width: 880px; margin: 24px auto; padding: 0 16px; line-height: 1.6; color: #1a1a1a; }
+    h1 { font-size: 22px; border-bottom: 2px solid #ddd; padding-bottom: 8px; }
+    h2 { font-size: 17px; margin-top: 26px; color: #0c447c; }
+    table { border-collapse: collapse; width: 100%; margin: 8px 0; }
+    th, td { border: 1px solid #ddd; padding: 8px 10px; text-align: left; font-size: 14px; vertical-align: top; }
+    th { background: #f4f6f8; }
+    code { background: #f1f1f1; padding: 1px 5px; border-radius: 4px; font-size: 13px; }
+    ol, ul { padding-left: 22px; }
+  </style>
+</head>
+<body>
+  <h1>Plan — SauceDemo: write API + Accessibility + Chromatic (demo)</h1>
+  <p class="meta">Author: Thong Ho · Date: 2026-07-15 · Follows on from the existing SauceDemo e2e suite</p>
+
+  <h2>1. Goal</h2>
+  <p>There is already an <strong>e2e</strong> suite for SauceDemo (36 tests). Now write the <strong>3 remaining types — API, Accessibility, Chromatic (visual)</strong> also running against <code>saucedemo.com</code>, reusing the existing page objects, to demo all 4 types.</p>
+
+  <h2>2. Scope</h2>
+  <ul>
+    <li><strong>In scope:</strong> 3 new test files (accessibility, api, chromatic) targeting SauceDemo; reuse <code>pages/saucedemo/</code> + <code>utils/a11y.ts</code>.</li>
+    <li><strong>Out of scope:</strong> do not touch the existing e2e; do not change project config (use the <code>api</code> and <code>visual</code> projects, and a11y runs under chromium).</li>
+  </ul>
+
+  <h2>3. Each type — what it is based on</h2>
+  <table>
+    <tr><th>Type</th><th>File</th><th>Based on / how to do it</th></tr>
+    <tr><td><strong>Accessibility</strong></td><td><code>tests/accessibility/saucedemo-a11y.spec.ts</code></td>
+      <td>Use the page objects to navigate to the pages (login, inventory, cart, checkout) → call <code>checkA11y()</code> to scan WCAG 2.1 A/AA.</td></tr>
+    <tr><td><strong>API</strong></td><td><code>tests/api/saucedemo-api.spec.ts</code></td>
+      <td>SauceDemo <em>has no real REST API</em> → use Playwright <code>request</code> to check at the HTTP level: GET pages/resources, assert status 200, content-type, body contains "Swag Labs".</td></tr>
+    <tr><td><strong>Chromatic (visual)</strong></td><td><code>tests/chromatic/saucedemo-visual.spec.ts</code></td>
+      <td>Import <code>@chromatic-com/playwright</code>; navigate to the pages (login, inventory) → <code>toHaveScreenshot()</code> to capture &amp; compare against the baseline (before/after/diff).</td></tr>
+  </table>
+
+  <h2>4. Decisions needed (important for the demo)</h2>
+  <ol>
+    <li><strong>Accessibility:</strong> <code>checkA11y()</code> currently <em>asserts 0 violations</em>. SauceDemo may <strong>have real a11y issues</strong> → the test will <strong>FAIL</strong>.
+      <ul>
+        <li><strong>Option A (recommended for the demo):</strong> leave it as-is — if it finds an issue, it is a good illustration of "a11y caught a bug → create a ticket".</li>
+        <li><strong>Option B:</strong> loosen it (only assert serious/critical issues, or exclude a widget) to make the demo pass cleanly.</li>
+      </ul>
+    </li>
+    <li><strong>API:</strong> since SauceDemo has no business API, the test is only an HTTP check (the page returns 200…). If you want a more "real" API demo, you could use a sample public API (reqres.in) — but by default follow the request: on saucedemo.com.</li>
+    <li><strong>Chromatic:</strong> the first run creates the baseline, later runs then compare the diff. Push to Chromatic using the existing <code>test:visual:chromatic</code> script.</li>
+  </ol>
+
+  <h2>5. Files to create</h2>
+  <table>
+    <tr><th>File</th><th>Content</th></tr>
+    <tr><td><code>tests/accessibility/saucedemo-a11y.spec.ts</code></td><td>scan axe on the SauceDemo pages (using page objects + checkA11y).</td></tr>
+    <tr><td><code>tests/api/saucedemo-api.spec.ts</code></td><td>Playwright request: GET pages/resources, assert status/headers/body.</td></tr>
+    <tr><td><code>tests/chromatic/saucedemo-visual.spec.ts</code></td><td>toHaveScreenshot the SauceDemo pages.</td></tr>
+    <tr><td><code>package.json</code> (optional)</td><td>add a convenience script to filter SauceDemo separately for each type (if needed).</td></tr>
+  </table>
+
+  <h2>6. How to run (projects already exist)</h2>
+  <ul>
+    <li>Accessibility: <code>npm run test:a11y</code> (filter SauceDemo: <code>npx playwright test accessibility saucedemo</code>)</li>
+    <li>API: <code>npm run test:api</code></li>
+    <li>Chromatic/visual: <code>npm run test:visual</code> (push to Chromatic: <code>npm run test:visual:chromatic</code>)</li>
+  </ul>
+
+  <h2>7. How to verify</h2>
+  <ul>
+    <li>Run each command above → each type produces a result + an HTML report.</li>
+    <li>Force one case to fail (e.g. a11y finds an issue, or visual changes the baseline) → see the reporter note the bug in <code>bug-report/&lt;type&gt;</code> + (if enabled) push to Jira.</li>
+  </ul>
+
+  <h2>8. Risks / notes</h2>
+  <ul>
+    <li>a11y may genuinely fail on SauceDemo (see section 4.1) — choose option A or B.</li>
+    <li>api on SauceDemo is only an HTTP check (no business API).</li>
+    <li>The sandbox cannot run a browser → verify on your machine.</li>
+  </ul>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>QC Report process (test results & coverage)</title>
+<style>
+  body { font-family: Arial, Helvetica, sans-serif; max-width: 900px; margin: 24px auto; padding: 0 18px; line-height: 1.6; color: #2C2C2A; }
+  h1 { font-size: 22px; border-bottom: 2px solid #ddd; padding-bottom: 8px; }
+  h2 { font-size: 17px; margin-top: 28px; color: #0c447c; }
+  .meta { color: #666; font-size: 14px; }
+  table { border-collapse: collapse; width: 100%; margin: 10px 0; }
+  th, td { border: 1px solid #ddd; padding: 8px 10px; text-align: left; font-size: 14px; vertical-align: top; }
+  th { background: #f4f6f8; }
+  code { background: #f1f1f1; padding: 1px 5px; border-radius: 4px; font-size: 13px; }
+  pre { background: #1e1e1e; color: #e6e6e6; padding: 12px 14px; border-radius: 6px; overflow-x: auto; font-size: 13px; }
+  ul, ol { padding-left: 22px; }
+</style>
+</head>
+<body>
+  <h1>QC Report process — Test results &amp; coverage</h1>
+  <p class="meta">QC Backlog row 25 · Updated: 2026-07-09 · Metrics template: the "QC Metrics &amp; Reporting" page (Confluence, row 11)</p>
+
+  <p>The <code>scripts/qc-report.mjs</code> script automatically aggregates the test results + bug counts by severity + test case counts,
+  then produces the <code>reports/qc-report.md</code> report and evaluates the release criteria.</p>
+
+  <h2>1. Data sources</h2>
+  <table>
+    <tr><th>Metric</th><th>Sourced from</th></tr>
+    <tr><td>Total / Passed / Failed / Pass rate</td><td><strong>Playwright JSON report</strong> — merges all <code>results/*.json</code> (should cover all of e2e / api / accessibility / visual)</td></tr>
+    <tr><td>Open defects by P1–P4</td><td><strong>Jira</strong> — counts tickets labelled <code>P1-blocker … P4-minor</code> that are not Done (requires JIRA_* in .env)</td></tr>
+    <tr><td>Number of features / test cases</td><td>counted in <code>test-cases/**/*.json</code></td></tr>
+  </table>
+
+  <h2>2. How to run (each cycle)</h2>
+  <pre>npm run test:all     # e2e + api + accessibility + visual -> results/results.json
+npm run qc:report    # -> reports/qc-report.md (aggregated)</pre>
+  <p><code>test:all</code> runs every type in a single pass so the report has full coverage. If you run each suite separately,
+  each suite overwrites <code>results/results.json</code> → the report only has the last suite; to merge them, save each suite
+  to its own file <code>results/&lt;name&gt;.json</code> (the script automatically sums every <code>results/*.json</code> file).</p>
+
+  <h2>3. Report contents</h2>
+  <ul>
+    <li><strong>Test results</strong>: Total · Passed · Failed · Flaky · Skipped · Pass rate % (target 100%).</li>
+    <li><strong>Open defects by severity</strong>: P1 / P2 / P3 / P4 (from Jira).</li>
+    <li><strong>Test cases</strong>: number of features + number of test cases.</li>
+    <li><strong>Release exit criteria</strong>: Pass rate 100% (0 fail) · 0 P1&amp;P2 open · Coverage ≥ 80%.</li>
+  </ul>
+
+  <h2>4. Related files</h2>
+  <table>
+    <tr><th>File</th><th>Role</th></tr>
+    <tr><td><code>scripts/qc-report.mjs</code></td><td>Generates the report (reads results/*.json + Jira + test-cases/).</td></tr>
+    <tr><td><code>playwright.config.ts</code></td><td>JSON reporter added → <code>results/results.json</code>.</td></tr>
+    <tr><td><code>package.json</code></td><td>Scripts <code>test:all</code>, <code>qc:report</code>.</td></tr>
+    <tr><td><code>reports/qc-report.md</code></td><td>The output report.</td></tr>
+    <tr><td>Confluence "QC Metrics &amp; Reporting"</td><td>Defines the metrics + targets + cadence (row 11).</td></tr>
+  </table>
+
+  <h2>5. Notes</h2>
+  <ul>
+    <li>The "Open defects" section needs <code>JIRA_BASE_URL / JIRA_EMAIL / JIRA_API_TOKEN / JIRA_PROJECT_KEY</code>; if missing it is skipped (shows "—").</li>
+    <li>The 80% coverage needs to be reconciled against the acceptance-criteria baseline — currently left as "to confirm".</li>
+    <li>The report can be pushed to Confluence automatically (a future extension, not yet done).</li>
+  </ul>
+</body>
+</html>

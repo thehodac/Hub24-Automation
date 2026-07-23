@@ -1,0 +1,128 @@
+# Bamboo Specs — cấu hình CI cho Atlassian Bamboo (tương đương CloudBees / GitHub
+# Actions). Bamboo đọc file này để tạo/chạy plan.
+#
+# LUỒNG (giống các CI khác):
+#   Stage 1 "Functional & Visual": chạy song song 2 job
+#       - Functional tests: e2e + api + accessibility
+#       - Chromatic: visual regression + build + ticket
+#   Stage 2 "Cross-browser": BrowserStack — Bamboo chỉ chạy stage sau khi stage
+#       trước PASS, nên BrowserStack tự động chỉ chạy khi 2 job trên xanh.
+#
+# YÊU CẦU PHÍA BAMBOO (admin làm 1 lần):
+#   - Có server Bamboo + link repo này + bật "Bamboo Specs".
+#   - Khai các biến (kiểu password cho secret) trong Bamboo, tên khớp bên dưới:
+#       jira_base_url, jira_email, jira_api_token, jira_project_key,
+#       jira_parent_key, chromatic_project_token,
+#       browserstack_username, browserstack_access_key
+---
+version: 2
+plan:
+  project-key: NITRO
+  key: HUB24PW
+  name: HUB24 Playwright Tests
+  description: Runs the Playwright suite (mirror of CloudBees / GitHub Actions).
+
+stages:
+  - Functional & Visual:
+      manual: false
+      final: false
+      jobs:
+        - Functional tests
+        - Chromatic
+  - Cross-browser:
+      manual: false
+      final: false
+      jobs:
+        - BrowserStack
+
+# --- Job 1: e2e + api + accessibility -----------------------------------------
+Functional tests:
+  key: FUNC
+  docker:
+    image: mcr.microsoft.com/playwright:v1.61.0-jammy
+  tasks:
+    - checkout: {}
+    - script:
+        interpreter: SHELL
+        scripts:
+          - |
+            export HOME=/root
+            export CI=true                          # Playwright 1 worker (đỡ tốn RAM)
+            export TEST_REPORT_DIR=test-report-bamboo
+            export JIRA_CREATE_TICKETS=true
+            export JIRA_BASE_URL="${bamboo.jira_base_url}"
+            export JIRA_EMAIL="${bamboo.jira_email}"
+            export JIRA_API_TOKEN="${bamboo.jira_api_token}"
+            export JIRA_PROJECT_KEY="${bamboo.jira_project_key}"
+            export JIRA_PARENT_KEY="${bamboo.jira_parent_key}"
+            npm ci
+            npx playwright test --project=chromium --project=e2e --project=api --workers=1
+  artifacts:
+    - name: test-report
+      location: test-report-bamboo
+      pattern: '**/*'
+      required: false
+      shared: true
+
+# --- Job 2: Chromatic (visual regression) -------------------------------------
+Chromatic:
+  key: CHROMA
+  docker:
+    image: mcr.microsoft.com/playwright:v1.61.0-jammy
+  tasks:
+    - checkout: {}
+    - script:
+        interpreter: SHELL
+        scripts:
+          - |
+            export HOME=/root
+            export CI=true
+            export TEST_REPORT_DIR=test-report-bamboo
+            export CHROMATIC_PROJECT_TOKEN="${bamboo.chromatic_project_token}"
+            export JIRA_CREATE_TICKETS=true
+            export JIRA_BASE_URL="${bamboo.jira_base_url}"
+            export JIRA_EMAIL="${bamboo.jira_email}"
+            export JIRA_API_TOKEN="${bamboo.jira_api_token}"
+            export JIRA_PROJECT_KEY="${bamboo.jira_project_key}"
+            export JIRA_PARENT_KEY="${bamboo.jira_parent_key}"
+            npm ci
+            npm run test:visual:chromatic
+
+# --- Job 3: BrowserStack (chỉ chạy sau khi Stage 1 PASS) ----------------------
+BrowserStack:
+  key: BS
+  docker:
+    image: node:20-bookworm
+  tasks:
+    - checkout: {}
+    - script:
+        interpreter: SHELL
+        scripts:
+          - |
+            export CI=true
+            export TEST_REPORT_DIR=test-report-bamboo
+            export BUG_CATEGORY_OVERRIDE=browserstack   # ticket -> [BrowserStack-Bug]
+            export BROWSERSTACK_USERNAME="${bamboo.browserstack_username}"
+            export BROWSERSTACK_ACCESS_KEY="${bamboo.browserstack_access_key}"
+            export JIRA_CREATE_TICKETS=true
+            export JIRA_BASE_URL="${bamboo.jira_base_url}"
+            export JIRA_EMAIL="${bamboo.jira_email}"
+            export JIRA_API_TOKEN="${bamboo.jira_api_token}"
+            export JIRA_PROJECT_KEY="${bamboo.jira_project_key}"
+            export JIRA_PARENT_KEY="${bamboo.jira_parent_key}"
+            npm ci
+            npm run test:browserstack
+
+# Trigger: chạy khi có commit mới trên nhánh đã link (cấu hình ở Bamboo UI, hoặc
+# thêm 'triggers:' + 'branches:' nếu team dùng Specs cho phần đó).
+---
+version: 2
+plan:
+  key: NITRO-HUB24PW
+plan-permissions:
+  - users:
+      - technical
+    permissions:
+      - view
+      - edit
+      - build

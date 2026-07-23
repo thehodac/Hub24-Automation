@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Plan — Bug export to Excel/CSV (Rovo/Jira format)</title>
+  <style>
+    body { font-family: Arial, Helvetica, sans-serif; max-width: 880px; margin: 24px auto; padding: 0 16px; line-height: 1.6; color: #1a1a1a; }
+    h1 { font-size: 22px; border-bottom: 2px solid #ddd; padding-bottom: 8px; }
+    h2 { font-size: 17px; margin-top: 26px; color: #0c447c; }
+    table { border-collapse: collapse; width: 100%; margin: 8px 0; }
+    th, td { border: 1px solid #ddd; padding: 8px 10px; text-align: left; font-size: 14px; vertical-align: top; }
+    th { background: #f4f6f8; }
+    code { background: #f1f1f1; padding: 1px 5px; border-radius: 4px; font-size: 13px; }
+    pre { background: #1e1e1e; color: #e6e6e6; padding: 12px 14px; border-radius: 6px; overflow-x: auto; font-size: 12.5px; }
+    ol, ul { padding-left: 22px; }
+  </style>
+</head>
+<body>
+  <h1>Plan — Export bugs to Excel/CSV in the Rovo/Jira format</h1>
+  <p class="meta">Author: Thong Ho · Date: 2026-07-15 · Template: NIT-6180.xlsx (Jira export) · Related: reporter bug-report</p>
+
+  <h2>1. Goal</h2>
+  <p>After each test run, the reporter automatically exports all bugs into <strong>one .xlsx file + one .csv file</strong> in the <strong>exact column format of the template file NIT-6180.xlsx</strong>,
+  saved into the <code>bug-excel-jira/</code> folder, so that <strong>Rovo/Jira can import them to create bug tickets</strong>. <strong>File name = the Epic key in <code>.env</code></strong> (<code>JIRA_PARENT_KEY</code>, e.g. <code>NIT-6180.xlsx</code>).</p>
+
+  <h2>2. Scope</h2>
+  <ul>
+    <li><strong>In scope:</strong> add a table-export function to <code>reporters/bug-report.ts</code>; create the <code>bug-excel-jira/</code> folder; write <code>.csv</code> (no library needed) + <code>.xlsx</code> (add <code>exceljs</code>).</li>
+    <li><strong>In scope:</strong> merge bugs of all types (e2e/api/accessibility/chromatic) into the same file, one bug per row.</li>
+    <li><strong>Out of scope:</strong> auto-importing into Jira (you do it manually / Rovo reads the file). Do not touch the existing bug→Jira REST flow.</li>
+  </ul>
+
+  <h2>3. File format (per the NIT-6180.xlsx template)</h2>
+  <p>Keep the 32-column header row of the export file; only fill the columns that have data, leave the rest blank:</p>
+  <table>
+    <tr><th>Column</th><th>Value to fill</th></tr>
+    <tr><td><code>Key</code></td><td>leave blank (Jira assigns it on creation)</td></tr>
+    <tr><td><code>Summary</code></td><td><code>[Bug] &lt;describe&gt; - &lt;title&gt;</code></td></tr>
+    <tr><td><code>Description</code></td><td>Jira wiki markup (see section 4)</td></tr>
+    <tr><td><code>Labels</code></td><td><code>&lt;severity&gt;, autobug-&lt;hash&gt;, automation</code></td></tr>
+    <tr><td><code>Parent</code></td><td><code>JIRA_PARENT_KEY</code> (from .env)</td></tr>
+    <tr><td><code>Project</code></td><td><code>JIRA_PROJECT_KEY</code> (NITRO)</td></tr>
+    <tr><td><code>P</code> (Priority)</td><td>mapped from severity: P1→Highest · P2→High · P3→Medium · P4→Low</td></tr>
+    <tr><td><code>T</code> (Type)</td><td><code>Bug</code></td></tr>
+    <tr><td><code>Creator</code> / <code>Reporter</code></td><td>(optional) a fixed name via env, or leave blank</td></tr>
+    <tr><td>the remaining custom columns</td><td>leave blank (Cause of Issue, Compliance required, FDS Approvers, …)</td></tr>
+  </table>
+
+  <h2>4. Description format (matching the template)</h2>
+  <pre>h3. Reason (why it failed)
+
+&lt;error text&gt;
+
+h3. Failed at step
+
+&lt;step&gt;
+
+h3. Steps to reproduce
+
+# step 1
+# step 2
+# [FAILED HERE] &lt;failed step&gt;
+
+h3. Actual result (current)
+
+&lt;actual&gt;
+
+h3. Expected result (to pass)
+
+&lt;expected&gt;
+
+Source: &lt;category&gt; — &lt;file&gt;
+
+Created automatically by the HUB24 Bug Report reporter.</pre>
+
+  <h2>5. File name</h2>
+  <ul>
+    <li><code>bug-excel-jira/&lt;JIRA_PARENT_KEY&gt;.xlsx</code> and <code>&lt;JIRA_PARENT_KEY&gt;.csv</code> — e.g. <code>NIT-6180.xlsx</code>.</li>
+    <li>Each run <strong>overwrites</strong> the file with the same epic name (just like the template). <em>If you want to keep a per-run history → add a timestamp <code>&lt;EPIC&gt;-YYYYMMDD-HHmm.xlsx</code> (let me know).</em></li>
+  </ul>
+
+  <h2>6. Files to create / change</h2>
+  <table>
+    <tr><th>File</th><th>Change</th></tr>
+    <tr><td><code>reporters/bug-report.ts</code></td><td>Edit — add <code>writeBugSpreadsheet()</code> (build the wiki-markup Description + Labels) called in <code>onEnd</code>.</td></tr>
+    <tr><td><code>package.json</code></td><td>Edit — add the devDependency <code>exceljs</code>.</td></tr>
+    <tr><td><code>bug-excel-jira/</code></td><td>New — folder holding the exported files (auto-created).</td></tr>
+    <tr><td><code>.gitignore</code></td><td>(optional) add <code>bug-excel-jira/</code>.</td></tr>
+  </table>
+
+  <h2>7. How to verify</h2>
+  <ul>
+    <li><code>npm install</code> then <code>npm run test:saucedemo</code> (which has a failing case).</li>
+    <li>Check that <code>bug-excel-jira/&lt;EPIC&gt;.xlsx</code> + <code>.csv</code> have the correct columns as in NIT-6180.xlsx, the Description has correct wiki markup, and Parent = the epic in .env.</li>
+    <li>Try a Rovo/Jira import of that file to create tickets.</li>
+  </ul>
+
+  <h2>8. Risks / notes</h2>
+  <ul>
+    <li><code>exceljs</code> is new; if installation is blocked by the network, <code>.csv</code> still works (fallback).</li>
+    <li>The template export has many unrelated custom fields (SFTP, FDS…) → leave them blank, do not generate data.</li>
+    <li>Does not affect the existing bug→Jira REST flow; this is a parallel export channel.</li>
+  </ul>
+</body>
+</html>

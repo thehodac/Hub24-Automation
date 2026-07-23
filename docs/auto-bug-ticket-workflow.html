@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Automatic ticket creation workflow (bug reporter)</title>
+<style>
+  body { font-family: Arial, Helvetica, sans-serif; max-width: 940px; margin: 24px auto; padding: 0 18px; line-height: 1.6; color: #2C2C2A; }
+  h1 { font-size: 22px; border-bottom: 2px solid #ddd; padding-bottom: 8px; }
+  h2 { font-size: 17px; margin-top: 28px; color: #0c447c; }
+  .meta { color: #666; font-size: 14px; }
+  table { border-collapse: collapse; width: 100%; margin: 10px 0; }
+  th, td { border: 1px solid #ddd; padding: 8px 10px; text-align: left; font-size: 14px; vertical-align: top; }
+  th { background: #f4f6f8; }
+  code { background: #f1f1f1; padding: 1px 5px; border-radius: 4px; font-size: 13px; }
+  pre { background: #1e1e1e; color: #e6e6e6; padding: 12px 14px; border-radius: 6px; overflow-x: auto; font-size: 13px; }
+  ul, ol { padding-left: 22px; }
+  .note { background:#fff8e1; border:1px solid #f0d98a; padding:8px 12px; border-radius:6px; }
+</style>
+</head>
+<body>
+  <h1>Automatic ticket creation workflow (Bug Report reporter)</h1>
+  <p class="meta">Updated: 2026-07-17 · File: <code>reporters/bug-report.ts</code> · <code>reporters/jira.ts</code> · <code>reporters/asana.ts</code></p>
+
+  <p>When any test <strong>fails</strong>, the reporter automatically <strong>creates a ticket</strong> in Jira (and Asana if enabled),
+  attaches the evidence, and <strong>closes the ticket automatically</strong> when the test passes again. It runs both locally and in CI (CloudBees / GitHub Actions / Bamboo).</p>
+
+  <h2>1. Flow</h2>
+  <ol>
+    <li>Playwright runs the tests → the reporter gathers the results (<code>onTestEnd</code> / <code>onEnd</code>).</li>
+    <li>Test <strong>fails</strong> → builds a "bug object" (reason, steps, environment, parameters, etc.).</li>
+    <li><strong>Deduplication:</strong> look for an open ticket for that test (by label). If one exists → skip; if not → create a new one.</li>
+    <li>Create a ticket in <strong>Jira</strong> (and <strong>Asana</strong> if enabled) + attach image/video/evidence.</li>
+    <li>Test <strong>passes again</strong> on a later run → the ticket is automatically moved to <strong>Done</strong> (Asana: mark complete).</li>
+  </ol>
+
+  <h2>2. Deduplication — what it relies on</h2>
+  <p>Each test has a hidden label <code>autobug-&lt;hash&gt;</code>, where <code>hash = md5(file-path + "::" + test-name)</code>. It is considered "already existing" when:
+  <strong>the same project</strong> + <strong>the label is still present</strong> + <strong>status ≠ Done</strong>. → Changing the prefix/content has NO effect; to create a new one, <strong>set the old ticket to Done</strong> (or rename the test/file).</p>
+
+  <h2>3. Ticket content (upgraded)</h2>
+  <table>
+    <tr><th>Item</th><th>Content</th></tr>
+    <tr><td><strong>Title</strong></td><td>Prefix by type + spec name + test name (section 4).</td></tr>
+    <tr><td><strong>Reason (why it failed)</strong></td><td>A <strong>clear, easy-to-understand</strong> sentence (naming the element), e.g. "The 'add to cart …' element was expected to be visible, but it was not found." A11y → lists the number of WCAG violations. If the test has a custom message, that message is used.</td></tr>
+    <tr><td><strong>Failed at step</strong></td><td>The step that failed (written in plain language).</td></tr>
+    <tr><td><strong>Steps to reproduce</strong></td><td>The steps in everyday language (e.g. "Enter username: standard_user", "Click the login button"), dropping the mechanical steps (Create context…). Passwords are masked automatically (***).</td></tr>
+    <tr><td><strong>Actual / Expected</strong></td><td>Actual result (clear sentence) vs expected.</td></tr>
+    <tr><td><strong>Environment / Device</strong></td><td>Device · OS + version · real browser (Chrome/Firefox/Safari + version). BrowserStack → the real device/OS/browser of the session.</td></tr>
+    <tr><td><strong>Test parameters (user inputs)</strong></td><td>Inputs used for the test (e.g. user, module) — via <code>attachTestParams()</code>. Passwords are not included.</td></tr>
+    <tr><td><strong>Evidence</strong></td><td>Image + video. Chromatic → before/after + build link (no video). BrowserStack → session link. Accessibility → <code>axe-results.json</code>.</td></tr>
+    <tr><td><strong>Test file</strong></td><td>Path of the spec that produced the bug.</td></tr>
+    <tr><td><strong>Labels</strong></td><td><code>automation</code>, <code>autobug-&lt;hash&gt;</code>, severity label (P1–P4).</td></tr>
+  </table>
+
+  <h2>4. Title prefix + issue type by category</h2>
+  <table>
+    <tr><th>Test type</th><th>Title prefix</th><th>Issue type (parent Epic → Story → …)</th></tr>
+    <tr><td>e2e</td><td><code>[E2E-Bug]</code></td><td>Bug / Sub-task</td></tr>
+    <tr><td>api</td><td><code>[API-Bug]</code></td><td>Bug / Sub-task</td></tr>
+    <tr><td>accessibility</td><td><code>[Accessibility-Bug]</code></td><td>Bug / Sub-task</td></tr>
+    <tr><td>browserstack</td><td><code>[BrowserStack-Bug]</code></td><td>Bug / Sub-task</td></tr>
+    <tr><td>chromatic</td><td><code>[Chromatic-Issue]</code></td><td><strong>Story / Sub-task</strong> (not a Bug — a visual change is not necessarily an error)</td></tr>
+  </table>
+
+  <h2>5. Destinations: Jira + Asana</h2>
+  <ul>
+    <li><strong>Jira</strong> (default): enable with <code>JIRA_CREATE_TICKETS=true</code> + credentials.</li>
+    <li><strong>Asana</strong> (in parallel, optional): enable with <code>ASANA_CREATE_TICKETS=true</code> + token. Runs independently of Jira.</li>
+  </ul>
+
+  <h2>6. Configuration (environment variables)</h2>
+  <pre># Jira
+JIRA_CREATE_TICKETS=true
+JIRA_BASE_URL=https://classltd.atlassian.net
+JIRA_EMAIL=...            JIRA_API_TOKEN=...
+JIRA_PROJECT_KEY=NIT      JIRA_PARENT_KEY=NIT-6655   # Epic or Story to attach the ticket to
+
+# Asana (optional — runs in parallel with Jira)
+ASANA_CREATE_TICKETS=true
+ASANA_TOKEN=...
+ASANA_PROJECT_GID=...     # Project ID (the number after /project/ in the URL) - REQUIRED
+ASANA_SECTION_GID=...     # Section ID within the project - OPTIONAL (empty = default section)
+
+# Report + CI
+TEST_REPORT_DIR=...       # CI/BrowserStack sets a separate report folder
+</pre>
+  <p class="note"><strong>Getting the Asana GID:</strong> <code>ASANA_PROJECT_GID</code> = the number after <code>/project/</code> in the project URL. Get <code>ASANA_SECTION_GID</code> with <code>node scripts/asana-sections.mjs &lt;PROJECT_GID&gt;</code> (prints the section name + GID). Leave it empty to place the task in the default section.</p>
+
+  <h2>7. To include "Test parameters" in the ticket</h2>
+  <p>The test attaches inputs itself via a helper, or uses the shared auto-fixture (every SauceDemo spec already has it via <code>pages/saucedemo/fixtures.ts</code>):</p>
+  <pre>import { attachTestParams } from '../../utils/testMeta';
+attachTestParams(testInfo, { username: 'standard_user', module: 'login' }); // mask secrets: password: '***'</pre>
+  <p>For an <strong>even clearer error</strong>: use an assertion with a message → <code>expect(header, 'Header not found').toBeVisible()</code>.</p>
+
+  <h2>8. Related files</h2>
+  <table>
+    <tr><th>File</th><th>Role</th></tr>
+    <tr><td><code>reporters/bug-report.ts</code></td><td>Catches failures, builds the bug object (clear reason, easy-to-read steps, environment, parameters), calls ticket creation, exports the test report.</td></tr>
+    <tr><td><code>reporters/jira.ts</code></td><td>Creates/closes Jira tickets; prefix + issue type by category; ADF description.</td></tr>
+    <tr><td><code>reporters/asana.ts</code></td><td>Creates/closes Asana tasks (in parallel with Jira).</td></tr>
+    <tr><td><code>utils/testMeta.ts</code></td><td><code>attachTestParams()</code> — attaches test parameters to the ticket.</td></tr>
+    <tr><td><code>utils/browserstack.ts</code></td><td>Gets the device/OS/browser + session link (BrowserStack).</td></tr>
+    <tr><td><code>scripts/asana-sections.mjs</code></td><td>Lists the sections + GIDs of an Asana project.</td></tr>
+  </table>
+</body>
+</html>

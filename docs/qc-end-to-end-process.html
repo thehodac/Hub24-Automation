@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>QC Automation — End-to-end process</title>
+  <style>
+    body { font-family: Arial, Helvetica, sans-serif; max-width: 900px; margin: 24px auto; padding: 0 16px; line-height: 1.6; color: #1a1a1a; }
+    h1 { font-size: 23px; border-bottom: 2px solid #ddd; padding-bottom: 8px; }
+    h2 { font-size: 18px; margin-top: 30px; color: #0c447c; }
+    .meta { color: #666; font-size: 14px; }
+    .flow { background:#f4f6f8; border:1px solid #dde3e8; border-radius:8px; padding:12px 16px; font-size:14px; margin:14px 0; }
+    .flow b { color:#0c447c; }
+    table { border-collapse: collapse; width: 100%; margin: 8px 0; }
+    th, td { border: 1px solid #ddd; padding: 8px 10px; text-align: left; font-size: 14px; vertical-align: top; }
+    th { background: #f4f6f8; width: 130px; }
+    code { background: #f1f1f1; padding: 1px 5px; border-radius: 4px; }
+    ol, ul { padding-left: 22px; }
+    .step-num { display:inline-block; background:#0c447c; color:#fff; border-radius:50%; min-width:26px; height:26px; padding:0 6px; text-align:center; line-height:26px; font-size:14px; margin-right:8px; }
+  </style>
+</head>
+<body>
+  <h1>QC Automation — End-to-end process</h1>
+  <p class="meta">Project: HUB24 / MPF QC framework · Author: Thong Ho · Date: 2026-07-20</p>
+
+  <p>The complete flow, from reading the project information to running cross-browser
+  tests on real devices. Each step lists the tools, outputs, and commands to run.</p>
+
+  <div class="flow">
+    <b>1</b> Read project information &nbsp;→&nbsp; <b>2</b> Generate Cucumber test cases
+    &nbsp;→&nbsp; <b>2b</b> Push the test cases to the project's tool
+    &nbsp;→&nbsp; <b>3</b> Write automated tests &nbsp;→&nbsp; <b>4</b> Run tests suite by suite
+    (e2e / api / a11y / chromatic) &nbsp;→&nbsp; <b>5</b> Push to GitHub + run CloudBees CI
+    &nbsp;→&nbsp; <b>6</b> Run BrowserStack (cross-browser / device)
+  </div>
+
+  <h2><span class="step-num">1</span>Read project information</h2>
+  <p>The bot loads all known information about the project so it works from real
+  documentation rather than guessing.</p>
+  <table>
+    <tr><th>Approach</th><td>Ask which project this is, then read the entire <code>projects-document/&lt;project&gt;/</code> folder (starting with <code>project-info.md</code>, then <code>docs/</code>). If the folder is empty → request the links (Confluence / doc URL, or web/app link) and/or ask that documentation files be added to the folder.</td></tr>
+    <tr><th>Tool</th><td><code>read-project-docs</code> skill</td></tr>
+    <tr><th>Output</th><td>Working context: ticket tool (Jira/Asana/Azure/Basecamp), app URL (BASE_URL/API_URL), where the Func Spec lives, CI, conventions</td></tr>
+  </table>
+
+  <h2><span class="step-num">2</span>Generate Cucumber test cases</h2>
+  <p>Read the Acceptance Criteria in the Functional Spec and convert them into Gherkin
+  scenarios (Given/When/Then). The pipeline does NOT invent or duplicate AC — it only
+  reads the AC already present in the spec.</p>
+  <table>
+    <tr><th>Approach</th><td>Collect the spec input (Confluence / file), generate the scenarios; QC + BA review and approve before use</td></tr>
+    <tr><th>Tool</th><td><code>generate-testcase</code> / <code>spec-to-testcase-pipeline</code> skill (Claude Code)</td></tr>
+    <tr><th>Output</th><td><code>.feature</code> + <code>.json</code> in <code>test-cases/</code> (source of truth)</td></tr>
+  </table>
+
+  <h2><span class="step-num">2b</span>Push the test cases to the project's tool</h2>
+  <p>Once the test cases are generated, the bot reports that it is done and pushes them
+  where the user wants — it never pushes on its own.</p>
+  <table>
+    <tr><th>Approach</th><td>
+      1. The bot reports the generation is done and asks: <b>"Where do you want to push the test cases?"</b> (Jira / Confluence / Asana — depending on the project's tool).<br>
+      2. The bot asks the user to <b>provide the link</b> where the test cases should go (Jira issue link / Confluence page / Asana project). The bot does not guess it.<br>
+      3. After the user enters the link, the bot pushes the test cases there (Excel <code>.xlsx</code> + JSON).
+    </td></tr>
+    <tr><th>Tool</th><td>Jira / Confluence / Asana API (Claude Code)</td></tr>
+    <tr><th>Output</th><td>Test cases published at the link the user provided; the copy in <code>test-cases/</code> remains the source of truth</td></tr>
+    <tr><th>Note</th><td>Publishing is side-effectful — the bot confirms the destination + link with the user before pushing.</td></tr>
+  </table>
+
+  <h2><span class="step-num">3</span>Write automated tests</h2>
+  <p>Turn the approved test cases into runnable Playwright specs, following the Page Object Model.</p>
+  <table>
+    <tr><th>Approach</th><td>Write specs in <code>tests/e2e/</code> (1 test / scenario, keep the tags); put actions/locators into page objects under <code>pages/</code>; use shared fixtures</td></tr>
+    <tr><th>Tool</th><td>Playwright + TypeScript (Claude Code)</td></tr>
+    <tr><th>Output</th><td>Specs in <code>tests/</code> + page objects in <code>pages/</code>, committed</td></tr>
+    <tr><th>Check</th><td><code>npx tsc --noEmit</code> + <code>eslint</code></td></tr>
+  </table>
+
+  <h2><span class="step-num">4</span>Run tests suite by suite</h2>
+  <p>Run each test type locally. On a failure, auto-create a bug ticket in the project's
+  tool (with a clear reason, environment/device, test parameters); each run produces one
+  pass/fail report.</p>
+  <table>
+    <tr><th>Commands</th><td>
+      E2E / regression: <code>npm run test:e2e</code><br>
+      API: <code>npm run test:api</code><br>
+      Accessibility: <code>npm run test:a11y</code><br>
+      Visual (Chromatic): <code>npm run test:visual:chromatic</code>
+    </td></tr>
+    <tr><th>Tool</th><td>Playwright · @axe-core/playwright · Chromatic · auto-ticket reporter</td></tr>
+    <tr><th>Output</th><td>Results + report in <code>test-report/</code>; bug ticket auto-created on failure (<code>[E2E-Bug]</code> / <code>[API-Bug]</code> / <code>[Accessibility-Bug]</code> / <code>[Chromatic-Issue]</code>)</td></tr>
+  </table>
+
+  <h2><span class="step-num">5</span>Push to GitHub and run CloudBees CI</h2>
+  <p>Commit and push the code; CI runs the whole suite automatically, auto-creates tickets
+  on failure, and exports a report.</p>
+  <table>
+    <tr><th>Approach</th><td>Push to the repo → the CloudBees pipeline runs <code>e2e → api → a11y → chromatic</code>, then auto-ticket + report. GitHub Actions mirrors this pipeline with a downloadable report artifact.</td></tr>
+    <tr><th>Tool</th><td>GitHub + CloudBees (and GitHub Actions)</td></tr>
+    <tr><th>Output</th><td>CI results + auto-created tickets + report artifact</td></tr>
+  </table>
+
+  <h2><span class="step-num">6</span>Run BrowserStack (cross-browser / device)</h2>
+  <p>Run the suite on real browsers and devices to confirm it works everywhere. Only run
+  after the functional + visual steps pass, and this is the gate before promoting to
+  PRE-PROD.</p>
+  <table>
+    <tr><th>Commands</th><td><code>npm run test:browserstack</code> (or the CI gate after steps 4–5 pass)</td></tr>
+    <tr><th>Tool</th><td>BrowserStack (real browsers &amp; devices)</td></tr>
+    <tr><th>Output</th><td>Cross-browser results; on failure → <code>[BrowserStack-Bug]</code> ticket with a session link; on pass → ready to promote to PRE-PROD</td></tr>
+  </table>
+
+  <h2>Notes</h2>
+  <ul>
+    <li>The copy in <code>test-cases/</code> is always the source of truth even when test cases are also published to Confluence / Asana.</li>
+    <li>Where tickets are created depends on the project (Jira / Asana / Azure DevOps / Basecamp) — set it in <code>.env</code>; verify with <code>node scripts/check-ticket-env.mjs</code>.</li>
+    <li>Running for real against HUB24 (steps 3–6) is blocked until the HUB24 test environment is available (BASE_URL + credentials); for now the process is demonstrated on the SauceDemo sample project.</li>
+  </ul>
+</body>
+</html>

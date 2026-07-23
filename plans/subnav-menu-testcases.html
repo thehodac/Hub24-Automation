@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Plan — Subnav Menu Test Cases (Regenerate)</title>
+  <style>
+    body { font-family: Arial, Helvetica, sans-serif; max-width: 820px; margin: 24px auto; padding: 0 16px; line-height: 1.6; color: #1a1a1a; }
+    h1 { font-size: 22px; border-bottom: 2px solid #ddd; padding-bottom: 8px; }
+    h2 { font-size: 17px; margin-top: 28px; color: #0c447c; }
+    .meta { color: #666; font-size: 14px; }
+    table { border-collapse: collapse; width: 100%; margin: 8px 0; }
+    th, td { border: 1px solid #ddd; padding: 8px 10px; text-align: left; font-size: 14px; }
+    th { background: #f4f6f8; }
+    code { background: #f1f1f1; padding: 1px 5px; border-radius: 4px; }
+    ol, ul { padding-left: 22px; }
+  </style>
+</head>
+<body>
+  <h1>Plan — Subnav Menu Test Cases (Regenerate)</h1>
+  <p class="meta">Author: automated-qa-pipeline · Date: 2026-07-10 · Related spec: Confluence pageId 2129690639 "App Header | Subnav Menu"</p>
+
+  <h2>1. Goal</h2>
+  <p>Regenerate the full QA test-case set for the "App Header | Subnav Menu" functional spec
+  (28 ACs, 6 dropdowns) because the spec was modified after the existing test-case Confluence
+  page (pageId 2135261242) was last generated. Update that Confluence page and mirror the
+  test cases into local JSON + Gherkin feature files for the automation repo. This is a
+  scheduled/automated daily pipeline run with fully specified inputs/outputs (exact IDs,
+  paths, and formats given by the calling system) — no design decisions are left open, so
+  this plan documents the pre-approved, deterministic steps rather than a proposal awaiting
+  human sign-off.</p>
+
+  <h2>2. Scope</h2>
+  <ul>
+    <li>In scope: derive 45-65+ Gherkin-style test cases (IDs TC_SUBNAV_001+) covering every
+    AC-01..AC-28 (positive, negative, edge, accessibility, mobile, analytics tags); update
+    Confluence page 2135261242 with a markdown table + JSON export; write
+    <code>test-cases/app-header/subnav-menu.json</code> and
+    <code>test-cases/app-header/subnav-menu.feature</code> in this repo.</li>
+    <li>Out of scope: modifying the functional spec page (2129690639), messaging anyone,
+    implementing actual Playwright step definitions/page objects for these scenarios (this
+    task only produces the test-case catalogue, not executable automation code).</li>
+  </ul>
+
+  <h2>3. Step-by-step approach</h2>
+  <ol>
+    <li>Write this plan file (done).</li>
+    <li>Draft the full test-case list (scenario id, tags, short scenario name, Gherkin
+    Given/When/Then/And description) covering all 28 ACs, including a <code>@gap</code> tagged
+    case for the undefined hamburger-breakpoint pixel value (AC-02).</li>
+    <li>Update Confluence page 2135261242 via <code>updateConfluencePage</code> (markdown
+    format) with the Excel-style table and JSON export block; re-fetch to verify rendering,
+    retry with HTML format if the markdown table doesn't render.</li>
+    <li>Write <code>test-cases/app-header/subnav-menu.json</code> (pretty-printed JSON array
+    mirroring the Confluence JSON export).</li>
+    <li>Write <code>test-cases/app-header/subnav-menu.feature</code> (Gherkin feature file,
+    one scenario per test case, tags line above each Scenario).</li>
+    <li>Report back: total test case count, Confluence page URL, confirmation both local
+    files were written.</li>
+  </ol>
+
+  <h2>4. Files to create / change</h2>
+  <table>
+    <tr><th>File</th><th>Change</th></tr>
+    <tr><td><code>plans/subnav-menu-testcases.html</code></td><td>This plan (new)</td></tr>
+    <tr><td><code>test-cases/app-header/subnav-menu.json</code></td><td>New — JSON array of test cases</td></tr>
+    <tr><td><code>test-cases/app-header/subnav-menu.feature</code></td><td>New — Gherkin feature file of test cases</td></tr>
+    <tr><td>Confluence pageId 2135261242</td><td>Updated via MCP — full regenerate of test-case table + JSON export</td></tr>
+  </table>
+
+  <h2>5. How to verify</h2>
+  <ul>
+    <li>Re-fetch Confluence page 2135261242 after update and confirm the table and JSON
+    code block render correctly.</li>
+    <li>Open <code>test-cases/app-header/subnav-menu.json</code> and confirm it parses as
+    valid JSON and the array length matches the reported test case count.</li>
+    <li>Open <code>test-cases/app-header/subnav-menu.feature</code> and confirm every
+    scenario has a tags line, Scenario line, and indented Given/When/Then/And steps.</li>
+    <li>Spot-check that every AC-01..AC-28 is referenced by at least one scenario.</li>
+  </ul>
+
+  <h2>6. Risks / notes</h2>
+  <ul>
+    <li>AC-02's breakpoint pixel value for wrap-to-hamburger is not defined in the spec —
+    flagged as a <code>@gap</code> test case rather than asserting an invented pixel value.</li>
+    <li>This is a non-interactive automated pipeline run; the task instructions already
+    constitute full specification/approval of scope, so implementation proceeds immediately
+    after this plan is written rather than pausing for interactive sign-off.</li>
+  </ul>
+</body>
+</html>

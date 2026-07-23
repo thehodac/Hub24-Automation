@@ -1,0 +1,422 @@
+[
+  {
+    "scenario_id": "TC_SEARCH_001",
+    "tags": "@ui @positive @smoke",
+    "scenario": "First-time user sees default discovery content on focus",
+    "description": "Given a user with no prior search history opens global search for the first time\nWhen the user focuses the search input without entering a query\nThen the dropdown opens showing default discovery content\nAnd the default content includes recommended searches and suggested actions/workflows\nAnd no results are pre-filtered"
+  },
+  {
+    "scenario_id": "TC_SEARCH_002",
+    "tags": "@ui @positive",
+    "scenario": "Default discovery shown instead of Recent when no history exists",
+    "description": "Given a user has no recent searches and no recent results\nWhen the user focuses the search input\nThen default discovery suggestions are shown\nAnd no \"Recent\" section is displayed"
+  },
+  {
+    "scenario_id": "TC_SEARCH_003",
+    "tags": "@ui @positive @smoke",
+    "scenario": "Returning user sees recent searches and recent results on focus",
+    "description": "Given a returning user has previously entered search queries and opened search results\nWhen the user focuses the search input with no query entered\nThen the dropdown displays up to 4 recent searches\nAnd the dropdown displays up to 4 recent results\nAnd the most recent search term is listed first"
+  },
+  {
+    "scenario_id": "TC_SEARCH_004",
+    "tags": "@ui @edge",
+    "scenario": "Recent content dropdown scrolls when combined content overflows",
+    "description": "Given a returning user has 4 recent searches and 4 recent results populated\nWhen the user focuses the search input and the combined content exceeds the dropdown's visible height\nThen scrolling is enabled so all recent content remains reachable"
+  },
+  {
+    "scenario_id": "TC_SEARCH_005",
+    "tags": "@ui @edge",
+    "scenario": "Fewer than 4 recent searches/results still render correctly",
+    "description": "Given a returning user has only 1 recent search and 2 recent results saved\nWhen the user focuses the search input with no query entered\nThen the dropdown displays the 1 recent search and 2 recent results available\nAnd no placeholder or error is shown for the missing slots"
+  },
+  {
+    "scenario_id": "TC_SEARCH_006",
+    "tags": "@ui @positive",
+    "scenario": "No pre-filtering applied to dropdown content by date range",
+    "description": "Given the search input is focused and no query has been entered\nWhen the dropdown content is evaluated for applied filters\nThen no pre-filtering by date range is applied to the displayed content"
+  },
+  {
+    "scenario_id": "TC_SEARCH_007",
+    "tags": "@ui @positive",
+    "scenario": "No pre-filtering applied to dropdown content by status or workflow state",
+    "description": "Given the search input is focused and no query has been entered\nWhen the dropdown content is evaluated for applied filters\nThen no pre-filtering by status is applied\nAnd no pre-filtering by workflow state or any system-level filter is applied\nAnd filtering is only introduced on the full search results page"
+  },
+  {
+    "scenario_id": "TC_SEARCH_008",
+    "tags": "@ui @positive @smoke",
+    "scenario": "Search input expands to minimum width and hides logo on activation",
+    "description": "Given a user is on a desktop breakpoint with the global search input inactive\nWhen the user activates the global search input\nThen the input expands to a minimum width of 540px\nAnd the brand logo is hidden"
+  },
+  {
+    "scenario_id": "TC_SEARCH_009",
+    "tags": "@ui @positive @edge",
+    "scenario": "Search input grows up to maximum width as viewport widens",
+    "description": "Given a user has activated global search on a desktop breakpoint\nWhen the viewport width increases\nThen the search input continues to grow up to a maximum width of 860px\nAnd growth is proportional to the available viewport width"
+  },
+  {
+    "scenario_id": "TC_SEARCH_010",
+    "tags": "@ui @edge",
+    "scenario": "Search input growth stops at LG breakpoint with logo hidden",
+    "description": "Given a user has activated global search and the viewport reaches the LG breakpoint of 1440px\nWhen the viewport width increases beyond 1440px\nThen the search input stops growing beyond its maximum width\nAnd the brand logo remains hidden while search is active"
+  },
+  {
+    "scenario_id": "TC_SEARCH_011",
+    "tags": "@ui @positive",
+    "scenario": "No prior context filters applied when entering a new query",
+    "description": "Given a user enters or edits a search query\nWhen the query is submitted\nThen results are not pre-filtered by any prior context"
+  },
+  {
+    "scenario_id": "TC_SEARCH_012",
+    "tags": "@ui @edge",
+    "scenario": "Large dataset requires 3 characters before returning matches",
+    "description": "Given the searchable dataset for the active query scope contains more than 50 possible results\nWhen the user types 2 characters into the search input\nThen the dropdown does not yet return matches\nWhen the user types a 3rd character\nThen the dropdown begins returning matches"
+  },
+  {
+    "scenario_id": "TC_SEARCH_013",
+    "tags": "@ui @positive @edge",
+    "scenario": "Small dataset allows filtering after 1 character",
+    "description": "Given the searchable dataset for the active query scope contains 50 or fewer possible results\nWhen the user types 1 character into the search input\nThen the dropdown may begin filtering and returning matches"
+  },
+  {
+    "scenario_id": "TC_SEARCH_014",
+    "tags": "@ui @positive @smoke",
+    "scenario": "Dropdown results update dynamically on each keystroke",
+    "description": "Given the user is actively typing in the search input\nWhen each keystroke updates the query text\nThen the dropdown results update dynamically to reflect the latest query text"
+  },
+  {
+    "scenario_id": "TC_SEARCH_015",
+    "tags": "@ui @positive",
+    "scenario": "Search supports contains, starts-with, and fuzzy matching",
+    "description": "Given a submitted query partially matches an entity name using contains, starts-with, or fuzzy matching rules\nWhen the query is evaluated against the searchable dataset\nThen matching results are returned using the supported matching method configured for that data domain"
+  },
+  {
+    "scenario_id": "TC_SEARCH_016",
+    "tags": "@ui @negative",
+    "scenario": "Typo-tolerant fuzzy match still surfaces close results",
+    "description": "Given a user enters a query containing a minor typo of a known entity name\nWhen the query is evaluated using fuzzy matching\nThen the closely matching entity is still surfaced in the results"
+  },
+  {
+    "scenario_id": "TC_SEARCH_017",
+    "tags": "@ui @positive @smoke",
+    "scenario": "Find intent prioritises matching entities for entity name query",
+    "description": "Given a submitted query matches a known company name\nWhen the results are ranked\nThen the query is classified with \"Find\" intent\nAnd matching entities are prioritised first\nAnd key entity metadata is surfaced\nAnd related documents are surfaced beneath the entities"
+  },
+  {
+    "scenario_id": "TC_SEARCH_018",
+    "tags": "@ui @positive",
+    "scenario": "Find intent triggered by ABN/ACN identifier",
+    "description": "Given a submitted query is a known ABN or ACN identifier\nWhen the results are ranked\nThen the query is classified with \"Find\" intent\nAnd the matching entity is prioritised first\nAnd key entity metadata is surfaced"
+  },
+  {
+    "scenario_id": "TC_SEARCH_019",
+    "tags": "@ui @positive @smoke",
+    "scenario": "Do intent prioritises workflows for action-oriented query",
+    "description": "Given a submitted query includes action-oriented language such as \"lodge\"\nWhen the results are ranked\nThen the query is classified with \"Do\" intent\nAnd matching workflows/actions are prioritised first\nAnd related templates, documents, and guidance are surfaced\nAnd relevant create actions are made available\nAnd relevant entities are surfaced"
+  },
+  {
+    "scenario_id": "TC_SEARCH_020",
+    "tags": "@ui @positive",
+    "scenario": "Do intent triggered by checklist/reminder keywords",
+    "description": "Given a submitted query includes the word \"checklist\" or \"reminder\"\nWhen the results are ranked\nThen the query is classified with \"Do\" intent\nAnd matching workflows/actions are prioritised first"
+  },
+  {
+    "scenario_id": "TC_SEARCH_021",
+    "tags": "@ui @positive @smoke",
+    "scenario": "Mixed/Exploratory intent balances result groups for ambiguous query",
+    "description": "Given a submitted query is broad or ambiguous such as \"annual statement\"\nWhen the results are ranked\nThen the query is classified with \"Mixed/Exploratory\" intent\nAnd the dropdown presents a balanced spread across relevant result groups"
+  },
+  {
+    "scenario_id": "TC_SEARCH_022",
+    "tags": "@ui @edge",
+    "scenario": "Exploratory query for a generic entity type balances groups",
+    "description": "Given a submitted query is the generic term \"trust\" with no further qualifier\nWhen the results are ranked\nThen the dropdown presents a balanced spread across relevant result groups rather than a single dominant group"
+  },
+  {
+    "scenario_id": "TC_SEARCH_023",
+    "tags": "@ui @positive",
+    "scenario": "Results within a group ranked by weighted relevance, recency, frequency, context",
+    "description": "Given multiple results exist within the same result-type group for a submitted query\nWhen the results are ordered\nThen they are ranked by a weighted combination of text-match relevance, recency, frequency, and user context where available"
+  },
+  {
+    "scenario_id": "TC_SEARCH_024",
+    "tags": "@ui @edge",
+    "scenario": "Higher text-match relevance outranks more recent but weaker match",
+    "description": "Given two results exist in the same group where one has a stronger text match and the other is more recently accessed\nWhen the results are ordered within the group\nThen text-match relevance is applied as the primary ranking factor ahead of recency"
+  },
+  {
+    "scenario_id": "TC_SEARCH_025",
+    "tags": "@ui @positive @smoke",
+    "scenario": "Results grouped by type with counts across multiple data domains",
+    "description": "Given results are returned across more than one data domain including Documents, Companies, and Trusts\nWhen the dropdown renders\nThen results are grouped by type\nAnd each group displays a count where available\nAnd each group is ranked internally by relevance"
+  },
+  {
+    "scenario_id": "TC_SEARCH_026",
+    "tags": "@ui @edge",
+    "scenario": "Each result-type group caps visible items at approximately 10",
+    "description": "Given a result-type group for a submitted query contains more than 10 matching items\nWhen the dropdown renders that group\nThen up to approximately 10 items are visible before requiring the full results page"
+  },
+  {
+    "scenario_id": "TC_SEARCH_027",
+    "tags": "@ui @positive",
+    "scenario": "Results grouped across Corporate Messenger, Funds, Lodgements, Super Comply, Individuals",
+    "description": "Given results are returned across the Corporate Messenger, Funds, Lodgements, Super Comply, and Individuals domains\nWhen the dropdown renders\nThen each domain is represented as its own grouped section with a count where available"
+  },
+  {
+    "scenario_id": "TC_SEARCH_028",
+    "tags": "@ui @positive",
+    "scenario": "Result item title wraps to 2 lines then truncates",
+    "description": "Given a result item is rendered with a long title\nWhen the title exceeds 2 lines of available space\nThen the title wraps up to 2 lines and then truncates with an ellipsis"
+  },
+  {
+    "scenario_id": "TC_SEARCH_029",
+    "tags": "@ui @edge",
+    "scenario": "Result item secondary metadata truncates on single line without wrapping",
+    "description": "Given a result item is rendered with long secondary metadata text\nWhen the metadata exceeds the width of a single line\nThen the metadata is limited to 1 line and truncates with an ellipsis without wrapping"
+  },
+  {
+    "scenario_id": "TC_SEARCH_030",
+    "tags": "@ui @positive",
+    "scenario": "Status badges/tags on result items are never truncated",
+    "description": "Given a result item is rendered with a status badge or tag\nWhen the item is displayed in the dropdown\nThen the status badge or tag text is never truncated\nAnd result type, status, and destination behaviour are visually distinguishable from one another"
+  },
+  {
+    "scenario_id": "TC_SEARCH_031",
+    "tags": "@ui @positive @smoke",
+    "scenario": "Matching query text is highlighted within result title and metadata",
+    "description": "Given a result item matches the active query\nWhen the item is displayed in the dropdown\nThen the matching text within the title and/or metadata is visually highlighted"
+  },
+  {
+    "scenario_id": "TC_SEARCH_032",
+    "tags": "@ui @edge",
+    "scenario": "Highlighting applies correctly for multi-word partial matches",
+    "description": "Given a result item matches only part of a multi-word active query\nWhen the item is displayed in the dropdown\nThen only the matching text segments are visually highlighted, not the full title or metadata"
+  },
+  {
+    "scenario_id": "TC_SEARCH_033",
+    "tags": "@ui @positive @smoke",
+    "scenario": "See all results action displayed when more matches exist than visible",
+    "description": "Given more matching results exist than are visible within the dropdown\nWhen the dropdown renders\nThen a \"See all results for '[query]'\" action is displayed at the bottom of the dropdown"
+  },
+  {
+    "scenario_id": "TC_SEARCH_034",
+    "tags": "@ui @positive @smoke",
+    "scenario": "Selecting See all results navigates to full results page with query applied",
+    "description": "Given the user selects \"See all results for '[query]'\"\nWhen the selection is made\nThen the user is navigated to the full search results page with the current query passed through and applied"
+  },
+  {
+    "scenario_id": "TC_SEARCH_035",
+    "tags": "@ui @positive @smoke",
+    "scenario": "Top-ranked result is auto-focused by default",
+    "description": "Given the user has entered a search query and results are displayed\nWhen the results appear in the dropdown\nThen the top-ranked result is auto-focused/highlighted by default"
+  },
+  {
+    "scenario_id": "TC_SEARCH_036",
+    "tags": "@ui @positive",
+    "scenario": "Enter key opens the currently highlighted result",
+    "description": "Given the user has entered a search query and a result is highlighted\nWhen the user presses Enter\nThen the highlighted result is opened"
+  },
+  {
+    "scenario_id": "TC_SEARCH_037",
+    "tags": "@ui @positive",
+    "scenario": "Enter with no result highlighted submits query to full results page",
+    "description": "Given the user has entered a search query and no result is highlighted\nWhen the user presses Enter\nThen the current query is submitted and the user is navigated to the full search results page"
+  },
+  {
+    "scenario_id": "TC_SEARCH_038",
+    "tags": "@ui @positive @accessibility",
+    "scenario": "Arrow keys move focus sequentially through dropdown results",
+    "description": "Given the search dropdown is open with results or suggestions visible\nWhen the user presses the Down arrow key repeatedly\nThen keyboard focus moves sequentially forward through the visible results\nWhen the user presses the Up arrow key\nThen keyboard focus moves sequentially backward through the visible results"
+  },
+  {
+    "scenario_id": "TC_SEARCH_039",
+    "tags": "@ui @positive @accessibility",
+    "scenario": "ESC key closes the dropdown and exits search",
+    "description": "Given the search dropdown is open with results or suggestions visible\nWhen the user presses the ESC key\nThen search exits and the dropdown closes"
+  },
+  {
+    "scenario_id": "TC_SEARCH_040",
+    "tags": "@ui @positive @smoke",
+    "scenario": "Clear control resets input and adds cleared term to recent searches",
+    "description": "Given the user has an active query in the search input\nWhen the user selects the clear (\"x\") control\nThen the search term is cleared\nAnd the input resets\nAnd the cleared term is added to recent searches"
+  },
+  {
+    "scenario_id": "TC_SEARCH_041",
+    "tags": "@ui @positive",
+    "scenario": "Selecting a suggested action navigates to its workflow start point",
+    "description": "Given the default dropdown displays a suggested action/workflow\nWhen the user selects the suggested action\nThen the user is navigated to the relevant workflow start point/create flow"
+  },
+  {
+    "scenario_id": "TC_SEARCH_042",
+    "tags": "@ui @positive",
+    "scenario": "Selecting a recommended search navigates to full results page with term applied",
+    "description": "Given the default dropdown displays a recommended search\nWhen the user selects the recommended search\nThen the user is navigated to the full results page with the recommended term applied"
+  },
+  {
+    "scenario_id": "TC_SEARCH_043",
+    "tags": "@ui @negative @smoke",
+    "scenario": "Zero matches shows No search results state with clear-and-retry option",
+    "description": "Given a submitted query returns zero matches across all data domains\nWhen the search request completes with no matches\nThen a \"No search results\" state is shown\nAnd the message \"No results match your search.\" is displayed\nAnd an option to \"Clear '[query]' and search again.\" is displayed\nAnd relevant contextual create actions are shown where supported"
+  },
+  {
+    "scenario_id": "TC_SEARCH_044",
+    "tags": "@ui @negative @edge",
+    "scenario": "No-results state shows for a query with only special characters",
+    "description": "Given a user submits a query consisting solely of special characters with no matching entities or documents\nWhen the search request completes with no matches\nThen the \"No search results\" state is shown with the message \"No results match your search.\""
+  },
+  {
+    "scenario_id": "TC_SEARCH_045",
+    "tags": "@ui @edge @negative",
+    "scenario": "No premature no-results flash while request is in flight",
+    "description": "Given a search request is in progress and has not yet completed\nWhen the dropdown is evaluated for what to render\nThen the empty/no-results state must not be shown until the request completes"
+  },
+  {
+    "scenario_id": "TC_SEARCH_046",
+    "tags": "@ui @gap @edge",
+    "scenario": "Loading/pending state while search request is in flight",
+    "description": "Given a user has submitted a query and the search request is in flight\nWhen the request has not yet completed\nThen a loading/pending indicator is shown in place of results or the no-results state\n# @gap: neither PRD nor UX Spec defines the loading/pending state design for an in-flight search request"
+  },
+  {
+    "scenario_id": "TC_SEARCH_047",
+    "tags": "@ui @gap @negative @edge",
+    "scenario": "Network timeout or offline during search shows recoverable error state",
+    "description": "Given a user submits a search query while the network connection times out or the device goes offline\nWhen the search request fails to complete\nThen an appropriate error/offline state is shown and the user can retry once connectivity is restored\n# @gap: neither PRD nor UX Spec defines behaviour on network timeout or offline recovery"
+  },
+  {
+    "scenario_id": "TC_SEARCH_048",
+    "tags": "@ui @mobile @positive @smoke",
+    "scenario": "Tapping search icon expands overlay to full header width on mobile",
+    "description": "Given a user is on a mobile breakpoint between 320px and 575px\nWhen the user taps the search icon\nThen the search input activates\nAnd the input expands to span the full width of the header bar\nAnd the search overlay covers other header elements"
+  },
+  {
+    "scenario_id": "TC_SEARCH_049",
+    "tags": "@ui @mobile @positive",
+    "scenario": "Tapping search icon expands overlay to full header width on tablet",
+    "description": "Given a user is on a tablet breakpoint between 576px and 989px\nWhen the user taps the search icon\nThen the search input activates\nAnd the input expands to span the full width of the header bar, overlaying other header elements"
+  },
+  {
+    "scenario_id": "TC_SEARCH_050",
+    "tags": "@ui @mobile @positive",
+    "scenario": "Tapping outside area closes mobile/tablet search overlay",
+    "description": "Given the mobile/tablet search overlay is active\nWhen the user taps the outside area of the overlay\nThen the search overlay closes and the user exits search"
+  },
+  {
+    "scenario_id": "TC_SEARCH_051",
+    "tags": "@ui @mobile @positive @smoke",
+    "scenario": "Left arrow icon-button closes mobile/tablet search overlay",
+    "description": "Given the mobile/tablet search overlay is active\nWhen the user taps the left arrow icon-button\nThen the search overlay closes and the user exits search"
+  },
+  {
+    "scenario_id": "TC_SEARCH_052",
+    "tags": "@ui @mobile @positive",
+    "scenario": "Mobile result cards prioritise title, type, status, and destination clarity",
+    "description": "Given search result cards are rendered at a mobile breakpoint\nWhen a card is displayed\nThen the card prioritises title, result type, status, and destination clarity consistent with the desktop truncation rules"
+  },
+  {
+    "scenario_id": "TC_SEARCH_053",
+    "tags": "@ui @mobile @edge",
+    "scenario": "Mobile result card title truncation matches desktop 2-line rule",
+    "description": "Given a search result card is rendered at a mobile breakpoint with a long title\nWhen the title exceeds 2 lines of available space\nThen the title wraps up to 2 lines then truncates with an ellipsis, consistent with the desktop behaviour"
+  },
+  {
+    "scenario_id": "TC_SEARCH_054",
+    "tags": "@ui @positive @smoke",
+    "scenario": "Filter tab on full results page displays a result count for the type",
+    "description": "Given a user reaches the full search results page with filters available\nWhen the user applies a filter tab for a given result type\nThen the page displays a result count for that type such as \"39 Companies found\""
+  },
+  {
+    "scenario_id": "TC_SEARCH_055",
+    "tags": "@ui @positive",
+    "scenario": "Full results page supports sort by relevance, date, and name",
+    "description": "Given a user reaches the full search results page with sorting controls available\nWhen the user opens the sort control\nThen the user can sort by relevance\nAnd the user can sort by date\nAnd the user can sort by name"
+  },
+  {
+    "scenario_id": "TC_SEARCH_056",
+    "tags": "@ui @positive @edge",
+    "scenario": "Pagination or load-more provided when results exceed one page",
+    "description": "Given more results exist than fit on one page of the full search results page\nWhen the results page renders\nThen pagination or a load-more control is provided to access the remaining results"
+  },
+  {
+    "scenario_id": "TC_SEARCH_057",
+    "tags": "@ui @positive @smoke",
+    "scenario": "Global search entry point available consistently across user roles",
+    "description": "Given any authenticated NowInfinity user role opens the application\nWhen the header renders\nThen the global search entry point is available consistently regardless of role, subject to existing entity/document access permissions"
+  },
+  {
+    "scenario_id": "TC_SEARCH_058",
+    "tags": "@ui @negative @edge",
+    "scenario": "Search results respect entity/document access permissions per role",
+    "description": "Given a user role with restricted access to certain entities or documents submits a query matching a restricted item\nWhen the search results are returned\nThen the restricted entity or document is not surfaced to that user, consistent with existing access permissions"
+  },
+  {
+    "scenario_id": "TC_SEARCH_059",
+    "tags": "@ui @positive",
+    "scenario": "Submitting a query updates the recent searches list",
+    "description": "Given a user's recent-search history currently has fewer than 4 entries\nWhen the user submits a new query\nThen the recent searches list reflects the newly submitted query, up to a maximum of 4 entries"
+  },
+  {
+    "scenario_id": "TC_SEARCH_060",
+    "tags": "@ui @edge",
+    "scenario": "Recent searches list caps at 4 and evicts oldest entry on overflow",
+    "description": "Given a user's recent-search history already contains 4 entries\nWhen the user submits a 5th distinct query\nThen the recent searches list still shows a maximum of 4 entries with the oldest entry evicted and the new query added"
+  },
+  {
+    "scenario_id": "TC_SEARCH_061",
+    "tags": "@ui @positive",
+    "scenario": "Clearing a query adds it to recent searches per AC-19 and AC-28",
+    "description": "Given a user has an active query in the search input\nWhen the user selects the clear (\"x\") control\nThen the recent searches list reflects the addition of the cleared query, up to the maximum of 4 entries"
+  },
+  {
+    "scenario_id": "TC_SEARCH_062",
+    "tags": "@ui @accessibility @positive @smoke",
+    "scenario": "Focus enters search input in logical, visible order",
+    "description": "Given a keyboard-only user tabs through the application header\nWhen focus reaches the global search input\nThen focus is visibly indicated per WCAG 2.2 focus-visible requirements and the focus order is logical"
+  },
+  {
+    "scenario_id": "TC_SEARCH_063",
+    "tags": "@ui @accessibility @positive",
+    "scenario": "Focus moves logically through dropdown results and See all results control",
+    "description": "Given a keyboard-only or assistive-technology user has the search dropdown open with results visible\nWhen the user moves focus through the results using the keyboard\nThen focus order proceeds logically through each visible result\nAnd focus order reaches the \"See all results\" action last\nAnd focus is visibly indicated at every step"
+  },
+  {
+    "scenario_id": "TC_SEARCH_064",
+    "tags": "@ui @accessibility @edge",
+    "scenario": "Focus-visible and focus-order requirements hold at every breakpoint",
+    "description": "Given a keyboard-only or assistive-technology user interacts with global search\nWhen the breakpoint changes between desktop, tablet, and mobile\nThen focus order and focus-visible indication remain logical and visible per WCAG 2.2 at every breakpoint"
+  },
+  {
+    "scenario_id": "TC_SEARCH_065",
+    "tags": "@ui @gap @negative",
+    "scenario": "Cross-product federated search scope is undefined for products/accounts/help",
+    "description": "Given a user submits a query intended to span products, accounts, and help as described in the PRD\nWhen the search request is evaluated\nThen no design exists in the UX Spec/Figma for federated cross-Class-suite results such as Class Super, Class Trust, or Class Portfolio, so results remain scoped to NowInfinity data domains only\n# @gap: PRD says search should span \"products, accounts, and help\" but UX Spec/Figma are scoped entirely to NowInfinity data domains"
+  },
+  {
+    "scenario_id": "TC_SEARCH_066",
+    "tags": "@ui @gap @negative",
+    "scenario": "Help/documentation content is absent as a searchable result type",
+    "description": "Given a user submits a query that matches help or documentation content referenced in the PRD\nWhen the search request is evaluated against the supported data domains\nThen no help/documentation result type is returned because it does not appear anywhere in the UX spec's supported domains\n# @gap: PRD includes \"help\" as a search target but no help/documentation result type appears in the UX spec"
+  },
+  {
+    "scenario_id": "TC_SEARCH_067",
+    "tags": "@analytics @positive",
+    "scenario": "Search query submission is tracked for analytics",
+    "description": "Given a user submits a search query\nWhen the query is submitted\nThen a search-submitted analytics event is captured including the query text, intent classification, and result count"
+  },
+  {
+    "scenario_id": "TC_SEARCH_068",
+    "tags": "@analytics @positive",
+    "scenario": "Result selection from dropdown is tracked with position and type",
+    "description": "Given a user selects a result item from the search dropdown\nWhen the selection is made\nThen a result-selected analytics event is captured including the result type, its position in the group, and the originating query"
+  },
+  {
+    "scenario_id": "TC_SEARCH_069",
+    "tags": "@analytics @positive",
+    "scenario": "See all results selection is tracked separately from item selection",
+    "description": "Given a user selects \"See all results for '[query]'\"\nWhen the selection is made\nThen a see-all-results analytics event is captured distinct from individual result-selection events"
+  },
+  {
+    "scenario_id": "TC_SEARCH_070",
+    "tags": "@analytics @edge",
+    "scenario": "Zero-result searches are tracked for content/discoverability gap analysis",
+    "description": "Given a submitted query returns zero matches across all data domains\nWhen the \"No search results\" state is shown\nThen a zero-results analytics event is captured including the query text for discoverability gap analysis"
+  }
+]

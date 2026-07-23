@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Plan — Test creating a Jira Bug ticket from a failed test</title>
+  <style>
+    body { font-family: Arial, Helvetica, sans-serif; max-width: 820px; margin: 24px auto; padding: 0 16px; line-height: 1.6; color: #1a1a1a; }
+    h1 { font-size: 22px; border-bottom: 2px solid #ddd; padding-bottom: 8px; }
+    h2 { font-size: 17px; margin-top: 26px; color: #0c447c; }
+    .meta { color: #666; font-size: 14px; }
+    table { border-collapse: collapse; width: 100%; margin: 8px 0; }
+    th, td { border: 1px solid #ddd; padding: 8px 10px; text-align: left; font-size: 14px; vertical-align: top; }
+    th { background: #f4f6f8; }
+    code { background: #f1f1f1; padding: 1px 5px; border-radius: 4px; }
+    ol, ul { padding-left: 22px; }
+    .warn { background: #fff4e5; border-left: 4px solid #ba7517; padding: 8px 12px; }
+  </style>
+</head>
+<body>
+  <h1>Plan — Test creating a Jira Bug ticket from a failed test</h1>
+  <p class="meta">Author: MPF Developer · Date: 2026-07-03 · Related: bug-report reporter + reporters/jira.ts</p>
+
+  <h2>1. Goal</h2>
+  <p>Verify end-to-end that when a Playwright test fails, the automation creates a
+     real <strong>Bug</strong> ticket in Jira project <code>NIT</code>, linked under
+     Epic <code>NIT-5006 (App Header)</code>, named <code>&lt;Func Spec&gt; - &lt;short bug&gt;</code>,
+     with the screenshot and video attached — matching Paulo's requirements.</p>
+
+  <h2>2. Scope</h2>
+  <ul>
+    <li>In scope: run ONE demo failing test locally, create ONE real ticket, verify it, then delete it.</li>
+    <li>Out of scope: enabling ticket creation on CloudBees CI; running against real App Header tests; changing reporter code (already built).</li>
+  </ul>
+
+  <h2>3. Step-by-step approach</h2>
+  <ol>
+    <li>Create a Jira API token at id.atlassian.com → API tokens.</li>
+    <li>In <code>.env</code> (gitignored) set: <code>JIRA_CREATE_TICKETS=true</code>,
+        <code>JIRA_EMAIL</code>, <code>JIRA_API_TOKEN</code> (project=NIT, epic=NIT-5006 already set).</li>
+    <li>Run the demo failing test:
+        <code>npx playwright test tests/UI/_demo-fail.spec.ts --project=chromium</code></li>
+    <li>Read the console: expect <code>Created NIT-xxxx</code>.</li>
+    <li>Open the ticket in Jira; check the fields + attachments (see section 5).</li>
+    <li>Delete the demo ticket so it does not clutter the board.</li>
+  </ol>
+
+  <h2>4. Files to create / change</h2>
+  <table>
+    <tr><th>File</th><th>Change</th></tr>
+    <tr><td><code>.env</code> (local only, gitignored)</td><td>Fill JIRA_EMAIL + JIRA_API_TOKEN, set JIRA_CREATE_TICKETS=true</td></tr>
+    <tr><td>(no source code changes)</td><td>Reporter + Jira integration are already implemented</td></tr>
+  </table>
+
+  <h2>5. How to verify</h2>
+  <ul>
+    <li>Console prints <code>&#9989; Created NIT-xxxx</code>.</li>
+    <li>Ticket type = <strong>Bug</strong>, under Epic <strong>NIT-5006</strong>.</li>
+    <li>Title = <code>Demo bug report - intentionally fails to demo the bug report</code>.</li>
+    <li>Description has: Reason, Failed step, Steps to reproduce, Actual, Expected.</li>
+    <li>Attachments: 1 screenshot (.png) + 1 video (.webm).</li>
+  </ul>
+
+  <h2>6. Risks / notes</h2>
+  <ul>
+    <li class="warn">Creates a REAL ticket in the NITRO project — must delete the demo ticket after checking.</li>
+    <li>API token is a secret → only in <code>.env</code> (never committed).</li>
+    <li>If it fails: 401 = wrong email/token; 400 = field/epic-link issue (we then adjust).</li>
+    <li>Later: rename the demo describe to a real Func Spec (e.g. "App Header") for real runs.</li>
+  </ul>
+</body>
+</html>

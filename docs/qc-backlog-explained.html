@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>QC Backlog table — detailed explanation (NITRO)</title>
+<style>
+  body { font-family: Arial, Helvetica, sans-serif; max-width: 940px; margin: 24px auto; padding: 0 18px; line-height: 1.6; color: #2C2C2A; }
+  h1 { font-size: 23px; border-bottom: 2px solid #ddd; padding-bottom: 8px; }
+  h2 { font-size: 18px; margin-top: 30px; color: #6a1b9a; background:#f3e5f5; padding:6px 10px; border-radius:6px; }
+  h3 { font-size: 15px; margin-top: 22px; color: #0c447c; }
+  .meta { color: #666; font-size: 14px; }
+  .d { font-size: 13px; color:#444; margin: 4px 0; }
+  .d b { color:#222; }
+  .st { display:inline-block; font-size:12px; padding:1px 8px; border-radius:10px; font-weight:700; }
+  .done { background:#C8E6C9; color:#1b5e20; }
+  .prog { background:#FFF3CD; color:#7a5b00; }
+  .todo { background:#E2E3E5; color:#41464b; }
+  .note { font-size:13px; background:#f4f6f8; border-left:3px solid #b4b2a9; padding:6px 10px; margin:6px 0; }
+  code { background:#f1f1f1; padding:1px 5px; border-radius:4px; font-size:12px; }
+</style>
+</head>
+<body>
+  <h1>QC Backlog table — detailed explanation of each row</h1>
+  <p class="meta">Project NITRO · "QC" sheet in Hub24 Teams Backlog planning · Updated: 2026-07-09</p>
+  <p>The table covers 2 phases: <b>GET READY</b> (build the foundation, done once) and <b>OPERATE ONWARDS</b> (operations, repeated per feature/cycle). Each row below includes: <i>what it is</i>, the main columns, and notes.</p>
+
+  <h2>GET READY — Build the foundation</h2>
+
+  <h3>3. Define QC strategy &amp; process <span class="st done">Done</span></h3>
+  <p class="d">Set the overall QC "rules of the game": scope, test levels, process, and entry/exit criteria.</p>
+  <p class="d"><b>Deliverable:</b> QC strategy doc (the "QA/QC Technical Specifications" page) · <b>Tool:</b> Confluence · <b>Manual</b> · <b>Owner:</b> Thong · <b>Dep:</b> Team alignment</p>
+  <div class="note">The cornerstone step — everything else builds on this strategy.</div>
+
+  <h3>4. Define test levels &amp; scope <span class="st done">Done</span></h3>
+  <p class="d">Decide which levels to test at (unit, integration, E2E, regression, UAT) and how far coverage extends for each release.</p>
+  <p class="d"><b>Deliverable:</b> Test scope doc · <b>Tool:</b> Confluence · <b>Manual</b> · <b>Owner:</b> Thong · <b>Dep:</b> QC strategy</p>
+
+  <h3>5. Set up Test Case Generator <span class="st done">Done</span></h3>
+  <p class="d">Connect Cowork ↔ Confluence to read Acceptance Criteria and auto-generate test cases (spec → test case pipeline).</p>
+  <p class="d"><b>Deliverable:</b> Working generator · <b>Tool:</b> Claude Cowork + Confluence · <b>Automated</b> · <b>Owner:</b> Thong · <b>Dep:</b> Confluence access</p>
+
+  <h3>6. Set up test management structure <span class="st done">Done</span></h3>
+  <p class="d">Build the QC "filing cabinet": folder + pages on Confluence, linked to Jira for tracking.</p>
+  <p class="d"><b>Deliverable:</b> QC space + Jira link · <b>Tool:</b> Confluence, Jira · <b>Manual Structure</b> · <b>Owner:</b> Paulo · <b>Dep:</b> QC folder access</p>
+  <div class="note">This is the "QC &amp; Testing Tools" folder currently used to hold test cases.</div>
+
+  <h3>7. Set up automation framework <span class="st done">Done</span></h3>
+  <p class="d">Build the Playwright + TypeScript repo (Page Object Model) + CI hooks — the "engine" of the entire automated test suite.</p>
+  <p class="d"><b>Deliverable:</b> Automation repo · <b>Tool:</b> Playwright, TypeScript, Claude Code · <b>Automated</b> · <b>Owner:</b> Thong · <b>Dep:</b> Repo access</p>
+
+  <h3>8. Set up test users &amp; environments <span class="st todo">To do</span></h3>
+  <p class="d">Provision test accounts + access to the test/staging environment (done once, provisioned by DevOps).</p>
+  <p class="d"><b>Deliverable:</b> Test data &amp; env access · <b>Tool:</b> Test env · <b>Manual</b> · <b>Owner:</b> Thong · <b>Dep:</b> DevOps support</p>
+  <div class="note">⚠️ <b>BLOCKER</b>: waiting on env access + mock data from DevOps. Blocks rows 16, 17, 18, 19.</div>
+
+  <h3>9. Setup BrowserStack <span class="st done">Done</span></h3>
+  <p class="d">Finalise the BrowserStack products (Automate/Live/Accessibility) and create the project in the shared master account.</p>
+  <p class="d"><b>Deliverable:</b> Approved tool list · <b>Tool:</b> BrowserStack · <b>Automated</b> · <b>Owner:</b> Thong · <b>Dep:</b> Rethna review</p>
+  <div class="note">Use one master account for every project; cost is billed by <b>parallel/seats</b>, not by number of projects.</div>
+
+  <h3>10. Define bug workflow &amp; severities <span class="st done">Done</span></h3>
+  <p class="d">Bug handling process + P1–P4 classification; a failing test auto-creates a Jira ticket (screenshots/video, deduplication).</p>
+  <p class="d"><b>Deliverable:</b> Bug workflow doc · <b>Tool:</b> Jira, Confluence · <b>Automated</b> · <b>Owner:</b> Thong · <b>Dep:</b> —</p>
+
+  <h3>11. Define metrics &amp; reporting <span class="st todo">To do</span></h3>
+  <p class="d">Define the metrics (coverage, pass rate, defect density) + report template + reporting cadence.</p>
+  <p class="d"><b>Deliverable:</b> Metrics/report template · <b>Tool:</b> Confluence, Jira · <b>Automated</b> · <b>Owner:</b> Thong · <b>Dep:</b> —</p>
+  <div class="note">The "QC Metrics &amp; Reporting" page has been created (targets: coverage ≥80%, pass rate 100%, 0 P1/P2). The "publish a report each cycle" task lives in row 25.</div>
+
+  <h2>OPERATE ONWARDS — Operations (repeated)</h2>
+
+  <h3>13. Intake PRD &amp; acceptance criteria <span class="st done">Done</span></h3>
+  <p class="d">"Read the brief": take in the feature's spec/PRD and Acceptance Criteria — the basis for writing test cases.</p>
+  <p class="d"><b>Deliverable:</b> Reviewed AC · <b>Tool:</b> Confluence · <b>Automated</b> · <b>Owner:</b> Thong · <b>Dep:</b> PRD/spec ready</p>
+
+  <h3>14. Create test cases from AC <span class="st done">Done</span></h3>
+  <p class="d">Generate Gherkin/Cucumber test cases, mapped 1:1 to each Acceptance Criterion.</p>
+  <p class="d"><b>Deliverable:</b> Test case suite · <b>Tool:</b> Claude Cowork + Confluence · <b>Automated</b> · <b>Owner:</b> Thong · <b>Dep:</b> AC finalised</p>
+
+  <h3>15. Review &amp; approve test cases <span class="st prog">In progress</span></h3>
+  <p class="d">A human + BA review (complete &amp; correct) then sign off on the AI-generated test case set.</p>
+  <p class="d"><b>Deliverable:</b> Approved test suite · <b>Tool:</b> Confluence · <b>Manual</b> · <b>Owner:</b> Paulo/Thong · <b>Dep:</b> Test cases drafted</p>
+  <div class="note">This is ticket <b>NIT-5141</b>. Note: 20 <code>@gap</code> cases = spec gaps, not automatable — split them out and send to Product.</div>
+
+  <h3>16. Prepare test data <span class="st todo">To do</span></h3>
+  <p class="d">Load test data (seed via API/fixtures) + confirm the build is deployed to the environment (each cycle).</p>
+  <p class="d"><b>Deliverable:</b> Ready test env · <b>Tool:</b> Test env · <b>Automated</b> · <b>Owner:</b> Thong · <b>Dep:</b> Build available</p>
+  <div class="note">Depends on row 8 (no env access yet → can't load data yet).</div>
+
+  <h3>17. Execute test cases <span class="st todo">To do</span></h3>
+  <p class="d">Run the automated Playwright suite (e2e/api/accessibility/visual), recording Pass/Fail. Only go manual for cases that can't be automated (UAT, third-party widgets).</p>
+  <p class="d"><b>Deliverable:</b> Test results · <b>Tool:</b> Confluence, Jira · <b>Automated</b> · <b>Owner:</b> Thong/Ben · <b>Dep:</b> Test env ready</p>
+  <div class="note">Dependency chain: row 8 → 16 → 17 (currently stuck due to missing environment).</div>
+
+  <h3>18. Cross-browser &amp; responsive testing <span class="st todo">To do</span></h3>
+  <p class="d">Check that the feature runs/displays correctly across multiple browsers and screen sizes (desktop, tablet).</p>
+  <p class="d"><b>Deliverable:</b> Compatibility results · <b>Tool:</b> BrowserStack · <b>Automated</b> · <b>Owner:</b> Thong/Ben · <b>Dep:</b> Build available</p>
+
+  <h3>19. Accessibility testing <span class="st prog">In progress</span></h3>
+  <p class="d">Check accessibility against WCAG 2.2 AA (keyboard, ARIA/screen reader, contrast) using axe.</p>
+  <p class="d"><b>Deliverable:</b> A11y results · <b>Tool:</b> axe (+ BrowserStack optional) · <b>Automated</b> · <b>Owner:</b> Thong · <b>Dep:</b> Build available</p>
+  <div class="note">The axe framework is ready; not yet run against the real app (blocked on env) and the perceptual part still needs a human check.</div>
+
+  <h3>20. Raise bugs <span class="st done">Done</span></h3>
+  <p class="d">Test fails → auto-create a Jira bug ticket: [Bug] prefix, attach screenshots+video, apply P1–P4 label, deduplicate.</p>
+  <p class="d"><b>Deliverable:</b> Jira bug tickets · <b>Tool:</b> Jira · <b>Automated</b> · <b>Owner:</b> Thong/Ben · <b>Dep:</b> Failed tests</p>
+  <div class="note">Parent is an Epic ⇒ type <b>Bug</b>; parent is a Story ⇒ <b>Bug Fixing (in-sprint) Sub-task</b>.</div>
+
+  <h3>21. Retest &amp; verify fixes <span class="st todo">To do</span></h3>
+  <p class="d">After the dev fixes it, re-run exactly the case that failed to confirm the bug is gone.</p>
+  <p class="d"><b>Deliverable:</b> Verified results · <b>Tool:</b> Jira, test env · <b>Manual</b> (re-run automated) · <b>Owner:</b> Thong/Ben · <b>Dep:</b> Bug fixed</p>
+  <div class="note">Automation assists: a previously failing test now passing → auto-moves the ticket to Done.</div>
+
+  <h3>22. Regression testing <span class="st todo">To do</span></h3>
+  <p class="d">Re-run to make sure new changes don't break existing features (usually before a release).</p>
+  <p class="d"><b>Deliverable:</b> Regression results · <b>Tool:</b> Playwright, BrowserStack · <b>Manual + Automated</b> · <b>Owner:</b> Thong/Ben · <b>Dep:</b> Release candidate</p>
+
+  <h3>23. Automate regression &amp; edge-case tests <span class="st todo">To do</span></h3>
+  <p class="d">Write automated scripts for regression + tricky/edge cases, so they can be reused.</p>
+  <p class="d"><b>Deliverable:</b> Automated scripts · <b>Tool:</b> Playwright, BrowserStack · <b>Automated</b> · <b>Owner:</b> Trong/Thong · <b>Dep:</b> Stable test cases</p>
+  <div class="note">Close to row 22 — if you want to keep it lean you could merge 22+23 into one.</div>
+
+  <h3>24. Run automated suite in CI <span class="st prog">In progress</span></h3>
+  <p class="d">Plug the test suite into CI (CloudBees) to run automatically on every build/PR, catching errors early.</p>
+  <p class="d"><b>Deliverable:</b> CI test run · <b>Tool:</b> Playwright, CloudBees CI · <b>Automated</b> · <b>Owner:</b> Trong/Thong · <b>Dep:</b> Automation ready</p>
+  <div class="note">The CI framework is built &amp; running; hasn't run the full end-to-end suite yet due to the environment blocker (row 8).</div>
+
+  <h3>25. Report test results &amp; coverage <span class="st todo">To do</span></h3>
+  <p class="d">Aggregate &amp; report each cycle: pass/fail, coverage, open bugs by severity, exit-criteria flags.</p>
+  <p class="d"><b>Deliverable:</b> QC report/dashboard · <b>Tool:</b> Confluence, Jira · <b>Automated</b> · <b>Owner:</b> Thong · <b>Dep:</b> Execution done</p>
+  <div class="note">The <code>npm run qc:report</code> script exists (runs <code>test:all</code> to cover all of e2e/api/accessibility/visual). Uses the template from row 11.</div>
+
+  <h3>26. Release sign-off (go / no-go) <span class="st todo">To do</span></h3>
+  <p class="d">The final "should this go to production" decision, based on the report + release criteria.</p>
+  <p class="d"><b>Deliverable:</b> Sign-off · <b>Tool:</b> Confluence, Jira · <b>Manual</b> · <b>Owner:</b> Thong/Paulo · <b>Dep:</b> Testing complete</p>
+  <div class="note">Mandatory under the Definition of Done ("explicit QC sign off"). The final safety gate — do not remove.</div>
+
+  <h3>27. Post-release checks &amp; triage <span class="st todo">To do</span></h3>
+  <p class="d">After going to production: a quick smoke check on the real environment + triage of any issues that arise.</p>
+  <p class="d"><b>Deliverable:</b> Post-release report · <b>Tool:</b> Jira · <b>Manual</b> · <b>Owner:</b> Thong/Ben · <b>Dep:</b> Release live</p>
+  <div class="note">Manual because automated testing on real production is risky + triage needs a human. Can be partly automated (read-only smoke + Pendo/Dynatrace monitoring).</div>
+
+  <h3>28. Visual regression testing <span class="st prog">In progress</span></h3>
+  <p class="d">Compare UI screenshots to catch unintended changes (broken layout/style shifts) — a before/after/diff report + Chromatic link.</p>
+  <p class="d"><b>Deliverable:</b> Visual diff report · <b>Tool:</b> Playwright, Chromatic · <b>Automated</b> · <b>Owner:</b> Thong · <b>Dep:</b> Build available</p>
+  <div class="note">Run <code>npm run test:visual:chromatic</code> → a before/after/diff image report + create a Chromatic build with a review link.</div>
+
+  <h2>Status summary</h2>
+  <ul>
+    <li><b>Done:</b> 3, 4, 5, 6, 7, 9, 10, 13, 14, 20</li>
+    <li><b>In progress:</b> 15, 19, 24, 28</li>
+    <li><b>To do:</b> 8 (BLOCKER), 11, 16, 17, 18, 21, 22, 23, 25, 26, 27</li>
+  </ul>
+  <div class="note">The biggest bottleneck: <b>row 8</b> (environment access + mock data from DevOps) — unblocking it will clear 16/17/18/19 and let 24/25 run the full suite.</div>
+</body>
+</html>

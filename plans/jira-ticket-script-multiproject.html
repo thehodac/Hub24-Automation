@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Plan — Reusable multi-project Jira ticket script</title>
+  <style>
+    body { font-family: Arial, Helvetica, sans-serif; max-width: 820px; margin: 24px auto; padding: 0 16px; line-height: 1.6; color: #1a1a1a; }
+    h1 { font-size: 22px; border-bottom: 2px solid #ddd; padding-bottom: 8px; }
+    h2 { font-size: 17px; margin-top: 26px; color: #0c447c; }
+    .meta { color: #666; font-size: 14px; }
+    table { border-collapse: collapse; width: 100%; margin: 8px 0; }
+    th, td { border: 1px solid #ddd; padding: 8px 10px; text-align: left; font-size: 14px; vertical-align: top; }
+    th { background: #f4f6f8; }
+    code { background: #f1f1f1; padding: 1px 5px; border-radius: 4px; }
+    ol, ul { padding-left: 22px; }
+    .warn { background: #fff4e5; border-left: 4px solid #ba7517; padding: 8px 12px; }
+  </style>
+</head>
+<body>
+  <h1>Plan — Reusable multi-project Jira ticket script</h1>
+  <p class="meta">Author: MPF Developer · Date: 2026-07-03 · Replaces the Cowork slash command (not supported)</p>
+
+  <h2>1. Goal</h2>
+  <p>A reusable Node script that creates a Jira ticket (and optional sub-task) in
+     ANY project — not hard-coded to NITRO — so the ticket-creation step can be run
+     standalone or called as one step inside a larger workflow.</p>
+
+  <h2>2. Scope</h2>
+  <ul>
+    <li>In scope: one parameterised script + an npm script to run it; reuse existing Jira logic.</li>
+    <li>Out of scope: a Cowork "skill" (must be created via Settings &gt; Capabilities, not here); the larger multi-step workflow (added later, will call this script).</li>
+  </ul>
+
+  <h2>3. How it works</h2>
+  <ol>
+    <li>Run: <code>node scripts/create-jira-ticket.mjs --project HUB --type Bug --summary "App Header - Login button missing" [--parent NIT-5186] [--subtask "..."]</code></li>
+    <li>Reads Jira credentials from <code>.env</code> (JIRA_BASE_URL / JIRA_EMAIL / JIRA_API_TOKEN).</li>
+    <li>Prints the planned fields and asks for confirmation (unless <code>--yes</code> is passed for automated runs).</li>
+    <li>Creates the ticket via the Jira REST API; optionally creates a sub-task inside it.</li>
+    <li>Prints the created key + URL.</li>
+  </ol>
+
+  <h2>4. Parameters</h2>
+  <table>
+    <tr><th>Flag</th><th>Meaning</th><th>Default</th></tr>
+    <tr><td><code>--project</code></td><td>Jira project key (any project)</td><td>required</td></tr>
+    <tr><td><code>--summary</code></td><td>Ticket title</td><td>required</td></tr>
+    <tr><td><code>--type</code></td><td>Issue type</td><td>Bug</td></tr>
+    <tr><td><code>--parent</code></td><td>Epic key or parent ticket (optional)</td><td>none</td></tr>
+    <tr><td><code>--subtask</code></td><td>Also create a sub-task with this title</td><td>none</td></tr>
+    <tr><td><code>--yes</code></td><td>Skip the confirmation prompt (for scripts)</td><td>off</td></tr>
+  </table>
+
+  <h2>5. Files to create / change</h2>
+  <table>
+    <tr><th>File</th><th>Change</th></tr>
+    <tr><td><code>scripts/create-jira-ticket.mjs</code></td><td>New — the reusable multi-project script</td></tr>
+    <tr><td><code>package.json</code></td><td>Add <code>"jira:ticket"</code> npm script</td></tr>
+    <tr><td><code>.claude/commands/create-jira-ticket.md</code></td><td>Update to be project-agnostic (reference doc)</td></tr>
+  </table>
+
+  <h2>6. How to verify</h2>
+  <ul>
+    <li>Run with a test project/parent → a ticket is created with the right fields.</li>
+    <li>Run with <code>--subtask</code> → a sub-task appears inside it.</li>
+    <li>Delete the test tickets afterwards.</li>
+  </ul>
+
+  <h2>7. Risks / notes</h2>
+  <ul>
+    <li class="warn">Creates REAL tickets — confirmation is ON by default; use a clear prefix while testing and delete after.</li>
+    <li>Credentials stay in <code>.env</code> (never committed).</li>
+    <li>Later the big workflow script will call this as one step.</li>
+  </ul>
+</body>
+</html>

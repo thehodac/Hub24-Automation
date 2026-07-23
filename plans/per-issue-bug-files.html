@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Plan — One file per issue (bug-report / bug-image / bug-video)</title>
+  <style>
+    body { font-family: Arial, Helvetica, sans-serif; max-width: 840px; margin: 24px auto; padding: 0 16px; line-height: 1.6; color: #1a1a1a; }
+    h1 { font-size: 22px; border-bottom: 2px solid #ddd; padding-bottom: 8px; }
+    h2 { font-size: 17px; margin-top: 26px; color: #0c447c; }
+    .meta { color: #666; font-size: 14px; }
+    table { border-collapse: collapse; width: 100%; margin: 8px 0; }
+    th, td { border: 1px solid #ddd; padding: 8px 10px; text-align: left; font-size: 14px; vertical-align: top; }
+    th { background: #f4f6f8; }
+    code { background: #f1f1f1; padding: 1px 5px; border-radius: 4px; }
+    ol, ul { padding-left: 22px; }
+    .warn { background: #fff4e5; border-left: 4px solid #ba7517; padding: 8px 12px; }
+  </style>
+</head>
+<body>
+  <h1>Plan — One file per issue, with [STATUS][ISSUE-NN] prefix</h1>
+  <p class="meta">Author: MPF Developer · Date: 2026-07-03 · Changes the Bug Report reporter</p>
+
+  <h2>1. Goal</h2>
+  <p>Change the reporter so that instead of ONE combined .docx per run, each failed
+     test produces its OWN set of files (report + image + video), named with a
+     status + stable issue id + test name, and updated on re-runs.</p>
+
+  <h2>2. Naming convention</h2>
+  <p>Base name (same in all 3 folders): <code>[STATUS][ISSUE-NN] &lt;describe&gt; - &lt;test title&gt;</code></p>
+  <ul>
+    <li>STATUS = <code>FAIL</code> or <code>PASS</code></li>
+    <li>ISSUE-NN = ISSUE-01, ISSUE-02, ... (stable per test across runs)</li>
+  </ul>
+  <table>
+    <tr><th>Folder</th><th>Example file</th></tr>
+    <tr><td><code>bug-report/</code></td><td><code>[FAIL][ISSUE-01] Demo bug report - intentionally fails....docx</code></td></tr>
+    <tr><td><code>bug-image/</code></td><td><code>[FAIL][ISSUE-01] Demo bug report - intentionally fails....png</code></td></tr>
+    <tr><td><code>bug-video/</code></td><td><code>[FAIL][ISSUE-01] Demo bug report - intentionally fails....webm</code></td></tr>
+  </table>
+
+  <h2>3. Behaviour per test, each run</h2>
+  <ol>
+    <li><strong>Fails, first time</strong> → assign next ISSUE-NN; create the 3 files as <code>[FAIL][ISSUE-NN] &lt;title&gt;</code>.</li>
+    <li><strong>Fails again (re-run)</strong> → find its existing files by title, keep the same ISSUE-NN, regenerate the .docx + copy the new screenshot/video, keep prefix <code>[FAIL]</code>.</li>
+    <li><strong>Passes (was an issue before)</strong> → rename its existing 3 files' prefix to <code>[PASS][ISSUE-NN]</code>; keep the old evidence (no new capture on pass).</li>
+    <li><strong>Passes, never failed</strong> → do nothing.</li>
+  </ol>
+  <p>No hidden state file — the issue id lives in the filename, so the folder itself
+     is the source of truth. New number = highest existing ISSUE-NN + 1.</p>
+
+  <h2>4. Files to change</h2>
+  <table>
+    <tr><th>File</th><th>Change</th></tr>
+    <tr><td><code>reporters/bug-report.ts</code></td><td>Replace the single-combined-.docx output with per-issue files + the [STATUS][ISSUE-NN] naming + re-run update logic (also process passed tests).</td></tr>
+  </table>
+
+  <h2>5. Unchanged</h2>
+  <ul>
+    <li>Console summary (Total / Passed / Failed, steps to reproduce).</li>
+    <li>Jira ticket creation (still per failed test, when enabled).</li>
+    <li>screenshot / video capture on failure (config already set).</li>
+  </ul>
+
+  <h2>6. How to verify</h2>
+  <ul>
+    <li>Run the demo fail test → see <code>[FAIL][ISSUE-01] ...</code> in all 3 folders.</li>
+    <li>Fix the demo test (make it pass) and re-run → the same files become <code>[PASS][ISSUE-01] ...</code>.</li>
+    <li>Add a second failing test → it gets <code>[ISSUE-02]</code>.</li>
+  </ul>
+
+  <h2>7. Risks / notes</h2>
+  <ul>
+    <li class="warn">Old combined report files from before are left as-is; new runs use the new per-issue naming.</li>
+    <li>Matching is by the sanitised test title; renaming a describe/test starts a new issue id.</li>
+    <li>Nothing is auto-deleted.</li>
+  </ul>
+</body>
+</html>

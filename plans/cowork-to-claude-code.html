@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Plan — Migrate the project from Claude Cowork to Claude Code</title>
+  <style>
+    body { font-family: Arial, Helvetica, sans-serif; max-width: 860px; margin: 24px auto; padding: 0 16px; line-height: 1.6; color: #1a1a1a; }
+    h1 { font-size: 22px; border-bottom: 2px solid #ddd; padding-bottom: 8px; }
+    h2 { font-size: 17px; margin-top: 28px; color: #0c447c; }
+    h3 { font-size: 15px; margin-top: 20px; color: #333; }
+    .meta { color: #666; font-size: 14px; }
+    table { border-collapse: collapse; width: 100%; margin: 8px 0; }
+    th, td { border: 1px solid #ddd; padding: 8px 10px; text-align: left; font-size: 14px; vertical-align: top; }
+    th { background: #f4f6f8; }
+    code { background: #f1f1f1; padding: 1px 5px; border-radius: 4px; font-size: 13px; }
+    ol, ul { padding-left: 22px; }
+    .note { font-size: 13px; background: #f4f6f8; border-left: 3px solid #b4b2a9; padding: 6px 10px; margin: 8px 0; }
+    .warn { font-size: 13px; background: #FFF3CD; border-left: 3px solid #e0a800; padding: 6px 10px; margin: 8px 0; }
+    .out { color: #777; }
+  </style>
+</head>
+<body>
+  <h1>Plan — Migrate the project from Claude Cowork to Claude Code</h1>
+  <p class="meta">Author: Thong Ho · Date: 2026-07-13 · Related: QC backlog (NITRO) · No dedicated ticket</p>
+
+  <h2>1. Goal</h2>
+  <p>The <code>Hub24-Automation</code> project is currently operated with <strong>Claude Cowork</strong>. From now on it moves to
+  <strong>Claude Code</strong>. The goal of this task: bring the entire "AI automation" part (currently living inside Cowork,
+  outside the repo) directly into the repo in a form Claude Code understands, and remove the pitfalls of Claude Code running directly on the local machine
+  (unlike Cowork, which runs in the cloud).</p>
+
+  <p><strong>Unchanged:</strong> the Playwright code, Page Object Model, the bug→Jira reporter, CloudBees CI, BrowserStack,
+  Chromatic — all keep working with Claude Code.</p>
+
+  <h2>2. Scope</h2>
+  <h3>In scope</h3>
+  <ul>
+    <li><strong>(1) Skills:</strong> convert the 2 Cowork skill prompts in <code>docs/</code> into real Claude Code
+      skills in <code>.claude/skills/</code>, so the whole team can clone the repo and use them.</li>
+    <li><strong>(3) Permissions:</strong> add <code>.claude/settings.json</code> with an allowlist of the safe, commonly used commands
+      (npm test, npx playwright, read-only git…) — reducing how often Claude Code has to ask for permission.</li>
+    <li><strong>(4) Fix the places that drifted from reality:</strong> <code>README.md</code> (still mentions the CI in <code>.github/</code> that was removed),
+      <code>.env</code> (currently has real Jira ticket creation enabled), <code>CLAUDE.md</code> (does not yet mention <code>test-cases/</code> or the skills).</li>
+  </ul>
+
+  <li><strong>(2) Daily 07:00 job — REMOVE ENTIRELY.</strong> Decision 2026-07-13: no longer need a periodic run.
+      This job lives in Cowork (the <code>daily-generate-test-specs</code> task) so it <strong>must be turned off in the
+      Cowork app itself</strong> — the repo cannot delete it. In the repo: remove all descriptions of it, switch to "run on demand" via the
+      <code>/spec-to-testcase-pipeline</code> skill.</li>
+  </ul>
+
+  <h3>Out of scope</h3>
+  <ul class="out">
+    <li>The SauceDemo suite (just a sample demo — do not touch it).</li>
+    <li>Writing real page objects / specs for HUB24 — waiting for test environment access (backlog row 8, currently a BLOCKER).</li>
+  </ul>
+
+  <h2>3. Step-by-step approach</h2>
+  <ol>
+    <li><strong>Create the 2 skills.</strong> Copy the contents of the 2 files <code>docs/skill-prompt-*.md</code> (which already have proper frontmatter
+      <code>name</code> + <code>description</code>) into <code>.claude/skills/&lt;name&gt;/SKILL.md</code>.
+      Keep the content as-is, only adjust 2 points to fit the Claude Code context:
+      <ul>
+        <li><code>spec-to-testcase-pipeline</code>: the "Scheduling" section is currently written for Cowork ("runs only while the app is
+          open") → change it to how it runs in Claude Code (type <code>/spec-to-testcase-pipeline</code>), noting that the periodic
+          job will be decided later.</li>
+        <li><code>playwright-bug-to-jira</code>: add a note that the reporter is <em>already installed</em> in the repo
+          (<code>reporters/bug-report.ts</code>, <code>reporters/jira.ts</code>) — this skill is now mainly used to
+          <em>extend/modify</em>, not to rebuild from scratch.</li>
+      </ul>
+      The 2 original files in <code>docs/</code> stay as documentation (do not delete).</li>
+
+    <li><strong>Create <code>.claude/settings.json</code></strong> with <code>permissions.allow</code> for the
+      read-only/safe commands commonly used in this repo. Do not allow destructive commands (git push, rm -rf, git reset --hard…).</li>
+
+    <li><strong>Edit <code>.env</code>:</strong> change <code>JIRA_CREATE_TICKETS=true</code> → <code>false</code>.
+      Reason: Claude Code runs on your machine, and every test run that fails creates a <em>real</em> Jira ticket in the NIT project.
+      Only set it to <code>true</code> when you intentionally want to create tickets.</li>
+
+    <li><strong>Edit <code>README.md</code>:</strong> remove/change the sentences still saying the CI is in <code>.github/</code>
+      (the "Structure" and "Visual regression" sections), point them to CloudBees (<code>.cloudbees/workflows/test.yaml</code>) —
+      which is the CI actually in use.</li>
+
+    <li><strong>Update <code>CLAUDE.md</code>:</strong> add a short section about (a) the <code>test-cases/</code> directory being the source of
+      the "backlog" (18 features / 384 test cases generated from the Functional Spec), (b) the 2 newly created skills and when to use them,
+      (c) the current state: no HUB24 environment yet → <code>BASE_URL</code> is still a placeholder,
+      <code>auth.setup.ts</code> is still a TODO.</li>
+
+    <li><strong>Remove the 07:00 job from the docs.</strong> Remove all descriptions of the scheduled task in
+      <code>docs/spec-to-testcase-workflow.html</code>, <code>docs/skill-prompt-spec-to-testcase.md</code>,
+      <code>test-cases/README.md</code> and the <code>spec-to-testcase-pipeline</code> skill — replace with "run on demand".
+      <strong>User's job:</strong> turn off the <code>daily-generate-test-specs</code> task in the Cowork app yourself.</li>
+
+    <li><strong>Re-check:</strong> run <code>npx playwright test --list</code> to make sure nothing is broken, and confirm the
+      2 skills appear in the Claude Code skill list.</li>
+  </ol>
+
+  <h2>4. Files to create / change</h2>
+  <table>
+    <tr><th>File</th><th>Change</th></tr>
+    <tr>
+      <td><code>.claude/skills/spec-to-testcase-pipeline/SKILL.md</code></td>
+      <td><strong>New</strong> — from <code>docs/skill-prompt-spec-to-testcase.md</code>; edit the Scheduling section to fit Claude Code.</td>
+    </tr>
+    <tr>
+      <td><code>.claude/skills/playwright-bug-to-jira/SKILL.md</code></td>
+      <td><strong>New</strong> — from <code>docs/skill-prompt-bug-to-jira.md</code>; add a note that the reporter is already installed.</td>
+    </tr>
+    <tr>
+      <td><code>.claude/settings.json</code></td>
+      <td><strong>New</strong> — <code>permissions.allow</code> for read-only npm/playwright/git. Does not touch secrets.</td>
+    </tr>
+    <tr>
+      <td><code>.env</code></td>
+      <td><strong>Edit</strong> — <code>JIRA_CREATE_TICKETS</code>: <code>true</code> → <code>false</code>. (This file is gitignored, not committed.)</td>
+    </tr>
+    <tr>
+      <td><code>README.md</code></td>
+      <td><strong>Edit</strong> — remove the <code>.github/</code> reference, point CI to CloudBees.</td>
+    </tr>
+    <tr>
+      <td><code>CLAUDE.md</code></td>
+      <td><strong>Edit</strong> — add the <code>test-cases/</code> section, the Skills section, and the current environment state.</td>
+    </tr>
+    <tr>
+      <td><code>docs/spec-to-testcase-workflow.html</code></td>
+      <td><strong>Edit</strong> — the "6. Schedule" section → "6. How to run": remove the 07:00 job, switch to run on demand.</td>
+    </tr>
+    <tr>
+      <td><code>docs/skill-prompt-spec-to-testcase.md</code></td>
+      <td><strong>Edit</strong> — the "Scheduling" section → "Running it" (remove the schedule). The rest stays as documentation.</td>
+    </tr>
+    <tr>
+      <td><code>test-cases/README.md</code></td>
+      <td><strong>Edit</strong> — the "How it is produced" section: remove "daily scheduled task (7:00 AM)", replace with invoking the skill.</td>
+    </tr>
+    <tr>
+      <td><code>docs/friday-demo-runsheet.md</code></td>
+      <td><em>Unchanged</em> — it is the runsheet record of a demo that already happened (NIT-5145), do not rewrite history.</td>
+    </tr>
+  </table>
+
+  <div class="note">No file under <code>pages/</code>, <code>tests/</code>, <code>reporters/</code>,
+  <code>playwright.config.ts</code> is touched. This task is purely about configuration + documentation.</div>
+
+  <h2>5. How to verify</h2>
+  <ul>
+    <li><code>npx playwright test --list</code> → lists tests normally, no errors (proving the config is not broken).</li>
+    <li>In Claude Code, type <code>/</code> → see <code>spec-to-testcase-pipeline</code> and
+      <code>playwright-bug-to-jira</code> in the skill list.</li>
+    <li><code>grep JIRA_CREATE_TICKETS .env</code> → <code>false</code>.</li>
+    <li><code>grep -n "github" README.md</code> → no more lines saying the CI is in <code>.github/</code>.</li>
+    <li>Try a command from the allowlist (e.g. <code>npm test -- --list</code>) → Claude Code no longer asks for permission.</li>
+  </ul>
+
+  <h2>6. Risks / notes</h2>
+  <ul>
+    <li><strong>The 07:00 job will stop running</strong> when you stop using Cowork. This is the only real loss — but
+      it is not urgent: the spec does not change every day, and running it manually via the slash command is enough for now. Will discuss in step (2).</li>
+    <li><strong>The Atlassian connector (Confluence/Jira)</strong> in Claude Code comes from the claude.ai account, not from
+      the repo. The <code>spec-to-testcase-pipeline</code> skill only runs while this connector is connected. In background /
+      cron runs, this connector <em>may</em> not be available — needs testing to be sure (related to step 2).</li>
+    <li><code>.env</code> is not committed (already gitignored) → editing <code>JIRA_CREATE_TICKETS</code> only takes effect on
+      your machine. If others on the team run the repo, they must be told to set it to <code>false</code> themselves.
+      (<code>.env.example</code> already has <code>false</code> — correct.)</li>
+    <li>The allowlist in <code>.claude/settings.json</code> is committed → it affects the whole team. Only include safe commands;
+      do not include <code>git push</code>, <code>rm</code>, or any command that writes to the system outside the repo.</li>
+  </ul>
+</body>
+</html>

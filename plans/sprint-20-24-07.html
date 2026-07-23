@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Plan — Sprint 20–24 Jul (rows 32–35)</title>
+  <style>
+    body { font-family: Arial, Helvetica, sans-serif; max-width: 900px; margin: 24px auto; padding: 0 16px; line-height: 1.6; color: #1a1a1a; }
+    h1 { font-size: 22px; border-bottom: 2px solid #ddd; padding-bottom: 8px; }
+    h2 { font-size: 17px; margin-top: 28px; color: #0c447c; }
+    h3 { font-size: 15px; margin-top: 20px; color: #222; }
+    .meta { color: #666; font-size: 14px; }
+    table { border-collapse: collapse; width: 100%; margin: 8px 0; }
+    th, td { border: 1px solid #ddd; padding: 8px 10px; text-align: left; font-size: 14px; vertical-align: top; }
+    th { background: #f4f6f8; }
+    code { background: #f1f1f1; padding: 1px 5px; border-radius: 4px; }
+    ol, ul { padding-left: 22px; }
+    .phase { font-weight: bold; color: #0c447c; }
+    .dod { background: #f6fbf6; border-left: 3px solid #3a9d3a; padding: 6px 12px; margin: 6px 0; }
+  </style>
+</head>
+<body>
+  <h1>Plan — Sprint 20–24 Jul 2026 (backlog rows 32–35)</h1>
+  <p class="meta">Author: Thong Ho · Date: 2026-07-20 · Scope: "Sprint - 20-24/7" section of the QC backlog · Related: NITRO/NIT</p>
+
+  <h2>1. Goal</h2>
+  <p>Deliver the four MPF-integration / knowledge-base tasks for this week as
+  <em>proven, documented and validated</em> flows — not just "code turned on". Each task
+  goes through the same lifecycle Didier asked for: <span class="phase">research → update the
+  flow diagram → test → document the result → secure (validate &amp; sign-off) the proven flow</span>.
+  Outcome by end of the week: every row below is either <code>Done</code> with evidence, or has a clear,
+  agreed reason it is blocked.</p>
+
+  <h2>2. Scope</h2>
+  <table>
+    <tr><th>Row</th><th>Task</th><th>Est</th><th>Status</th></tr>
+    <tr><td>32</td><td>Asana — enable auto-create tasks (code ready, turn on)</td><td>1d</td><td>In progress</td></tr>
+    <tr><td>33</td><td>Curate + load 1 robust past MPF project into the agent's in-house knowledge base</td><td>2d</td><td>To do</td></tr>
+    <tr><td>34</td><td>Publish test cases to the project's tool too (Asana)</td><td>1d</td><td>To do</td></tr>
+    <tr><td>35</td><td>Demo &amp; validation guideline (document + video)</td><td>1d</td><td>To do</td></tr>
+  </table>
+  <ul>
+    <li><strong>In scope:</strong> the 4 rows above, on the SauceDemo sample project (proves the flow end-to-end).</li>
+    <li><strong>Out of scope:</strong> HUB24-specific execution (blocked on the HUB24 env); Azure DevOps / Basecamp enablement (later rows); new feature work.</li>
+  </ul>
+
+  <h2>3. Schedule — what &amp; when</h2>
+  <table>
+    <tr><th>Day</th><th>Focus</th><th>Main output</th></tr>
+    <tr><td>Mon 20/7</td><td>Row 32 — Asana enable + test</td><td>Auto-created Asana task from a failing test, verified</td></tr>
+    <tr><td>Tue 21/7</td><td>Row 33 (part 1) — research + curate 1 MPF project</td><td>Shortlist of quality artefacts from one robust past project</td></tr>
+    <tr><td>Wed 22/7</td><td>Row 33 (part 2) — load into in-house knowledge base</td><td>Knowledge base populated (closed env), test retrieval</td></tr>
+    <tr><td>Thu 23/7</td><td>Row 34 — publish test cases to Asana</td><td>Approved test cases attached/created on Asana</td></tr>
+    <tr><td>Fri 24/7</td><td>Row 35 — demo guideline (doc + video) + team validation</td><td>Guideline doc, recording, team sign-off</td></tr>
+  </table>
+
+  <h2>4. Per-task approach (Didier's 5 phases each)</h2>
+
+  <h3>Row 32 — Asana: enable auto-create tasks</h3>
+  <ol>
+    <li><span class="phase">Research:</span> confirm the Asana reporter is wired (<code>reporters/asana.ts</code>); identify the required <code>.env</code> vars and where the token/GID come from.</li>
+    <li><span class="phase">Diagram:</span> add Asana as a bug destination on the auto-ticket sub-process diagram (<code>docs/qc-subprocess-diagrams.html</code>) — Jira and Asana in parallel.</li>
+    <li><span class="phase">Test:</span> fill <code>.env</code> (<code>ASANA_CREATE_TICKETS=true</code> + token + project GID), run <code>node scripts/check-ticket-env.mjs</code>, then run a deliberately failing test and confirm a task appears in the right Asana project/section.</li>
+    <li><span class="phase">Document:</span> record the result (screenshot of the created task, dedup on re-run, auto-complete on pass) in the workflow doc.</li>
+    <li><span class="phase">Secure the flow:</span> confirm ticket content (prefix, Environment/Device, params without password, clear error), then mark row 32 Done with evidence.</li>
+  </ol>
+  <p class="dod"><strong>Done when:</strong> failing test → Asana task created in correct project · re-run → no duplicate · test passes → task auto-completed · ticket content verified.</p>
+
+  <h3>Row 33 — Curate + load 1 robust MPF project into the knowledge base</h3>
+  <ol>
+    <li><span class="phase">Research:</span> with Kat, pick ONE robust past MPF project on Drive; agree what "good artefact" means (clean specs, well-formed test cases, feature files).</li>
+    <li><span class="phase">Diagram:</span> sketch how the agent uses the knowledge base when generating test cases (input → retrieve examples → generate) — a small flow in the docs.</li>
+    <li><span class="phase">Curate + load:</span> shortlist the quality artefacts, then load them into the agent's <em>in-house / closed</em> knowledge base (no client data leaves the environment).</li>
+    <li><span class="phase">Test:</span> run a generation against the loaded examples and check the output quality improves / follows the curated style.</li>
+    <li><span class="phase">Document + secure:</span> note which project + artefacts were used and the closed-env constraint; get Kat's confirmation. Mark Done.</li>
+  </ol>
+  <p class="dod"><strong>Done when:</strong> 1 project curated, artefacts loaded in the closed KB, a test generation demonstrably uses them, Kat confirms.</p>
+
+  <h3>Row 34 — Publish test cases to Asana</h3>
+  <ol>
+    <li><span class="phase">Research:</span> confirm the publish target (Asana project/link from the user) and the two files to attach (Excel <code>.xlsx</code> + JSON).</li>
+    <li><span class="phase">Diagram:</span> update the "Publishing generated test cases" step to show Asana as a destination alongside Confluence.</li>
+    <li><span class="phase">Test:</span> publish an approved sample set to Asana (ask destination + link first — this is side-effectful), verify the ticket + both files appear.</li>
+    <li><span class="phase">Document:</span> capture the created Asana item as evidence; note the repo copy stays source of truth.</li>
+    <li><span class="phase">Secure the flow:</span> confirm the confirmation-gate works (never auto-publish without the user's destination + link). Mark Done.</li>
+  </ol>
+  <p class="dod"><strong>Done when:</strong> approved test cases published to the agreed Asana location with both files, after explicit user confirmation.</p>
+
+  <h3>Row 35 — Demo &amp; validation guideline (document + video)</h3>
+  <ol>
+    <li><span class="phase">Research:</span> list what to demo (e2e / api / a11y / chromatic + auto-tickets) and the audience.</li>
+    <li><span class="phase">Diagram:</span> reuse the end-to-end sub-process diagrams as the demo storyboard.</li>
+    <li><span class="phase">Build:</span> write a short guideline doc (steps to run the suite + what to look at) and record a short video walkthrough.</li>
+    <li><span class="phase">Test:</span> dry-run the guideline start-to-finish to make sure someone else could follow it.</li>
+    <li><span class="phase">Secure the flow:</span> run the validation session with the team, capture sign-off. Mark Done.</li>
+  </ol>
+  <p class="dod"><strong>Done when:</strong> guideline doc + recording exist, dry-run passes, team validates and signs off.</p>
+
+  <h2>5. Files to create / change</h2>
+  <table>
+    <tr><th>File</th><th>Change</th></tr>
+    <tr><td><code>.env</code></td><td>Asana vars (user fills; not committed)</td></tr>
+    <tr><td><code>docs/qc-subprocess-diagrams.html</code></td><td>Add Asana destination + KB usage flow</td></tr>
+    <tr><td><code>docs/auto-bug-ticket-workflow.html</code></td><td>Document Asana result + evidence</td></tr>
+    <tr><td><code>docs/demo-guideline.(md/docx)</code> + video</td><td>New demo guideline + recording (row 35)</td></tr>
+    <tr><td>Knowledge-base config / curated artefacts</td><td>Row 33 — closed env, in-house only</td></tr>
+  </table>
+
+  <h2>6. How to verify</h2>
+  <ul>
+    <li>Row 32: <code>node scripts/check-ticket-env.mjs</code> → Asana ready; failing test → Asana task; re-run → no dupe; pass → auto-close.</li>
+    <li>Row 33: a generation run visibly uses the curated examples; Kat confirms.</li>
+    <li>Row 34: the Asana publish target shows the ticket + both files.</li>
+    <li>Row 35: a teammate follows the guideline unaided; team sign-off recorded.</li>
+  </ul>
+
+  <h2>7. Risks / dependencies</h2>
+  <ul>
+    <li>Row 32 &amp; 34 need the Asana token + project GID (user-provided) and network allow-listing.</li>
+    <li>Row 33 needs access to the MPF Drive and Kat's pick of the reference project; closed-env constraint must hold.</li>
+    <li>Publishing (row 34) is side-effectful — confirm destination + link before running.</li>
+    <li>All rows run on the SauceDemo sample; HUB24 execution stays blocked until the HUB24 env is provisioned.</li>
+  </ul>
+
+  <h2>8. Approval</h2>
+  <p>Per the planning workflow, this plan is presented for approval before implementation.
+  Requesting sign-off from Didier / Kat by end of day 20/7. No code changes until approved.</p>
+</body>
+</html>

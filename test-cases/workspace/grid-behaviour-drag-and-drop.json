@@ -1,0 +1,218 @@
+[
+  {
+    "scenario_id": "TC_GRID_001",
+    "tags": "@ui @positive @smoke",
+    "scenario": "Desktop grid renders 12-column layout with correct gutters and margin",
+    "description": "Given the Workspace page loads on desktop\nWhen it renders\nThen widgets lay out on a 12-column grid\nAnd the grid uses 24px gutters\nAnd the grid uses a 40px outer margin"
+  },
+  {
+    "scenario_id": "TC_GRID_002",
+    "tags": "@ui @positive",
+    "scenario": "Wide widgets occupy 8 columns on desktop",
+    "description": "Given the Workspace page loads on desktop\nWhen it renders\nThen each wide widget occupies 8 columns\nAnd each wide widget has a fixed height of 436px"
+  },
+  {
+    "scenario_id": "TC_GRID_003",
+    "tags": "@ui @positive",
+    "scenario": "Small widgets occupy 4 columns on desktop",
+    "description": "Given the Workspace page loads on desktop\nWhen it renders\nThen each small widget occupies 4 columns\nAnd each small widget has a fixed height of 436px"
+  },
+  {
+    "scenario_id": "TC_GRID_004",
+    "tags": "@ui @positive @edge",
+    "scenario": "All desktop widgets share a fixed 436px height regardless of content length",
+    "description": "Given the Workspace page loads on desktop\nAnd a widget contains more content than another widget of the same size\nWhen the grid renders\nThen both widgets render at a fixed height of 436px\nAnd content overflow is handled without changing widget height"
+  },
+  {
+    "scenario_id": "TC_GRID_005",
+    "tags": "@ui @positive @smoke @mobile",
+    "scenario": "Tablet layout stacks all widgets in a single full-width column",
+    "description": "Given the Workspace page loads on tablet\nWhen it renders\nThen all widgets, wide and small, span the full 12 columns\nAnd all widgets are arranged in a single stacked column"
+  },
+  {
+    "scenario_id": "TC_GRID_006",
+    "tags": "@ui @positive @mobile",
+    "scenario": "Tablet layout uses 16px gutters and 24px outer margin",
+    "description": "Given the Workspace page loads on tablet\nWhen it renders\nThen the grid uses 16px gutters\nAnd the grid uses a 24px outer margin"
+  },
+  {
+    "scenario_id": "TC_GRID_007",
+    "tags": "@ui @positive @mobile",
+    "scenario": "Tablet stacked widget order matches desktop layout order",
+    "description": "Given the Workspace page has a known widget order on desktop\nWhen the same Workspace page renders on tablet\nThen the stacked widgets appear in the same top-to-bottom order as the desktop layout"
+  },
+  {
+    "scenario_id": "TC_GRID_008",
+    "tags": "@ui @positive @mobile @edge",
+    "scenario": "Tablet widget height is content-driven rather than fixed",
+    "description": "Given the Workspace page loads on tablet\nAnd a widget contains more content than another widget\nWhen the grid renders\nThen each widget's height reflects its own content\nAnd widget heights are not fixed at 436px as on desktop"
+  },
+  {
+    "scenario_id": "TC_GRID_009",
+    "tags": "@ui @edge @gap",
+    "scenario": "Grid switches from desktop to tablet layout when viewport crosses the responsive breakpoint",
+    "description": "Given the Workspace page is open at a desktop viewport width\nWhen the viewport width is reduced across the responsive breakpoint\nThen the grid switches from the desktop multi-column layout to the single-column 100%-width stacked tablet layout\nAnd this scenario cannot be executed deterministically because the breakpoint pixel value is not specified in the design (flagged design gap)"
+  },
+  {
+    "scenario_id": "TC_GRID_010",
+    "tags": "@negative @gap",
+    "scenario": "Breakpoint pixel value is undefined, blocking deterministic boundary testing",
+    "description": "Given AC-03 requires a specific desktop-to-tablet breakpoint\nWhen the functional spec is reviewed for the breakpoint pixel value\nThen the value is documented as TBD\nAnd no deterministic pass/fail boundary test can be authored until the value is defined\nAnd this is flagged as a design coverage gap"
+  },
+  {
+    "scenario_id": "TC_GRID_011",
+    "tags": "@ui @positive",
+    "scenario": "Drag handle appears in widget header on hover",
+    "description": "Given a widget is in its default non-dragging state on desktop\nWhen the user hovers over the widget\nThen a grip-dots-vertical drag handle icon appears in the widget header"
+  },
+  {
+    "scenario_id": "TC_GRID_012",
+    "tags": "@ui @positive @edge",
+    "scenario": "Headerless or image-led widget shows drag handle at fixed default position on hover",
+    "description": "Given a headerless or image-led widget is in its default non-dragging state on desktop\nWhen the user hovers over the widget\nThen a drag handle appears at a fixed default position on the widget"
+  },
+  {
+    "scenario_id": "TC_GRID_013",
+    "tags": "@ui @positive @smoke",
+    "scenario": "Clicking and holding the drag handle lifts the widget and shows a placeholder",
+    "description": "Given the drag handle is visible on a widget on desktop\nWhen the user clicks and holds the handle\nThen the widget lifts into a dragging state\nAnd the widget's original slot shows a placeholder"
+  },
+  {
+    "scenario_id": "TC_GRID_014",
+    "tags": "@ui @positive",
+    "scenario": "Dragged widget can be moved in any direction on desktop",
+    "description": "Given a widget is in a dragging state on desktop\nWhen the user moves the pointer up, down, left, or right\nThen the widget follows the pointer movement in the corresponding direction"
+  },
+  {
+    "scenario_id": "TC_GRID_015",
+    "tags": "@ui @positive @smoke",
+    "scenario": "Releasing a dragged widget snaps it into place and reflows the grid without gaps or overlaps",
+    "description": "Given a widget is being dragged on desktop\nWhen the user releases it\nThen the widget snaps to the nearest valid grid position\nAnd all other widgets automatically reflow\nAnd no empty gaps remain in the grid\nAnd no widgets overlap"
+  },
+  {
+    "scenario_id": "TC_GRID_016",
+    "tags": "@ui @positive",
+    "scenario": "Adjacent large widgets expand to full width when three small widgets complete a row",
+    "description": "Given three small 4-column widgets complete a single grid row\nWhen the layout reflows\nThen adjacent large 8-column widgets automatically expand to occupy the full 12 columns"
+  },
+  {
+    "scenario_id": "TC_GRID_017",
+    "tags": "@ui @positive",
+    "scenario": "Two small widgets in a row grow to fill available row space",
+    "description": "Given two small widgets occupy a single grid row\nWhen the layout reflows\nThen the two small widgets grow to fill the available row space"
+  },
+  {
+    "scenario_id": "TC_GRID_018",
+    "tags": "@ui @positive @edge",
+    "scenario": "Lone small widget in a row grows to fill available row space",
+    "description": "Given one lone small widget occupies a single grid row\nWhen the layout reflows\nThen the lone small widget grows to fill the available row space"
+  },
+  {
+    "scenario_id": "TC_GRID_019",
+    "tags": "@negative",
+    "scenario": "Widget resizing is not permitted in this release",
+    "description": "Given a widget is selected or being dragged\nWhen the user attempts to resize the widget\nThen the resize action is not permitted\nAnd the widget dimensions remain unchanged"
+  },
+  {
+    "scenario_id": "TC_GRID_020",
+    "tags": "@ui @positive @mobile",
+    "scenario": "Tablet drag activates only after a 500ms hold on the handle",
+    "description": "Given a widget's drag handle is pressed on tablet\nWhen the user holds the handle for 500ms\nThen dragging activates\nAnd movement is constrained to vertical up/down reordering only"
+  },
+  {
+    "scenario_id": "TC_GRID_021",
+    "tags": "@negative @mobile",
+    "scenario": "Tablet drag does not activate if handle is released before 500ms",
+    "description": "Given a widget's drag handle is pressed on tablet\nWhen the user releases the handle before 500ms has elapsed\nThen dragging does not activate\nAnd the underlying page scroll is not interrupted"
+  },
+  {
+    "scenario_id": "TC_GRID_022",
+    "tags": "@ui @positive @mobile @edge",
+    "scenario": "Tablet drag movement is constrained to vertical reordering only",
+    "description": "Given a widget drag has activated on tablet after the 500ms hold\nWhen the user attempts to move the widget horizontally\nThen the widget movement is constrained to vertical up/down reordering only"
+  },
+  {
+    "scenario_id": "TC_GRID_023",
+    "tags": "@ui @positive @mobile",
+    "scenario": "Tapping a tablet widget outside interactive controls enters active/selected state",
+    "description": "Given a widget is displayed on tablet\nWhen the user taps anywhere on the widget other than an interactive control\nThen the widget enters an active/selected state"
+  },
+  {
+    "scenario_id": "TC_GRID_024",
+    "tags": "@negative @mobile",
+    "scenario": "Drag does not initiate from outside the tablet drag handle",
+    "description": "Given a widget is displayed on tablet\nWhen the user attempts to drag from anywhere other than the drag handle\nThen the drag does not initiate"
+  },
+  {
+    "scenario_id": "TC_GRID_025",
+    "tags": "@ui @positive @edge",
+    "scenario": "Widget for a disabled feature is hidden and other widgets reflow to fill the space",
+    "description": "Given the Workspace grid renders for a user\nAnd a widget's associated feature is not enabled for that user\nWhen the grid renders\nThen the widget is hidden\nAnd the widget does not occupy a grid slot\nAnd other widgets reflow to fill the space"
+  },
+  {
+    "scenario_id": "TC_GRID_026",
+    "tags": "@ui @positive @gap",
+    "scenario": "Rearranged layout persists after navigating away and returning to Workspace",
+    "description": "Given a user has rearranged widgets via drag-and-drop\nWhen they navigate away from Workspace and return\nThen the rearranged layout persists for that user\nAnd the persistence mechanism is a flagged design gap pending definition"
+  },
+  {
+    "scenario_id": "TC_GRID_027",
+    "tags": "@ui @positive @gap",
+    "scenario": "Rearranged layout persists after logout and login",
+    "description": "Given a user has rearranged widgets via drag-and-drop\nWhen they log out and log back in\nThen the rearranged layout persists for that user\nAnd the persistence mechanism is a flagged design gap pending definition"
+  },
+  {
+    "scenario_id": "TC_GRID_028",
+    "tags": "@negative @gap",
+    "scenario": "Layout persistence mechanism is undefined, blocking cross-session/device sync verification",
+    "description": "Given AC-12 requires layout persistence for a user\nWhen the design is reviewed for the save trigger, storage scope, and cross-session/device sync behaviour\nThen these details are undefined in the Deliverable Breakdown\nAnd cross-device sync cannot be verified until the persistence mechanism is specified\nAnd this is flagged as a design coverage gap"
+  },
+  {
+    "scenario_id": "TC_GRID_029",
+    "tags": "@ui @positive @analytics",
+    "scenario": "Clicking thumbs-up or thumbs-down on a feedback-enabled widget launches the Pendo feedback flow",
+    "description": "Given a feedback-enabled widget such as Trending Documents, Continue Work, Upcoming Deadlines, Outstanding Signatures, Lodgement Status, or Reporting Snapshot is displayed\nWhen the user clicks its thumbs-up or thumbs-down icon\nThen the click launches the Pendo feedback flow\nAnd Pendo owns the pop-up UI and response tracking"
+  },
+  {
+    "scenario_id": "TC_GRID_030",
+    "tags": "@negative @analytics",
+    "scenario": "No custom feedback modal is built for feedback-enabled widgets",
+    "description": "Given a feedback-enabled widget is displayed\nWhen the user clicks its thumbs-up or thumbs-down icon\nThen no custom feedback modal is rendered by the application\nAnd the feedback UI is fully owned by Pendo"
+  },
+  {
+    "scenario_id": "TC_GRID_031",
+    "tags": "@accessibility @positive",
+    "scenario": "Drag handle becomes visible when a widget receives keyboard focus",
+    "description": "Given a keyboard-only user tabs to a widget\nWhen the widget receives focus\nThen its drag handle becomes visible\nAnd the visibility matches the hover-triggered visibility for pointer users"
+  },
+  {
+    "scenario_id": "TC_GRID_032",
+    "tags": "@accessibility @negative @gap",
+    "scenario": "No keyboard-operable move mechanism or ARIA-live reflow announcement is defined",
+    "description": "Given a keyboard-only user has focused a widget and its drag handle is visible\nWhen the user attempts to reorder the widget using the keyboard alone\nThen no keyboard-operable move mechanism such as arrow-key reorder or a move up/down menu action is specified\nAnd no ARIA-live announcement of grid reflow is defined\nAnd this is flagged as a design coverage gap affecting AC-14"
+  },
+  {
+    "scenario_id": "TC_GRID_033",
+    "tags": "@ui @positive @edge",
+    "scenario": "Widget released outside a valid drop zone auto-snaps back to the nearest valid position",
+    "description": "Given a widget is mid-drag on desktop\nWhen the user releases it outside any valid drop zone\nThen the widget automatically snaps back to the nearest valid grid position\nAnd no invalid-drop or error state is shown"
+  },
+  {
+    "scenario_id": "TC_GRID_034",
+    "tags": "@ui @positive @smoke",
+    "scenario": "Desktop widget order matches the reference mockup",
+    "description": "Given the Workspace grid has rendered on desktop per the reference mockup\nWhen the rendered order is compared to the design\nThen the first row shows Upcoming Deadlines at 8 columns and Continue Work at 4 columns\nAnd the second row shows Lodgements Status at 8 columns and Popular Documents at 4 columns\nAnd the third row shows Outstanding Signatures at 8 columns and a promotional or event card at 4 columns"
+  },
+  {
+    "scenario_id": "TC_GRID_035",
+    "tags": "@ui @positive @mobile",
+    "scenario": "Tablet table/list widget with more than five items uses numbered pagination",
+    "description": "Given the tablet viewport is active\nAnd a table or list widget such as Upcoming Deadlines or Popular Documents contains more than five items\nWhen the widget renders\nThen it uses numbered pagination\nAnd it does not use internal vertical scroll"
+  },
+  {
+    "scenario_id": "TC_GRID_036",
+    "tags": "@ui @positive @mobile @edge",
+    "scenario": "Tablet table/list widget with five or fewer items does not show pagination",
+    "description": "Given the tablet viewport is active\nAnd a table or list widget contains five or fewer items\nWhen the widget renders\nThen no numbered pagination controls are shown"
+  }
+]

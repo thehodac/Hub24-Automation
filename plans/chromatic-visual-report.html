@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Plan — Chromatic visual report (before/after images + link)</title>
+<style>
+  body { font-family: Arial, Helvetica, sans-serif; max-width: 860px; margin: 24px auto; padding: 0 16px; line-height: 1.6; color: #1a1a1a; }
+  h1 { font-size: 22px; border-bottom: 2px solid #ddd; padding-bottom: 8px; }
+  h2 { font-size: 17px; margin-top: 28px; color: #0c447c; }
+  .meta { color: #666; font-size: 14px; }
+  table { border-collapse: collapse; width: 100%; margin: 8px 0; }
+  th, td { border: 1px solid #ddd; padding: 8px 10px; text-align: left; font-size: 14px; }
+  th { background: #f4f6f8; }
+  code { background: #f1f1f1; padding: 1px 5px; border-radius: 4px; }
+  ol, ul { padding-left: 22px; }
+</style>
+</head>
+<body>
+  <h1>Plan — Report for Chromatic: before/after/diff images + Chromatic link</h1>
+  <p class="meta">Author: MPF Developer · Date: 2026-07-07 · Option 3 (combined)</p>
+
+  <h2>1. Goal</h2>
+  <p>On each visual run, if there is a UI change → create a report file containing the <strong>before
+  (expected) image, after (actual) image, and diff image</strong>, along with a <strong>link to the Chromatic build</strong>
+  to open/review it on the dashboard.</p>
+
+  <h2>2. Core idea</h2>
+  <ul>
+    <li><strong>Local images</strong> come from <em>Playwright visual testing</em> (<code>toHaveScreenshot()</code>):
+      when an image differs from the baseline, the test FAILS locally and Playwright automatically generates the 3 images
+      <code>-expected.png</code> / <code>-actual.png</code> / <code>-diff.png</code>.</li>
+    <li><strong>Report</strong> comes from the existing reporter: for the <code>chromatic</code> type, embed all 3 images into the
+      <code>.docx</code> file and add a Chromatic link line.</li>
+    <li><strong>Chromatic link</strong> comes from the <code>chromatic</code> run (the CLI prints the build URL); save the URL into
+      a file for the reporter to read, or set it via the env var <code>CHROMATIC_BUILD_URL</code>.</li>
+  </ul>
+
+  <h2>3. Steps</h2>
+  <ol>
+    <li><strong>Visual specs</strong> (<code>tests/chromatic/</code>): use <code>await expect(page).toHaveScreenshot('&lt;name&gt;.png')</code>
+      to compare locally (replacing / supplementing the current archive approach). The first run creates the baseline.</li>
+    <li><strong>playwright.config</strong>: configure the <code>visual</code> project to allow writing the baseline
+      (<code>--update-snapshots</code> on the first run) and store snapshots next to the spec.</li>
+    <li><strong>reporters/bug-report.ts</strong>: for the <code>chromatic</code> category, find the 3 image attachments from
+      <code>toHaveScreenshot</code> (named "expected"/"actual"/"diff"), copy them into <code>bug-image/chromatic/</code> and
+      <strong>embed all 3 into the .docx</strong> ("Before / After / Diff" section). Add a
+      <em>Chromatic build:</em> &lt;link&gt; line.</li>
+    <li><strong>Chromatic link</strong>: add a <code>npm run test:visual:report</code> script that runs
+      <code>chromatic</code> then writes the build URL to <code>.chromatic-build-url</code>; the reporter reads this file (or the env var
+      <code>CHROMATIC_BUILD_URL</code>) to insert the link. If it is missing → the report still has the images, only the link is absent.</li>
+    <li><strong>.gitignore</strong>: ignore temporary diff images and <code>.chromatic-build-url</code>.</li>
+  </ol>
+
+  <h2>4. Files changed</h2>
+  <table>
+    <tr><th>File</th><th>Change</th></tr>
+    <tr><td><code>tests/chromatic/*.spec.ts</code></td><td>Use <code>toHaveScreenshot()</code> for local comparison.</td></tr>
+    <tr><td><code>playwright.config.ts</code></td><td>Configure snapshots for the <code>visual</code> project.</td></tr>
+    <tr><td><code>reporters/bug-report.ts</code></td><td>Chromatic category: embed the 3 expected/actual/diff images + the Chromatic link line.</td></tr>
+    <tr><td><code>package.json</code></td><td>Script to run chromatic + save the build URL.</td></tr>
+    <tr><td><code>.gitignore</code></td><td>Ignore temporary files.</td></tr>
+  </table>
+
+  <h2>5. How to verify</h2>
+  <ul>
+    <li>Run once to create the baseline. Make a small change to a component → run <code>npm run test:visual</code> again.</li>
+    <li>Expected: <code>bug-report/chromatic/[FAIL][ISSUE-NN] ....docx</code> has <strong>3 before/after/diff images</strong> + the Chromatic link;
+      the images are in <code>bug-image/chromatic/</code>.</li>
+  </ul>
+
+  <h2>6. Risks / notes</h2>
+  <ul>
+    <li><code>toHaveScreenshot</code> needs a <strong>baseline</strong> — the first run must create the baseline (this does not count as a failure).</li>
+    <li>The comparison images are <strong>Playwright's</strong> (local), independent of the images on Chromatic; the link only opens the dashboard.</li>
+    <li>An exact deep-link to each change needs the Chromatic build number; if it cannot be obtained, use the general build link.</li>
+    <li>An image change may be <em>intentional</em> — a person still needs to confirm it (accept the new baseline) as usual.</li>
+  </ul>
+</body>
+</html>

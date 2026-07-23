@@ -1,0 +1,146 @@
+[
+  {
+    "scenario_id": "TC_WNEW_001",
+    "tags": "@ui @positive @smoke",
+    "scenario": "Widget renders card with all required elements",
+    "description": "Given a user loads Workspace\nWhen the What's New widget renders\nThen a card displays with a badge (Enhancement, New Feature, Announcement, or Coming Soon)\nAnd the card displays a headline, body copy, a CTA link with an arrow icon, and a supporting visual"
+  },
+  {
+    "scenario_id": "TC_WNEW_002",
+    "tags": "@ui @positive",
+    "scenario": "Each badge type renders correctly on a card",
+    "description": "Given a user loads Workspace\nWhen a card renders with a given update type\nThen the badge label matches one of Enhancement, New Feature, Announcement, or Coming Soon\nAnd the badge is visually distinct from the headline and body copy"
+  },
+  {
+    "scenario_id": "TC_WNEW_003",
+    "tags": "@ui @positive @smoke",
+    "scenario": "Carousel with dot indicators displays for multiple updates",
+    "description": "Given more than one update is available\nWhen the widget renders\nThen a carousel displays with dot indicators\nAnd the dot indicators allow navigation between multiple update cards"
+  },
+  {
+    "scenario_id": "TC_WNEW_004",
+    "tags": "@ui @positive",
+    "scenario": "User navigates carousel via dot indicators",
+    "description": "Given the widget has rendered a carousel with multiple cards\nWhen the user clicks a dot indicator for a different card\nThen the carousel transitions to the corresponding card\nAnd the active dot indicator updates to reflect the currently displayed card"
+  },
+  {
+    "scenario_id": "TC_WNEW_005",
+    "tags": "@ui @edge",
+    "scenario": "Single update available suppresses carousel controls",
+    "description": "Given only one update is available\nWhen the widget renders\nThen no carousel or dot indicators are displayed\nAnd the single card displays without navigation controls"
+  },
+  {
+    "scenario_id": "TC_WNEW_006",
+    "tags": "@ui @positive",
+    "scenario": "Date-marker variant displays calendar-style date block",
+    "description": "Given a specific update has an associated date\nAnd the date-marker variant is enabled\nWhen that card renders\nThen a calendar-style date block (e.g. \"Jul 22 Wed\") displays adjacent to the headline"
+  },
+  {
+    "scenario_id": "TC_WNEW_007",
+    "tags": "@ui @negative @edge",
+    "scenario": "Card without date-marker variant enabled omits date block",
+    "description": "Given a specific update has an associated date\nAnd the date-marker variant is not enabled\nWhen that card renders\nThen no calendar-style date block displays adjacent to the headline"
+  },
+  {
+    "scenario_id": "TC_WNEW_008",
+    "tags": "@ui @edge",
+    "scenario": "Card with no associated date renders without date block",
+    "description": "Given a specific update has no associated date\nAnd the date-marker variant is enabled\nWhen that card renders\nThen no calendar-style date block displays\nAnd the card layout remains visually consistent with dated cards"
+  },
+  {
+    "scenario_id": "TC_WNEW_009",
+    "tags": "@ui @positive",
+    "scenario": "CTA label and destination adapt per update",
+    "description": "Given a card is displayed\nWhen the user views the card's CTA\nThen the CTA label (e.g. \"Learn more,\" \"Explore Feature,\" \"See What's Changing,\" \"Take a Tour\") matches the specific update being communicated\nAnd the CTA destination link corresponds to that same update"
+  },
+  {
+    "scenario_id": "TC_WNEW_010",
+    "tags": "@ui @positive @smoke",
+    "scenario": "Clicking CTA navigates to the correct destination",
+    "description": "Given a card is displayed\nWhen the user clicks its CTA\nThen the user is navigated to the destination associated with that specific update\nAnd the navigation occurs without disrupting the surrounding Workspace layout"
+  },
+  {
+    "scenario_id": "TC_WNEW_011",
+    "tags": "@ui @positive",
+    "scenario": "Release 1 example cards render as specified",
+    "description": "Given Release 1 content is populating the widget\nWhen example cards render\nThen cards may include \"Introducing the new app header,\" \"Introducing the workspace,\" \"Coming soon in Release 2,\" and \"Get your tickets to Ignite\"\nAnd each example card displays its own badge, headline, body copy, and CTA"
+  },
+  {
+    "scenario_id": "TC_WNEW_012",
+    "tags": "@ui @negative",
+    "scenario": "No filter, sort, or export controls present",
+    "description": "Given the widget has rendered\nWhen viewed\nThen no filter controls are present\nAnd no sort controls are present\nAnd no export controls are present"
+  },
+  {
+    "scenario_id": "TC_WNEW_013",
+    "tags": "@ui @negative",
+    "scenario": "No feedback (thumbs up/down) controls present",
+    "description": "Given the widget has rendered\nWhen viewed\nThen no thumbs up control is present\nAnd no thumbs down control is present\nAnd no other feedback-collection affordance is present on the widget"
+  },
+  {
+    "scenario_id": "TC_WNEW_014",
+    "tags": "@mobile @ui @positive",
+    "scenario": "Widget and carousel render responsively on mobile viewport",
+    "description": "Given a user loads Workspace on a mobile viewport\nWhen the What's New widget renders\nThen the card content (badge, headline, body copy, CTA, visual) remains fully visible without horizontal overflow\nAnd the carousel dot indicators remain visible and operable via touch"
+  },
+  {
+    "scenario_id": "TC_WNEW_015",
+    "tags": "@mobile @positive",
+    "scenario": "Swipe gesture navigates carousel on mobile",
+    "description": "Given the widget has rendered a carousel with multiple cards on a mobile viewport\nWhen the user swipes the card horizontally\nThen the carousel transitions to the adjacent card\nAnd the active dot indicator updates accordingly"
+  },
+  {
+    "scenario_id": "TC_WNEW_016",
+    "tags": "@analytics @gap",
+    "scenario": "CTA click emits analytics tracking event",
+    "description": "Given a card is displayed\nWhen the user clicks its CTA\nThen an analytics event is captured that identifies the specific update and CTA clicked\nAnd no analytics tracking mechanism is documented in the spec, so this scenario cannot be fully verified without further design input"
+  },
+  {
+    "scenario_id": "TC_WNEW_017",
+    "tags": "@accessibility @gap",
+    "scenario": "Widget is keyboard and screen-reader accessible",
+    "description": "Given a user navigates Workspace using only a keyboard and/or screen reader\nWhen the What's New widget receives focus\nThen the badge, headline, body copy, CTA, and visual are announced with appropriate semantics\nAnd carousel dot indicators are reachable and operable via keyboard\nAnd no WCAG/ARIA requirements are documented in the spec, so expected behavior is undefined pending design input"
+  },
+  {
+    "scenario_id": "TC_WNEW_018",
+    "tags": "@accessibility @gap @edge",
+    "scenario": "Role-based visibility of widget content is unverifiable",
+    "description": "Given users with different roles or permission levels load Workspace\nWhen the What's New widget renders\nThen the widget content shown should reflect any role-based visibility rules\nAnd no role-based visibility rules are documented in the spec, so this scenario cannot be verified without further design input"
+  },
+  {
+    "scenario_id": "TC_WNEW_019",
+    "tags": "@edge @gap",
+    "scenario": "Widget behavior when no updates are available is undefined",
+    "description": "Given zero updates are available to populate the widget\nWhen the widget attempts to render\nThen the widget should display a defined empty state\nAnd no empty-state design or content is documented in the spec, so expected behavior is undefined pending design input"
+  },
+  {
+    "scenario_id": "TC_WNEW_020",
+    "tags": "@edge @gap",
+    "scenario": "Widget behavior during content load is undefined",
+    "description": "Given the widget is fetching update content\nWhen the content has not yet loaded\nThen the widget should display a defined loading state\nAnd no loading-state design is documented in the spec, so expected behavior is undefined pending design input"
+  },
+  {
+    "scenario_id": "TC_WNEW_021",
+    "tags": "@edge @negative @gap",
+    "scenario": "Widget behavior on content fetch failure is undefined",
+    "description": "Given the widget attempts to load update content\nWhen the content fails to load due to an error\nThen the widget should display a defined error state\nAnd no error-state design or messaging is documented in the spec, so expected behavior is undefined pending design input"
+  },
+  {
+    "scenario_id": "TC_WNEW_022",
+    "tags": "@gap @edge",
+    "scenario": "\"View all\" or archive navigation pattern is undefined",
+    "description": "Given a user wants to view updates beyond those shown in the widget\nWhen the user looks for a \"view all\" or archive entry point\nThen a defined navigation pattern to a full update history should exist\nAnd no \"view all\"/archive navigation pattern is documented in the spec, so this scenario cannot be verified without further design input"
+  },
+  {
+    "scenario_id": "TC_WNEW_023",
+    "tags": "@gap @edge",
+    "scenario": "Content authoring/publishing mechanism is undefined",
+    "description": "Given a content author needs to create, schedule, or publish a What's New card\nWhen they attempt to author new widget content\nThen a defined CMS or authoring mechanism should exist to create/schedule/publish cards\nAnd no content authoring/CMS mechanism is documented anywhere in the spec, so this scenario cannot be verified without further design input"
+  },
+  {
+    "scenario_id": "TC_WNEW_024",
+    "tags": "@ui @negative @edge",
+    "scenario": "Hover state on card and CTA is undefined",
+    "description": "Given a card is displayed\nWhen the user hovers over the card or its CTA\nThen a defined hover state should be visually indicated\nAnd no hover-state design is documented in the spec, so expected behavior is undefined pending design input"
+  }
+]

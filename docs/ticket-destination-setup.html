@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Configure the ticket destination (per project)</title>
+<style>
+  body { font-family: Arial, Helvetica, sans-serif; max-width: 960px; margin: 24px auto; padding: 0 18px; line-height: 1.6; color: #2C2C2A; }
+  h1 { font-size: 22px; border-bottom: 2px solid #ddd; padding-bottom: 8px; }
+  h2 { font-size: 17px; margin-top: 26px; color: #0c447c; }
+  .meta { color: #666; font-size: 14px; }
+  table { border-collapse: collapse; width: 100%; margin: 10px 0; }
+  th, td { border: 1px solid #ddd; padding: 8px 10px; text-align: left; font-size: 14px; vertical-align: top; }
+  th { background: #f4f6f8; }
+  code { background: #f1f1f1; padding: 1px 5px; border-radius: 4px; font-size: 13px; }
+  pre { background: #1e1e1e; color: #e6e6e6; padding: 12px 14px; border-radius: 6px; overflow-x: auto; font-size: 13px; }
+  .note { background:#fff8e1; border:1px solid #f0d98a; padding:8px 12px; border-radius:6px; }
+</style>
+</head>
+<body>
+  <h1>Configure the ticket destination (per project)</h1>
+  <p class="meta">Updated: 2026-07-17 · Each MPF project uses a different tool → configure <code>.env</code> correctly before running.</p>
+
+  <h2>REQUIRED workflow before enabling auto-ticket</h2>
+  <ol>
+    <li><strong>Ask which tool the project uses:</strong> Jira, Asana, Azure DevOps, or Basecamp? (May be more than 1.)</li>
+    <li><strong>Fill in <code>.env</code></strong> for that tool (sections below), and set the <code>*_CREATE_TICKETS=true</code> flag.</li>
+    <li><strong>Run one failing test</strong> to check the ticket is created in the right place.</li>
+  </ol>
+  <p class="note">Only enable the tools the project actually uses. Any tool not in use → leave <code>*_CREATE_TICKETS=false</code> (the default). Reporters run in parallel, independently per tool. <strong>NEVER commit a token/PAT/secret</strong> — keep them only in <code>.env</code> (gitignored).</p>
+
+  <h2>1. Jira</h2>
+  <pre>JIRA_CREATE_TICKETS=true
+JIRA_BASE_URL=...   JIRA_EMAIL=...   JIRA_API_TOKEN=...
+JIRA_PROJECT_KEY=...   JIRA_PARENT_KEY=...</pre>
+  <table>
+    <tr><th>Variable</th><th>How to get it</th></tr>
+    <tr><td><code>JIRA_BASE_URL</code></td><td>Your Atlassian site URL, e.g. <code>https://classltd.atlassian.net</code>.</td></tr>
+    <tr><td><code>JIRA_EMAIL</code></td><td>Your Atlassian account email (an account with permission to create issues).</td></tr>
+    <tr><td><code>JIRA_API_TOKEN</code></td><td><code>id.atlassian.com/manage-profile/security/api-tokens</code> → <strong>Create API token</strong> → copy (shown once).</td></tr>
+    <tr><td><code>JIRA_PROJECT_KEY</code></td><td>The project key (e.g. <code>NIT</code>) — visible at the start of a ticket key (NIT-123) or in Project settings.</td></tr>
+    <tr><td><code>JIRA_PARENT_KEY</code></td><td>The Epic/Story key to attach the ticket to (e.g. <code>NIT-6655</code>).</td></tr>
+  </table>
+
+  <h2>2. Asana</h2>
+  <pre>ASANA_CREATE_TICKETS=true
+ASANA_TOKEN=...   ASANA_PROJECT_GID=...   ASANA_SECTION_GID=   (empty = default section)</pre>
+  <table>
+    <tr><th>Variable</th><th>How to get it</th></tr>
+    <tr><td><code>ASANA_TOKEN</code></td><td>Avatar → <strong>Settings → Apps</strong> → at the bottom of the page <strong>"View developer console"</strong> → <strong>Personal access tokens</strong> → New token → copy (shown once).</td></tr>
+    <tr><td><code>ASANA_PROJECT_GID</code></td><td>Open the project → URL: <code>.../project/<b>1207751943301534</b>/...</code> → the number after <code>/project/</code>.</td></tr>
+    <tr><td><code>ASANA_SECTION_GID</code></td><td>(optional) run <code>node scripts/asana-sections.mjs &lt;PROJECT_GID&gt;</code> → it prints the section names + GIDs → copy the GID you want. Empty = default section.</td></tr>
+  </table>
+
+  <h2>3. Azure DevOps (Azure Boards)</h2>
+  <pre>AZURE_DEVOPS_CREATE_TICKETS=true
+AZURE_DEVOPS_ORG=...   AZURE_DEVOPS_PROJECT=...   AZURE_DEVOPS_PAT=...
+AZURE_DEVOPS_AREA_PATH=   (optional)</pre>
+  <table>
+    <tr><th>Variable</th><th>How to get it</th></tr>
+    <tr><td><code>AZURE_DEVOPS_ORG</code></td><td>The organization name in the URL: <code>dev.azure.com/<b>&lt;org&gt;</b></code>.</td></tr>
+    <tr><td><code>AZURE_DEVOPS_PROJECT</code></td><td>The project name (visible in the URL after the org, or in the Projects list).</td></tr>
+    <tr><td><code>AZURE_DEVOPS_PAT</code></td><td>Go to <code>dev.azure.com</code> → top right <strong>User settings</strong> → <strong>Personal access tokens</strong> → <strong>New Token</strong> → select the <strong>Work Items (Read &amp; Write)</strong> scope → Create → copy (shown once).</td></tr>
+    <tr><td><code>AZURE_DEVOPS_AREA_PATH</code></td><td>(optional) Project settings → Boards → Team configuration → Areas. Can be left empty.</td></tr>
+  </table>
+
+  <h2>4. Basecamp 3</h2>
+  <pre>BASECAMP_CREATE_TICKETS=true
+BASECAMP_TOKEN=...   BASECAMP_ACCOUNT_ID=...   BASECAMP_PROJECT_ID=...   BASECAMP_TODOLIST_ID=...</pre>
+  <table>
+    <tr><th>Variable</th><th>How to get it</th></tr>
+    <tr><td><code>BASECAMP_ACCOUNT_ID</code></td><td>The number in the Basecamp URL: <code>3.basecamp.com/<b>1234567</b>/...</code>.</td></tr>
+    <tr><td><code>BASECAMP_TOKEN</code></td><td>Basecamp uses <strong>OAuth2</strong>: register an app at <code>launchpad.37signals.com/integrations</code> → run the OAuth flow to obtain an <strong>access token</strong>. (More involved than a regular token — usually get a dev/admin to help.)</td></tr>
+    <tr><td><code>BASECAMP_PROJECT_ID</code></td><td>Open the project → URL: <code>.../buckets/<b>&lt;project_id&gt;</b>/...</code> → the number after <code>/buckets/</code>.</td></tr>
+    <tr><td><code>BASECAMP_TODOLIST_ID</code></td><td>Open the exact <strong>to-do list</strong> you want to create tasks in → URL: <code>.../todolists/<b>&lt;todolist_id&gt;</b></code> → the number after <code>/todolists/</code>.</td></tr>
+  </table>
+
+  <h2>After filling it in</h2>
+  <pre>npx tsc --noEmit          # check syntax
+npm run test:e2e          # (or any test command) - a failing test will create a ticket in the enabled destination</pre>
+  <p>Check that the ticket appears in the configured tool. If you enable multiple tools at once, tickets are created in parallel in all of them.</p>
+</body>
+</html>

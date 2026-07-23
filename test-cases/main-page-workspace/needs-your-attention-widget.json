@@ -1,0 +1,146 @@
+[
+  {
+    "scenario_id": "TC_NYA_001",
+    "tags": "@ui @positive @smoke",
+    "scenario": "Summary stat cards render with correct counts",
+    "description": "Given the user is authenticated and the Workspace page loads\nWhen the Needs Your Attention widget renders\nThen three summary stat cards are displayed: Overdue deadlines (red), Awaiting signature (amber), Rejected lodgements (red/pink)\nAnd each card shows its correct count"
+  },
+  {
+    "scenario_id": "TC_NYA_002",
+    "tags": "@ui @edge",
+    "scenario": "Zero-count stat cards still render",
+    "description": "Given the user has no overdue deadlines, no awaiting signatures, and no rejected lodgements\nWhen the widget renders\nThen each stat card still displays \"0\"\nAnd no stat card is hidden"
+  },
+  {
+    "scenario_id": "TC_NYA_003",
+    "tags": "@ui @positive",
+    "scenario": "Deadlines tab is active by default",
+    "description": "Given the widget first renders\nWhen the user views the widget\nThen the Deadlines tab is active and selected by default\nAnd the active tab is visually distinguished"
+  },
+  {
+    "scenario_id": "TC_NYA_004",
+    "tags": "@ui @positive",
+    "scenario": "Switching to Signatures tab filters the table",
+    "description": "Given the widget is rendered\nWhen the user selects the Signatures tab\nThen the table content filters to show only signature-pending items"
+  },
+  {
+    "scenario_id": "TC_NYA_005",
+    "tags": "@ui @positive",
+    "scenario": "Switching to Lodgements tab filters the table",
+    "description": "Given the widget is rendered\nWhen the user selects the Lodgements tab\nThen the table content filters to show only rejected or pending lodgement items"
+  },
+  {
+    "scenario_id": "TC_NYA_006",
+    "tags": "@ui @positive",
+    "scenario": "Deadlines table displays required columns and status badges",
+    "description": "Given the Deadlines tab is active and data is loaded\nWhen the table renders\nThen it displays Entity, Deadline Type, Due Date, Days Remaining, and Status columns\nAnd an overdue item shows a negative Days Remaining and an \"Overdue\" badge in dark red"
+  },
+  {
+    "scenario_id": "TC_NYA_007",
+    "tags": "@ui @positive",
+    "scenario": "Due today item shows correct status badge",
+    "description": "Given an item is due today\nWhen the Deadlines table renders\nThen Days Remaining shows \"Today\"\nAnd the Status badge renders as \"Due today\" in blue"
+  },
+  {
+    "scenario_id": "TC_NYA_008",
+    "tags": "@ui @functional",
+    "scenario": "Clicking a Deadlines row navigates with full context",
+    "description": "Given the Deadlines tab is active\nWhen the user clicks on a row\nThen the user is navigated to the relevant client entity file or deadline/task record\nAnd entity name, deadline type, and due date context is preserved"
+  },
+  {
+    "scenario_id": "TC_NYA_009",
+    "tags": "@negative @edge",
+    "scenario": "Clicking a row for a resolved deadline shows informational message",
+    "description": "Given a deadline row is displayed\nAnd the target record has since been completed elsewhere\nWhen the user clicks the row\nThen an informational message is shown\nAnd the widget refreshes to remove the resolved item"
+  },
+  {
+    "scenario_id": "TC_NYA_010",
+    "tags": "@ui @edge",
+    "scenario": "Empty state renders per tab with zero results",
+    "description": "Given the active tab has no items requiring attention\nWhen the tab is viewed\nThen an empty state message \"No items require your attention right now.\" renders in the table area\nAnd no broken table structure or blank rows are rendered"
+  },
+  {
+    "scenario_id": "TC_NYA_011",
+    "tags": "@ui @edge",
+    "scenario": "Widget-level empty state renders when all counts are zero",
+    "description": "Given all three summary stat cards show 0\nWhen the widget renders\nThen a widget-level empty state message is displayed confirming all items are clear"
+  },
+  {
+    "scenario_id": "TC_NYA_012",
+    "tags": "@ui @edge",
+    "scenario": "Skeleton loaders show while data is fetching",
+    "description": "Given the widget is fetching data asynchronously\nWhen the page is loading\nThen skeleton loaders are shown in place of the stat cards and table rows"
+  },
+  {
+    "scenario_id": "TC_NYA_013",
+    "tags": "@negative",
+    "scenario": "Inline error message shown when data fetch fails",
+    "description": "Given the widget data fetch exceeds 10 seconds or fails\nWhen the timeout or failure occurs\nThen an inline error message \"Unable to load attention items. Please refresh.\" renders\nAnd other widgets on the Workspace page are not affected"
+  },
+  {
+    "scenario_id": "TC_NYA_014",
+    "tags": "@ui @positive",
+    "scenario": "Stat card click activates corresponding tab",
+    "description": "Given items exist across multiple tabs\nWhen the user clicks a stat card\nThen the corresponding tab is immediately activated\nAnd the table scrolls into view"
+  },
+  {
+    "scenario_id": "TC_NYA_015",
+    "tags": "@functional @edge",
+    "scenario": "Table default sort is by urgency",
+    "description": "Given the Deadlines table renders\nWhen no column sort has been applied\nThen rows are sorted with Overdue items first, then Due today, then Due soon, then Upcoming"
+  },
+  {
+    "scenario_id": "TC_NYA_016",
+    "tags": "@ui @positive",
+    "scenario": "Column header sort toggles ascending and descending",
+    "description": "Given the Deadlines table is rendered\nWhen the user clicks a column header\nThen the table re-sorts by that column ascending\nAnd clicking again reverses the sort to descending\nAnd a sort indicator icon is visible on the active column"
+  },
+  {
+    "scenario_id": "TC_NYA_017",
+    "tags": "@functional",
+    "scenario": "Widget data refreshes on page reload",
+    "description": "Given the widget data is stale\nWhen the user refreshes the Workspace page\nThen the widget fetches fresh data\nAnd all stat card counts and table rows update"
+  },
+  {
+    "scenario_id": "TC_NYA_018",
+    "tags": "@mobile @ui",
+    "scenario": "Table columns reflow on narrow viewport",
+    "description": "Given the widget renders on a viewport below 1024px\nWhen the table displays\nThen columns reflow to prioritise Entity, Status, and Due Date\nAnd non-critical columns are hidden or accessible via horizontal scroll"
+  },
+  {
+    "scenario_id": "TC_NYA_019",
+    "tags": "@mobile @ui",
+    "scenario": "Stat cards stack vertically on narrow viewport",
+    "description": "Given the widget renders on a viewport below 1024px\nWhen the summary stat cards render at reduced width\nThen they stack vertically or reduce in size without truncating count values"
+  },
+  {
+    "scenario_id": "TC_NYA_020",
+    "tags": "@accessibility",
+    "scenario": "Keyboard focus order moves logically through the widget",
+    "description": "Given a keyboard user is navigating the widget\nWhen the user tabs through it\nThen focus moves through stat cards, tab controls, and table rows in logical order"
+  },
+  {
+    "scenario_id": "TC_NYA_021",
+    "tags": "@accessibility",
+    "scenario": "Status badges are not communicated by colour alone",
+    "description": "Given a status badge is rendered\nWhen it displays\nThen the text label (e.g. \"Overdue\") is always present for screen reader compatibility"
+  },
+  {
+    "scenario_id": "TC_NYA_022",
+    "tags": "@accessibility",
+    "scenario": "Sortable column headers expose aria-sort",
+    "description": "Given the table contains sortable columns\nWhen a column header renders\nThen it carries an aria-sort attribute of \"ascending\", \"descending\", or \"none\""
+  },
+  {
+    "scenario_id": "TC_NYA_023",
+    "tags": "@gap",
+    "scenario": "Email notification channel for attention items is unspecified",
+    "description": "Given the PRD requires timely alerts in-app and email\nWhen reviewing the design for the Needs Your Attention widget\nThen no UX specification exists for email notification templates, preferences, or frequency controls\nAnd this is flagged as a design coverage gap pending Product/UX resolution"
+  },
+  {
+    "scenario_id": "TC_NYA_024",
+    "tags": "@gap",
+    "scenario": "Overlap between Lodgements tab and Lodgements Status widget is undefined",
+    "description": "Given this widget includes a Lodgements tab\nAnd a separate dedicated Lodgements Status widget also exists\nWhen comparing scope definitions\nThen no PRD guidance differentiates content or status coverage between the two surfaces\nAnd this is flagged as a design coverage gap pending Product/UX resolution"
+  }
+]

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Plan — API evidence (request/response + PNG)</title>
+  <style>
+    body { font-family: Arial, Helvetica, sans-serif; max-width: 820px; margin: 24px auto; padding: 0 16px; line-height: 1.6; color: #1a1a1a; }
+    h1 { font-size: 22px; border-bottom: 2px solid #ddd; padding-bottom: 8px; }
+    h2 { font-size: 17px; margin-top: 28px; color: #0c447c; }
+    .meta { color: #666; font-size: 14px; }
+    table { border-collapse: collapse; width: 100%; margin: 8px 0; }
+    th, td { border: 1px solid #ddd; padding: 8px 10px; text-align: left; font-size: 14px; }
+    th { background: #f4f6f8; }
+    code { background: #f1f1f1; padding: 1px 5px; border-radius: 4px; }
+    ol, ul { padding-left: 22px; }
+  </style>
+</head>
+<body>
+  <h1>Plan — API bug evidence: request/response + .png image</h1>
+  <p class="meta">Author: MPF Developer · Date: 2026-07-06 · Related ticket: Epic NIT-5006</p>
+
+  <h2>1. Goal</h2>
+  <p>API tests have no browser, so there is no real screenshot/video. Goal: every API bug
+  still has evidence — write the <strong>HTTP request/response</strong> into a .docx file, and
+  <strong>render that information into a .png image</strong> saved in <code>bug-image/api/</code>
+  (then embed the image into the .docx). No video is recorded (there is nothing to record for API).</p>
+
+  <h2>2. Scope</h2>
+  <ul>
+    <li>In scope: a helper for API tests to attach request/response; the reporter reads that evidence,
+      adds it to the docx + renders it into a .png image; one demo API test with a fake call/HTTP so the image is visible.</li>
+    <li>Out of scope: video for API; changing how other test types run (e2e/chromatic/accessibility stay unchanged).</li>
+  </ul>
+
+  <h2>3. Step-by-step approach</h2>
+  <ol>
+    <li><strong>Evidence-collection helper</strong> — <code>utils/apiEvidence.ts</code>:
+      the function <code>attachApiEvidence(testInfo, { method, url, status, requestBody, responseBody, requestHeaders?, responseHeaders? })</code>
+      formats it into readable text and calls <code>testInfo.attach('api-evidence', { body, contentType: 'text/plain' })</code>.
+      Real API tests call this function after each request (or only when needed) to attach it.</li>
+    <li><strong>Reporter reads the evidence</strong> — in <code>reporters/bug-report.ts</code>:
+      find the attachment named <code>api-evidence</code> on each failed case, read the text content (add an <code>apiEvidence?</code> field to FailedCase).</li>
+    <li><strong>Add to the .docx</strong>: a new "API request / response" section showing the request/response content.</li>
+    <li><strong>Render the .png image</strong>: use Playwright's built-in chromium (<code>import('@playwright/test')</code>),
+      open it headless → <code>setContent</code> with the request/response content (as &lt;pre&gt;) → <code>screenshot</code> →
+      save <code>bug-image/api/[FAIL][ISSUE-01] ....png</code>. Wrap in try/catch: if chromium is not available, skip the image, the docx still has the text.</li>
+    <li>The image is saved with the correct name so the docx's existing image-embedding logic displays it automatically (no need to change the embedding part).</li>
+    <li><strong>Demo</strong>: edit <code>tests/api/_demo-fail.api.spec.ts</code> — create fake evidence (no network needed),
+      <code>attachApiEvidence(...)</code> then let the test fail → run once to see the .docx + .png in the api folder.</li>
+  </ol>
+
+  <h2>4. Files to create / change</h2>
+  <table>
+    <tr><th>File</th><th>Change</th></tr>
+    <tr><td><code>utils/apiEvidence.ts</code></td><td>CREATE — helper to attach request/response.</td></tr>
+    <tr><td><code>reporters/bug-report.ts</code></td><td>EDIT — read the <code>api-evidence</code> attachment; add a section to the docx; render text→PNG using chromium (try/catch).</td></tr>
+    <tr><td><code>tests/api/_demo-fail.api.spec.ts</code></td><td>EDIT — use the helper to attach fake evidence then fail (for the demo).</td></tr>
+  </table>
+
+  <h2>5. How to verify</h2>
+  <ul>
+    <li>Run: <code>npx playwright test tests/api/_demo-fail.api.spec.ts --project=api</code></li>
+    <li>Expected: <code>bug-report/api/[FAIL][ISSUE-01] ....docx</code> has an "API request/response" section + the embedded image;
+      <code>bug-image/api/[FAIL][ISSUE-01] ....png</code> appears.</li>
+    <li>No video for API (by design).</li>
+  </ul>
+
+  <h2>6. Risks / notes</h2>
+  <ul>
+    <li>Rendering the PNG requires chromium to be installed (<code>npx playwright install chromium</code>). If CI runs the api project without a browser installed → skip the image, the docx still has enough text (does not break).</li>
+    <li>Real API tests must call <code>attachApiEvidence</code> to have evidence; if not called, there is only the docx text as today.</li>
+    <li>The image is a "text image" (a rendered request/response), not a UI screenshot — because API has no UI.</li>
+  </ul>
+</body>
+</html>

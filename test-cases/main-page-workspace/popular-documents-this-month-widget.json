@@ -1,0 +1,134 @@
+[
+  {
+    "scenario_id": "TC_POPDOC_001",
+    "tags": "@ui @positive @smoke",
+    "scenario": "Widget renders up to 6 ranked document rows",
+    "description": "Given the user is authenticated and the Workspace page loads\nWhen the Popular Documents This Month widget renders\nThen up to 6 document rows display, each with a category icon, template name, category label, and usage count"
+  },
+  {
+    "scenario_id": "TC_POPDOC_002",
+    "tags": "@ui @edge",
+    "scenario": "Fewer than 6 items shows only available rows",
+    "description": "Given fewer than 6 popular documents are available\nWhen the widget renders\nThen only the available items are shown\nAnd no empty placeholder rows are rendered"
+  },
+  {
+    "scenario_id": "TC_POPDOC_003",
+    "tags": "@functional",
+    "scenario": "List is sorted descending by usage count",
+    "description": "Given the widget has loaded its ranked document list\nWhen the list renders\nThen documents are sorted in descending order by usage count"
+  },
+  {
+    "scenario_id": "TC_POPDOC_004",
+    "tags": "@edge",
+    "scenario": "Tied usage counts are sorted alphabetically",
+    "description": "Given two document types share the same usage count\nWhen the list renders\nThen they are sorted alphabetically by document name as a tiebreaker"
+  },
+  {
+    "scenario_id": "TC_POPDOC_005",
+    "tags": "@edge",
+    "scenario": "All-zero usage counts show empty state",
+    "description": "Given a usage count is zero for all items\nWhen the widget renders\nThen it displays the empty state message \"No popular documents yet this month.\""
+  },
+  {
+    "scenario_id": "TC_POPDOC_006",
+    "tags": "@functional",
+    "scenario": "Clicking a document row navigates to document creation with type pre-selected",
+    "description": "Given a document item in the list is displayed\nWhen the user clicks it\nThen the user is navigated to the document creation flow with the document type pre-selected"
+  },
+  {
+    "scenario_id": "TC_POPDOC_007",
+    "tags": "@negative @edge",
+    "scenario": "Clicking a deprecated document shows informational message",
+    "description": "Given the document template is no longer available\nWhen the user clicks the row\nThen an informational message displays rather than navigating to a broken flow"
+  },
+  {
+    "scenario_id": "TC_POPDOC_008",
+    "tags": "@functional",
+    "scenario": "Widget is scoped to the current firm",
+    "description": "Given the widget loads\nWhen usage counts are calculated\nThen they reflect document creation activity within the currently selected firm only"
+  },
+  {
+    "scenario_id": "TC_POPDOC_009",
+    "tags": "@functional",
+    "scenario": "Firm switch refreshes the popularity data",
+    "description": "Given the user switches firms via the account selector\nWhen the switch completes\nThen the widget refreshes to display popularity data scoped to the newly selected firm"
+  },
+  {
+    "scenario_id": "TC_POPDOC_010",
+    "tags": "@ui @positive",
+    "scenario": "Category icon colour matches the document's product category",
+    "description": "Given a document row renders\nWhen the category icon displays\nThen its colour matches the product category of the document"
+  },
+  {
+    "scenario_id": "TC_POPDOC_011",
+    "tags": "@edge",
+    "scenario": "Unmapped product category uses neutral fallback icon",
+    "description": "Given a product category is unrecognised or unmapped\nWhen the row renders\nThen a neutral/default icon colour is applied\nAnd no missing or broken icon is displayed"
+  },
+  {
+    "scenario_id": "TC_POPDOC_012",
+    "tags": "@functional @edge",
+    "scenario": "Usage counts reflect the current calendar month only",
+    "description": "Given the widget loads at any point during a calendar month\nWhen usage counts render\nThen they reflect document creations from the 1st of the current month to the current date"
+  },
+  {
+    "scenario_id": "TC_POPDOC_013",
+    "tags": "@edge",
+    "scenario": "Month rollover resets the widget data",
+    "description": "Given the calendar month rolls over\nWhen the new month begins\nThen the widget resets to reflect the new month's data\nAnd previous month counts are no longer shown"
+  },
+  {
+    "scenario_id": "TC_POPDOC_014",
+    "tags": "@ui @edge",
+    "scenario": "Skeleton loaders show while document list is fetching",
+    "description": "Given the widget is fetching its document list\nWhen the page is loading\nThen skeleton loaders display in place of each document row"
+  },
+  {
+    "scenario_id": "TC_POPDOC_015",
+    "tags": "@negative",
+    "scenario": "Inline error message shown when data fetch fails",
+    "description": "Given the data fetch fails or times out\nWhen the failure occurs\nThen an inline error message \"Unable to load popular documents. Please refresh.\" renders\nAnd other Workspace widgets are not affected"
+  },
+  {
+    "scenario_id": "TC_POPDOC_016",
+    "tags": "@negative @functional",
+    "scenario": "Document types outside role-based access are excluded",
+    "description": "Given a document type falls outside the user's role-based access permissions\nWhen the list renders\nThen that document type is excluded entirely and never shown as a locked or inaccessible item"
+  },
+  {
+    "scenario_id": "TC_POPDOC_017",
+    "tags": "@mobile @ui",
+    "scenario": "Document name and category label reflow on narrow viewport",
+    "description": "Given the widget renders at reduced viewport width\nWhen a row displays\nThen the document name and category label reflow without truncation, or truncate with an accessible tooltip"
+  },
+  {
+    "scenario_id": "TC_POPDOC_018",
+    "tags": "@accessibility",
+    "scenario": "Document rows are keyboard focusable",
+    "description": "Given a keyboard user navigates the widget\nWhen the user tabs through document rows\nThen each row is focusable via Tab key with a visible focus indicator"
+  },
+  {
+    "scenario_id": "TC_POPDOC_019",
+    "tags": "@accessibility",
+    "scenario": "Screen reader announces name, category, and usage count",
+    "description": "Given a screen reader is active\nWhen a document row is announced\nThen it includes document name, category label, and usage count"
+  },
+  {
+    "scenario_id": "TC_POPDOC_020",
+    "tags": "@analytics",
+    "scenario": "Pendo event fires on document row click",
+    "description": "Given a user clicks a document row\nWhen the click is registered\nThen a Pendo event is fired capturing document template name, product category, usage rank position, and user role"
+  },
+  {
+    "scenario_id": "TC_POPDOC_021",
+    "tags": "@analytics",
+    "scenario": "Pendo impression event fires on widget load",
+    "description": "Given the widget loads with data\nWhen the render completes\nThen a Pendo impression event is fired to track widget engagement rates"
+  },
+  {
+    "scenario_id": "TC_POPDOC_022",
+    "tags": "@gap",
+    "scenario": "Design delivers a popularity ranking, not the PRD's Favourites requirement",
+    "description": "Given the PRD specifies a user-curated Favourites widget\nWhen comparing it to the delivered \"Popular Documents This Month\" design\nThen the design implements an aggregate popularity ranking instead of a personalised bookmarking feature\nAnd this is flagged as a design coverage gap pending Product/UX resolution"
+  }
+]

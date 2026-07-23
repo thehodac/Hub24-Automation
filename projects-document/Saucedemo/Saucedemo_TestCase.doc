@@ -1,0 +1,840 @@
+Date: Tue, 21 Jul 2026 04:06:44 +0000 (UTC)
+Message-ID: <1457674357.11.1784606804011@5f7205c4ee52>
+Subject: Exported From Confluence
+MIME-Version: 1.0
+Content-Type: multipart/related; 
+	boundary="----=_Part_10_1557687548.1784606804011"
+
+------=_Part_10_1557687548.1784606804011
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Content-Location: file:///C:/exported.html
+
+<html xmlns:o=3D'urn:schemas-microsoft-com:office:office'
+      xmlns:w=3D'urn:schemas-microsoft-com:office:word'
+      xmlns:v=3D'urn:schemas-microsoft-com:vml'
+      xmlns=3D'urn:w3-org-ns:HTML'>
+<head>
+    <meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8=
+">
+    <title>Saucedemo_TestCase</title>
+    <!--[if gte mso 9]>
+    <xml>
+        <o:OfficeDocumentSettings>
+            <o:TargetScreenSize>1024x640</o:TargetScreenSize>
+            <o:PixelsPerInch>72</o:PixelsPerInch>
+            <o:AllowPNG/>
+        </o:OfficeDocumentSettings>
+        <w:WordDocument>
+            <w:View>Print</w:View>
+            <w:Zoom>90</w:Zoom>
+            <w:DoNotOptimizeForBrowser/>
+        </w:WordDocument>
+    </xml>
+    <![endif]-->
+    <style>
+                <!--
+        @page Section1 {
+            size: 8.5in 11.0in;
+            margin: 1.0in;
+            mso-header-margin: .5in;
+            mso-footer-margin: .5in;
+            mso-paper-source: 0;
+        }
+
+        table {
+            border: solid 1px;
+            border-collapse: collapse;
+        }
+
+        table td, table th {
+            border: solid 1px;
+            padding: 5px;
+        }
+
+        td {
+            page-break-inside: avoid;
+        }
+
+        tr {
+            page-break-after: avoid;
+        }
+
+        div.Section1 {
+            page: Section1;
+        }
+
+        /* Confluence print stylesheet. Common to all themes for print medi=
+a */
+/* Full of !important until we improve batching for print CSS */
+
+@media print {
+    #main {
+        padding-bottom: 1em !important; /* The default padding of 6em is to=
+o much for printouts */
+    }
+
+    body {
+        font: var(--ds-font-body-small, Arial, Helvetica, FreeSans, sans-se=
+rif);
+    }
+
+    body, #full-height-container, #main, #page, #content, .has-personal-sid=
+ebar #content {
+        background: var(--ds-surface, #fff) !important;
+        color: var(--ds-text, #000) !important;
+        border: 0 !important;
+        width: 100% !important;
+        height: auto !important;
+        min-height: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        display: block !important;
+    }
+
+    a, a:link, a:visited, a:focus, a:hover, a:active {
+        color: var(--ds-text, #000);
+    }
+
+    #content h1,
+    #content h2,
+    #content h3,
+    #content h4,
+    #content h5,
+    #content h6 {
+        page-break-after: avoid;
+    }
+
+    pre {
+        font: var(--ds-font-code, Monaco, "Courier New", monospace);
+    }
+
+    #header,
+    .aui-header-inner,
+    #navigation,
+    #sidebar,
+    .sidebar,
+    #personal-info-sidebar,
+    .ia-fixed-sidebar,
+    .page-actions,
+    .navmenu,
+    .ajs-menu-bar,
+    .noprint,
+    .inline-control-link,
+    .inline-control-link a,
+    a.show-labels-editor,
+    .global-comment-actions,
+    .comment-actions,
+    .quick-comment-container,
+    #addcomment {
+        display: none !important;
+    }
+
+    /* CONF-28544 cannot print multiple pages in IE */
+    #splitter-content {
+        position: relative !important;
+    }
+
+    .comment .date::before {
+        content: none !important; /* remove middot for print view */
+    }
+
+    h1.pagetitle img {
+        height: auto;
+        width: auto;
+    }
+
+    .print-only {
+        display: block;
+    }
+
+    #footer {
+        position: relative !important; /* CONF-17506 Place the footer at en=
+d of the content */
+        margin: 0;
+        padding: 0;
+        background: none;
+        clear: both;
+    }
+
+    #poweredby {
+        border-top: none;
+        background: none;
+    }
+
+    #poweredby li.print-only {
+        display: list-item;
+        font-style: italic;
+    }
+
+    #poweredby li.noprint {
+        display: none;
+    }
+
+    /* no width controls in print */
+    .wiki-content .table-wrap,
+    .wiki-content p,
+    .panel .codeContent,
+    .panel .codeContent pre,
+    .image-wrap {
+        overflow: visible !important;
+    }
+
+    /* TODO - should this work? */
+    #children-section,
+    #comments-section .comment,
+    #comments-section .comment .comment-body,
+    #comments-section .comment .comment-content,
+    #comments-section .comment p {
+        page-break-inside: avoid;
+    }
+
+    #page-children a {
+        text-decoration: none;
+    }
+
+    /**
+     hide twixies
+
+     the specificity here is a hack because print styles
+     are getting loaded before the base styles. */
+    #comments-section.pageSection .section-header,
+    #comments-section.pageSection .section-title,
+    #children-section.pageSection .section-header,
+    #children-section.pageSection .section-title,
+    .children-show-hide {
+        padding-left: 0;
+        margin-left: 0;
+    }
+
+    .children-show-hide.icon {
+        display: none;
+    }
+
+    /* personal sidebar */
+    .has-personal-sidebar #content {
+        margin-right: 0px;
+    }
+
+    .has-personal-sidebar #content .pageSection {
+        margin-right: 0px;
+    }
+
+    .no-print, .no-print * {
+        display: none !important;
+    }
+}
+-->
+    </style>
+</head>
+<body>
+    <h1>Saucedemo_TestCase</h1>
+    <div class=3D"Section1">
+        <h1 id=3D"Saucedemo_TestCase-Saucedemo.com=E2=80=94TestCaseSuite">S=
+aucedemo.com =E2=80=94 Test Case Suite</h1>
+<p><strong>Site:</strong> <a href=3D"https://www.saucedemo.com" class=3D"ex=
+ternal-link" rel=3D"nofollow">https://www.saucedemo.com</a> | <strong>Gener=
+ated:</strong> 2026-07-10 | <strong>Total:</strong> 36 test cases</p>
+<h2 id=3D"Saucedemo_TestCase-Module1:Login">Module 1: Login</h2>
+<div class=3D"table-wrap">
+<table data-layout=3D"default" class=3D"confluenceTable">
+<tbody>
+<tr>
+<th class=3D"confluenceTh">
+<p><strong>Scenario ID</strong></p></th>
+<th class=3D"confluenceTh">
+<p><strong>Tags</strong></p></th>
+<th class=3D"confluenceTh">
+<p><strong>Scenario</strong></p></th>
+<th class=3D"confluenceTh">
+<p><strong>Description (BDD Steps)</strong></p></th>
+</tr>
+<tr>
+<td class=3D"confluenceTd">
+<p>TC_LOGIN_001</p></td>
+<td class=3D"confluenceTd">
+<p>@ui @smoke @positive</p></td>
+<td class=3D"confluenceTd">
+<p>Login successfully with standard user</p></td>
+<td class=3D"confluenceTd">
+<p><strong>Given</strong> I am on the login page<br><strong>When</strong> I=
+ enter username "standard_user" and password "secret_sauce"<br><strong>And<=
+/strong> I click the Login button<br><strong>Then</strong> I should be redi=
+rected to the inventory page<br><strong>And</strong> the product list shoul=
+d be visible</p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd">
+<p>TC_LOGIN_002</p></td>
+<td class=3D"confluenceTd">
+<p>@ui @negative</p></td>
+<td class=3D"confluenceTd">
+<p>Login fails for locked out user</p></td>
+<td class=3D"confluenceTd">
+<p><strong>Given</strong> I am on the login page<br><strong>When</strong> I=
+ enter username "locked_out_user" and password "secret_sauce"<br><strong>An=
+d</strong> I click the Login button<br><strong>Then</strong> an error messa=
+ge "Epic sadface: Sorry, this user has been locked out." should appear</p><=
+/td>
+</tr>
+<tr>
+<td class=3D"confluenceTd">
+<p>TC_LOGIN_003</p></td>
+<td class=3D"confluenceTd">
+<p>@ui @negative</p></td>
+<td class=3D"confluenceTd">
+<p>Login with empty username shows error</p></td>
+<td class=3D"confluenceTd">
+<p><strong>Given</strong> I am on the login page<br><strong>When</strong> I=
+ leave the username field empty<br><strong>And</strong> I enter password "s=
+ecret_sauce"<br><strong>And</strong> I click the Login button<br><strong>Th=
+en</strong> an error message "Epic sadface: Username is required" should ap=
+pear</p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd">
+<p>TC_LOGIN_004</p></td>
+<td class=3D"confluenceTd">
+<p>@ui @negative</p></td>
+<td class=3D"confluenceTd">
+<p>Login with empty password shows error</p></td>
+<td class=3D"confluenceTd">
+<p><strong>Given</strong> I am on the login page<br><strong>When</strong> I=
+ enter username "standard_user"<br><strong>And</strong> I leave the passwor=
+d field empty<br><strong>And</strong> I click the Login button<br><strong>T=
+hen</strong> an error message "Epic sadface: Password is required" should a=
+ppear</p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd">
+<p>TC_LOGIN_005</p></td>
+<td class=3D"confluenceTd">
+<p>@ui @negative</p></td>
+<td class=3D"confluenceTd">
+<p>Login with invalid credentials shows error</p></td>
+<td class=3D"confluenceTd">
+<p><strong>Given</strong> I am on the login page<br><strong>When</strong> I=
+ enter username "invalid_user" and password "wrong_pass"<br><strong>And</st=
+rong> I click the Login button<br><strong>Then</strong> an error message "E=
+pic sadface: Username and password do not match" should appear</p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd">
+<p>TC_LOGIN_006</p></td>
+<td class=3D"confluenceTd">
+<p>@ui @positive</p></td>
+<td class=3D"confluenceTd">
+<p>Error message clears when X button is clicked</p></td>
+<td class=3D"confluenceTd">
+<p><strong>Given</strong> I am on the login page<br><strong>When</strong> I=
+ submit the form with empty credentials<br><strong>Then</strong> an error m=
+essage should appear<br><strong>When</strong> I click the X button on the e=
+rror message<br><strong>Then</strong> the error message should disappear</p=
+></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd">
+<p>TC_LOGIN_007</p></td>
+<td class=3D"confluenceTd">
+<p>@ui @performance</p></td>
+<td class=3D"confluenceTd">
+<p>Login with performance glitch user succeeds (slow)</p></td>
+<td class=3D"confluenceTd">
+<p><strong>Given</strong> I am on the login page<br><strong>When</strong> I=
+ enter username "performance_glitch_user" and password "secret_sauce"<br><s=
+trong>And</strong> I click the Login button<br><strong>Then</strong> I shou=
+ld eventually be redirected to the inventory page (may take up to 10s)</p><=
+/td>
+</tr>
+<tr>
+<td class=3D"confluenceTd">
+<p>TC_LOGIN_008</p></td>
+<td class=3D"confluenceTd">
+<p>@ui @smoke @positive</p></td>
+<td class=3D"confluenceTd">
+<p>Logout successfully returns to login page</p></td>
+<td class=3D"confluenceTd">
+<p><strong>Given</strong> I am logged in as "standard_user"<br><strong>When=
+</strong> I open the burger menu<br><strong>And</strong> I click the Logout=
+ button<br><strong>Then</strong> I should be redirected to the login page<b=
+r><strong>And</strong> the Login button should be visible</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id=3D"Saucedemo_TestCase-Module2:Inventory/ProductList">Module 2: Inven=
+tory / Product List</h2>
+<div class=3D"table-wrap">
+<table data-layout=3D"default" class=3D"confluenceTable">
+<tbody>
+<tr>
+<th class=3D"confluenceTh">
+<p><strong>Scenario ID</strong></p></th>
+<th class=3D"confluenceTh">
+<p><strong>Tags</strong></p></th>
+<th class=3D"confluenceTh">
+<p><strong>Scenario</strong></p></th>
+<th class=3D"confluenceTh">
+<p><strong>Description (BDD Steps)</strong></p></th>
+</tr>
+<tr>
+<td class=3D"confluenceTd">
+<p>TC_INV_001</p></td>
+<td class=3D"confluenceTd">
+<p>@ui @smoke @positive</p></td>
+<td class=3D"confluenceTd">
+<p>Inventory page displays 6 products</p></td>
+<td class=3D"confluenceTd">
+<p><strong>Given</strong> I am logged in as "standard_user"<br><strong>When=
+</strong> I am on the inventory page<br><strong>Then</strong> I should see =
+exactly 6 product items</p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd">
+<p>TC_INV_002</p></td>
+<td class=3D"confluenceTd">
+<p>@ui @positive</p></td>
+<td class=3D"confluenceTd">
+<p>Sort products A to Z</p></td>
+<td class=3D"confluenceTd">
+<p><strong>Given</strong> I am on the inventory page<br><strong>When</stron=
+g> I select sort option "Name (A to Z)"<br><strong>Then</strong> the produc=
+t names should be sorted in ascending alphabetical order</p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd">
+<p>TC_INV_003</p></td>
+<td class=3D"confluenceTd">
+<p>@ui @positive</p></td>
+<td class=3D"confluenceTd">
+<p>Sort products Z to A</p></td>
+<td class=3D"confluenceTd">
+<p><strong>Given</strong> I am on the inventory page<br><strong>When</stron=
+g> I select sort option "Name (Z to A)"<br><strong>Then</strong> the produc=
+t names should be sorted in descending alphabetical order</p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd">
+<p>TC_INV_004</p></td>
+<td class=3D"confluenceTd">
+<p>@ui @positive</p></td>
+<td class=3D"confluenceTd">
+<p>Sort products by price low to high</p></td>
+<td class=3D"confluenceTd">
+<p><strong>Given</strong> I am on the inventory page<br><strong>When</stron=
+g> I select sort option "Price (low to high)"<br><strong>Then</strong> the =
+product prices should be sorted in ascending order</p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd">
+<p>TC_INV_005</p></td>
+<td class=3D"confluenceTd">
+<p>@ui @positive</p></td>
+<td class=3D"confluenceTd">
+<p>Sort products by price high to low</p></td>
+<td class=3D"confluenceTd">
+<p><strong>Given</strong> I am on the inventory page<br><strong>When</stron=
+g> I select sort option "Price (high to low)"<br><strong>Then</strong> the =
+product prices should be sorted in descending order</p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd">
+<p>TC_INV_006</p></td>
+<td class=3D"confluenceTd">
+<p>@ui @smoke @positive</p></td>
+<td class=3D"confluenceTd">
+<p>Add item to cart shows badge count</p></td>
+<td class=3D"confluenceTd">
+<p><strong>Given</strong> I am on the inventory page<br><strong>When</stron=
+g> I click "Add to cart" on "Sauce Labs Backpack"<br><strong>Then</strong> =
+the cart icon badge should show "1"</p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd">
+<p>TC_INV_007</p></td>
+<td class=3D"confluenceTd">
+<p>@ui @positive</p></td>
+<td class=3D"confluenceTd">
+<p>Add multiple items to cart updates badge</p></td>
+<td class=3D"confluenceTd">
+<p><strong>Given</strong> I am on the inventory page<br><strong>When</stron=
+g> I add "Sauce Labs Backpack" and "Sauce Labs Bike Light" to cart<br><stro=
+ng>Then</strong> the cart icon badge should show "2"</p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd">
+<p>TC_INV_008</p></td>
+<td class=3D"confluenceTd">
+<p>@ui @positive</p></td>
+<td class=3D"confluenceTd">
+<p>Remove item from inventory page hides badge</p></td>
+<td class=3D"confluenceTd">
+<p><strong>Given</strong> I have added "Sauce Labs Backpack" to the cart<br=
+><strong>When</strong> I click "Remove" on the same product<br><strong>Then=
+</strong> the cart icon badge should not be visible</p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd">
+<p>TC_INV_009</p></td>
+<td class=3D"confluenceTd">
+<p>@ui @positive</p></td>
+<td class=3D"confluenceTd">
+<p>Click product name navigates to detail page</p></td>
+<td class=3D"confluenceTd">
+<p><strong>Given</strong> I am on the inventory page<br><strong>When</stron=
+g> I click on the name "Sauce Labs Backpack"<br><strong>Then</strong> I sho=
+uld be navigated to the product detail page<br><strong>And</strong> the URL=
+ should contain "inventory-item.html"</p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd">
+<p>TC_INV_010</p></td>
+<td class=3D"confluenceTd">
+<p>@ui @positive</p></td>
+<td class=3D"confluenceTd">
+<p>Click cart icon navigates to cart page</p></td>
+<td class=3D"confluenceTd">
+<p><strong>Given</strong> I am on the inventory page<br><strong>When</stron=
+g> I click the cart icon<br><strong>Then</strong> I should be navigated to =
+the cart page<br><strong>And</strong> the URL should contain "cart.html"</p=
+></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id=3D"Saucedemo_TestCase-Module3:Cart">Module 3: Cart</h2>
+<div class=3D"table-wrap">
+<table data-layout=3D"default" class=3D"confluenceTable">
+<tbody>
+<tr>
+<th class=3D"confluenceTh">
+<p><strong>Scenario ID</strong></p></th>
+<th class=3D"confluenceTh">
+<p><strong>Tags</strong></p></th>
+<th class=3D"confluenceTh">
+<p><strong>Scenario</strong></p></th>
+<th class=3D"confluenceTh">
+<p><strong>Description (BDD Steps)</strong></p></th>
+</tr>
+<tr>
+<td class=3D"confluenceTd">
+<p>TC_CART_001</p></td>
+<td class=3D"confluenceTd">
+<p>@ui @smoke @positive</p></td>
+<td class=3D"confluenceTd">
+<p>Cart page displays added items correctly</p></td>
+<td class=3D"confluenceTd">
+<p><strong>Given</strong> I have added "Sauce Labs Backpack" to the cart<br=
+><strong>When</strong> I navigate to the cart page<br><strong>Then</strong>=
+ I should see "Sauce Labs Backpack" listed in the cart<br><strong>And</stro=
+ng> the item name, description, and price should be correct</p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd">
+<p>TC_CART_002</p></td>
+<td class=3D"confluenceTd">
+<p>@ui @positive</p></td>
+<td class=3D"confluenceTd">
+<p>Remove item from cart page</p></td>
+<td class=3D"confluenceTd">
+<p><strong>Given</strong> I have "Sauce Labs Backpack" in the cart<br><stro=
+ng>When</strong> I click "Remove" on the cart page<br><strong>Then</strong>=
+ the item should be removed from the cart<br><strong>And</strong> the cart =
+badge should not be visible</p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd">
+<p>TC_CART_003</p></td>
+<td class=3D"confluenceTd">
+<p>@ui @positive</p></td>
+<td class=3D"confluenceTd">
+<p>Continue Shopping button returns to inventory</p></td>
+<td class=3D"confluenceTd">
+<p><strong>Given</strong> I am on the cart page<br><strong>When</strong> I =
+click "Continue Shopping"<br><strong>Then</strong> I should be returned to =
+the inventory page</p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd">
+<p>TC_CART_004</p></td>
+<td class=3D"confluenceTd">
+<p>@ui @smoke @positive</p></td>
+<td class=3D"confluenceTd">
+<p>Checkout button navigates to checkout step 1</p></td>
+<td class=3D"confluenceTd">
+<p><strong>Given</strong> I have at least one item in the cart<br><strong>W=
+hen</strong> I click "Checkout"<br><strong>Then</strong> I should be naviga=
+ted to the checkout information page<br><strong>And</strong> the URL should=
+ contain "checkout-step-one.html"</p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd">
+<p>TC_CART_005</p></td>
+<td class=3D"confluenceTd">
+<p>@ui @positive</p></td>
+<td class=3D"confluenceTd">
+<p>Empty cart shows no items</p></td>
+<td class=3D"confluenceTd">
+<p><strong>Given</strong> I am logged in as "standard_user" and have not ad=
+ded any items<br><strong>When</strong> I navigate to the cart page<br><stro=
+ng>Then</strong> the cart should be empty with no items listed</p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd">
+<p>TC_CART_006</p></td>
+<td class=3D"confluenceTd">
+<p>@ui @positive</p></td>
+<td class=3D"confluenceTd">
+<p>Cart persists after page reload</p></td>
+<td class=3D"confluenceTd">
+<p><strong>Given</strong> I have added "Sauce Labs Backpack" to the cart<br=
+><strong>When</strong> I reload the page<br><strong>Then</strong> the cart =
+badge should still show "1"<br><strong>And</strong> the item should still b=
+e in the cart</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id=3D"Saucedemo_TestCase-Module4:Checkout">Module 4: Checkout</h2>
+<div class=3D"table-wrap">
+<table data-layout=3D"default" class=3D"confluenceTable">
+<tbody>
+<tr>
+<th class=3D"confluenceTh">
+<p><strong>Scenario ID</strong></p></th>
+<th class=3D"confluenceTh">
+<p><strong>Tags</strong></p></th>
+<th class=3D"confluenceTh">
+<p><strong>Scenario</strong></p></th>
+<th class=3D"confluenceTh">
+<p><strong>Description (BDD Steps)</strong></p></th>
+</tr>
+<tr>
+<td class=3D"confluenceTd">
+<p>TC_CHK_001</p></td>
+<td class=3D"confluenceTd">
+<p>@ui @smoke @positive</p></td>
+<td class=3D"confluenceTd">
+<p>Proceed to step 2 with valid info</p></td>
+<td class=3D"confluenceTd">
+<p><strong>Given</strong> I am on checkout step 1<br><strong>When</strong> =
+I enter First Name "John", Last Name "Doe", Zip "10001"<br><strong>And</str=
+ong> I click "Continue"<br><strong>Then</strong> I should be redirected to =
+checkout step 2<br><strong>And</strong> the URL should contain "checkout-st=
+ep-two.html"</p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd">
+<p>TC_CHK_002</p></td>
+<td class=3D"confluenceTd">
+<p>@ui @negative</p></td>
+<td class=3D"confluenceTd">
+<p>Checkout fails with empty first name</p></td>
+<td class=3D"confluenceTd">
+<p><strong>Given</strong> I am on checkout step 1<br><strong>When</strong> =
+I leave First Name empty and fill Last Name and Zip<br><strong>And</strong>=
+ I click "Continue"<br><strong>Then</strong> an error "Error: First Name is=
+ required" should appear</p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd">
+<p>TC_CHK_003</p></td>
+<td class=3D"confluenceTd">
+<p>@ui @negative</p></td>
+<td class=3D"confluenceTd">
+<p>Checkout fails with empty last name</p></td>
+<td class=3D"confluenceTd">
+<p><strong>Given</strong> I am on checkout step 1<br><strong>When</strong> =
+I fill First Name, leave Last Name empty, fill Zip<br><strong>And</strong> =
+I click "Continue"<br><strong>Then</strong> an error "Error: Last Name is r=
+equired" should appear</p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd">
+<p>TC_CHK_004</p></td>
+<td class=3D"confluenceTd">
+<p>@ui @negative</p></td>
+<td class=3D"confluenceTd">
+<p>Checkout fails with empty zip code</p></td>
+<td class=3D"confluenceTd">
+<p><strong>Given</strong> I am on checkout step 1<br><strong>When</strong> =
+I fill First Name and Last Name, leave Zip empty<br><strong>And</strong> I =
+click "Continue"<br><strong>Then</strong> an error "Error: Postal Code is r=
+equired" should appear</p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd">
+<p>TC_CHK_005</p></td>
+<td class=3D"confluenceTd">
+<p>@ui @positive</p></td>
+<td class=3D"confluenceTd">
+<p>Cancel on step 1 returns to cart</p></td>
+<td class=3D"confluenceTd">
+<p><strong>Given</strong> I am on checkout step 1<br><strong>When</strong> =
+I click "Cancel"<br><strong>Then</strong> I should be returned to the cart =
+page</p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd">
+<p>TC_CHK_006</p></td>
+<td class=3D"confluenceTd">
+<p>@ui @positive</p></td>
+<td class=3D"confluenceTd">
+<p>Cancel on step 2 returns to inventory</p></td>
+<td class=3D"confluenceTd">
+<p><strong>Given</strong> I am on checkout step 2 (order overview)<br><stro=
+ng>When</strong> I click "Cancel"<br><strong>Then</strong> I should be retu=
+rned to the inventory page</p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd">
+<p>TC_CHK_007</p></td>
+<td class=3D"confluenceTd">
+<p>@ui @positive</p></td>
+<td class=3D"confluenceTd">
+<p>Order total is correctly calculated on step 2</p></td>
+<td class=3D"confluenceTd">
+<p><strong>Given</strong> I have added items totalling a known price<br><st=
+rong>When</strong> I reach checkout step 2<br><strong>Then</strong> the ite=
+m total and grand total should be correctly calculated and displayed</p></t=
+d>
+</tr>
+<tr>
+<td class=3D"confluenceTd">
+<p>TC_CHK_008</p></td>
+<td class=3D"confluenceTd">
+<p>@ui @positive</p></td>
+<td class=3D"confluenceTd">
+<p>Back Home button on confirmation returns to inventory</p></td>
+<td class=3D"confluenceTd">
+<p><strong>Given</strong> I have completed a checkout and see the confirmat=
+ion page<br><strong>When</strong> I click "Back Home"<br><strong>Then</stro=
+ng> I should be returned to the inventory page<br><strong>And</strong> the =
+cart badge should not be visible</p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd">
+<p>TC_CHK_009</p></td>
+<td class=3D"confluenceTd">
+<p>@ui @positive</p></td>
+<td class=3D"confluenceTd">
+<p>Order summary shows all price components on step 2</p></td>
+<td class=3D"confluenceTd">
+<p><strong>Given</strong> I am on checkout step 2<br><strong>When</strong> =
+I view the order overview<br><strong>Then</strong> I should see the item li=
+st, subtotal, tax, and total price all visible</p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd">
+<p>TC_CHK_010</p></td>
+<td class=3D"confluenceTd">
+<p>@ui @smoke @positive @e2e</p></td>
+<td class=3D"confluenceTd">
+<p>Complete full checkout flow =E2=80=94 finish button</p></td>
+<td class=3D"confluenceTd">
+<p><strong>Given</strong> I am on checkout step 2 with valid items<br><stro=
+ng>When</strong> I click "Finish"<br><strong>Then</strong> I should see the=
+ order confirmation screen</p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd">
+<p>TC_CHK_011</p></td>
+<td class=3D"confluenceTd">
+<p>@ui @smoke @positive @e2e</p></td>
+<td class=3D"confluenceTd">
+<p>Order confirmation shows success message</p></td>
+<td class=3D"confluenceTd">
+<p><strong>Given</strong> I have completed the checkout flow<br><strong>Whe=
+n</strong> I see the confirmation page<br><strong>Then</strong> a success h=
+eader and confirmation text should be visible</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id=3D"Saucedemo_TestCase-Module5:Navigation">Module 5: Navigation</h2>
+<div class=3D"table-wrap">
+<table data-layout=3D"default" class=3D"confluenceTable">
+<tbody>
+<tr>
+<th class=3D"confluenceTh">
+<p><strong>Scenario ID</strong></p></th>
+<th class=3D"confluenceTh">
+<p><strong>Tags</strong></p></th>
+<th class=3D"confluenceTh">
+<p><strong>Scenario</strong></p></th>
+<th class=3D"confluenceTh">
+<p><strong>Description (BDD Steps)</strong></p></th>
+</tr>
+<tr>
+<td class=3D"confluenceTd">
+<p>TC_NAV_001</p></td>
+<td class=3D"confluenceTd">
+<p>@ui @positive</p></td>
+<td class=3D"confluenceTd">
+<p>Burger menu opens and closes</p></td>
+<td class=3D"confluenceTd">
+<p><strong>Given</strong> I am logged in and on any page<br><strong>When</s=
+trong> I click the burger menu icon<br><strong>Then</strong> the side menu =
+should open with options: All Items, About, Logout, Reset App State<br><str=
+ong>When</strong> I click X to close<br><strong>Then</strong> the menu shou=
+ld close</p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd">
+<p>TC_NAV_002</p></td>
+<td class=3D"confluenceTd">
+<p>@ui @positive</p></td>
+<td class=3D"confluenceTd">
+<p>Reset App State clears cart</p></td>
+<td class=3D"confluenceTd">
+<p><strong>Given</strong> I have items in my cart<br><strong>When</strong> =
+I open the burger menu and click "Reset App State"<br><strong>Then</strong>=
+ the cart badge should disappear<br><strong>And</strong> all "Add to cart" =
+buttons should be reset</p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd">
+<p>TC_NAV_003</p></td>
+<td class=3D"confluenceTd">
+<p>@ui @positive</p></td>
+<td class=3D"confluenceTd">
+<p>All Items menu link returns to inventory</p></td>
+<td class=3D"confluenceTd">
+<p><strong>Given</strong> I am on a page other than inventory<br><strong>Wh=
+en</strong> I open the burger menu and click "All Items"<br><strong>Then</s=
+trong> I should be navigated back to the inventory page</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id=3D"Saucedemo_TestCase-Stage3:ArchitectReview">Stage 3: Architect Rev=
+iew</h2>
+<div class=3D"confluence-information-macro confluence-information-macro-inf=
+ormation">
+<span class=3D"aui-icon aui-icon-small aui-iconfont-info confluence-informa=
+tion-macro-icon"></span>
+<div class=3D"confluence-information-macro-body">
+<p><strong>Coverage Summary:</strong> 36 test cases across 5 modules =E2=80=
+=94 Login (8), Inventory (10), Cart (6), Checkout (11), Navigation (3).</p>
+</div>
+</div>
+<div class=3D"confluence-information-macro confluence-information-macro-not=
+e">
+<span class=3D"aui-icon aui-icon-small aui-iconfont-warning confluence-info=
+rmation-macro-icon"></span>
+<div class=3D"confluence-information-macro-body">
+<p><strong>Risks identified:</strong><br>
+1. <strong>problem_user</strong> =E2=80=94 broken images and form bugs not =
+explicitly covered.<br>
+2. <strong>error_user</strong> =E2=80=94 specific error behaviours on certa=
+in actions not tested.<br>
+3. <strong>visual_user</strong> =E2=80=94 visual differences require screen=
+shot comparison (Chromatic/visual regression).<br>
+4. <strong>Tax calculation</strong> =E2=80=94 TC_CHK_007 should be verified=
+ against actual site tax rate.</p>
+</div>
+</div>
+    </div>
+</body>
+</html>
+------=_Part_10_1557687548.1784606804011--

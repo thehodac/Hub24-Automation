@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Chromatic Visual Report workflow</title>
+<style>
+  body { font-family: Arial, Helvetica, sans-serif; max-width: 920px; margin: 24px auto; padding: 0 18px; line-height: 1.6; color: #2C2C2A; }
+  h1 { font-size: 23px; border-bottom: 2px solid #ddd; padding-bottom: 8px; }
+  h2 { font-size: 17px; margin-top: 30px; color: #0c447c; }
+  .meta { color: #666; font-size: 14px; }
+  table { border-collapse: collapse; width: 100%; margin: 10px 0; }
+  th, td { border: 1px solid #ddd; padding: 8px 10px; text-align: left; font-size: 14px; vertical-align: top; }
+  th { background: #f4f6f8; }
+  code { background: #f1f1f1; padding: 1px 5px; border-radius: 4px; font-size: 13px; }
+  pre { background: #1e1e1e; color: #e6e6e6; padding: 12px 14px; border-radius: 6px; overflow-x: auto; font-size: 13px; }
+  ol, ul { padding-left: 22px; }
+  .flow { background:#f4f6f8; border:1px solid #ddd; border-radius:8px; padding:12px 16px; font-size:14px; }
+</style>
+</head>
+<body>
+  <h1>Workflow: Chromatic Visual Report (before/after/diff images + link)</h1>
+  <p class="meta">Automation QC · Playwright + Chromatic · Updated: 2026-07-07</p>
+
+  <p>When running visual tests, if the UI changes compared to the baseline → generate a report file (.docx) containing
+  <strong>Before / After / Diff images</strong> (compared locally by Playwright) and a <strong>link to the Chromatic build</strong>
+  (where changes are reviewed/approved on the dashboard).</p>
+
+  <div class="flow">
+    <strong>Flow:</strong> run the visual test → Playwright <code>toHaveScreenshot()</code> compares with the baseline
+    → if different: test FAIL, produce <code>expected/actual/diff</code> images
+    → the reporter embeds the 3 images into <code>bug-report/chromatic/…docx</code>
+    → upload to Chromatic to create a new build → get the build link → insert it into the report.
+  </div>
+
+  <h2>1. How to run</h2>
+  <p><strong>One command (recommended)</strong> — run the test, create the Chromatic build, and insert the link into the report:</p>
+  <pre>npm run test:visual:chromatic</pre>
+  <p>This command automatically does 3 steps: (1) run the visual test → report + images, (2) upload to Chromatic → save the build URL to
+  <code>.chromatic-build-url</code>, (3) run the visual test again so the report has the link. Requires <code>CHROMATIC_PROJECT_TOKEN</code> in <code>.env</code>.</p>
+  <p>Or split the commands: <code>npm run test:visual</code> (images only, no link) · <code>npm run chromatic:report</code> (create build + save link).</p>
+
+  <h2>2. First time — create the baseline</h2>
+  <p><code>toHaveScreenshot</code> needs a reference image. The first run writes the baseline (the test "fails" once when creating it, and passes on the next run):</p>
+  <pre>npx playwright test tests/chromatic/&lt;spec&gt; --project=visual --update-snapshots</pre>
+  <p>The baseline is stored in <code>tests/chromatic/&lt;spec&gt;-snapshots/</code>. When a change is <strong>approved</strong> (matching the new design), update the baseline with <code>--update-snapshots</code>.</p>
+
+  <h2>3. Result (when there is a change)</h2>
+  <ul>
+    <li><code>bug-report/chromatic/[FAIL][ISSUE-NN] &lt;test&gt;.docx</code> — has a <strong>Visual comparison</strong> section: Before (expected) / After (actual) / Diff, and the line <strong>Chromatic build: &lt;link&gt;</strong>.</li>
+    <li>Images in <code>bug-image/chromatic/</code>.</li>
+    <li>On Chromatic: a <strong>new build</strong> with comparison images + Accept/Deny buttons.</li>
+  </ul>
+
+  <h2>4. Related files</h2>
+  <table>
+    <tr><th>File</th><th>Role</th></tr>
+    <tr><td><code>tests/chromatic/*.spec.ts</code></td><td>Import <code>@chromatic-com/playwright</code> (archive for Chromatic) + <code>toHaveScreenshot()</code> (local image comparison).</td></tr>
+    <tr><td><code>reporters/bug-report.ts</code></td><td>Chromatic type: embeds the 3 expected/actual/diff images + the Chromatic link line (read from env <code>CHROMATIC_BUILD_URL</code> or the file <code>.chromatic-build-url</code>).</td></tr>
+    <tr><td><code>scripts/visual-with-chromatic.mjs</code></td><td>Combines into 1 command: test → chromatic → test (so the report has the link).</td></tr>
+    <tr><td><code>scripts/chromatic-build-url.mjs</code></td><td>Runs Chromatic, captures the build URL, saves <code>.chromatic-build-url</code>.</td></tr>
+  </table>
+
+  <h2>5. Configuration (.env)</h2>
+  <ul>
+    <li><code>CHROMATIC_PROJECT_TOKEN</code> — Chromatic upload token (DO NOT commit).</li>
+    <li><code>CHROMATIC_BUILD_URL</code> — (optional) manually set the build link for the report to use instead of the file.</li>
+  </ul>
+
+  <h2>6. Notes</h2>
+  <ul>
+    <li>The comparison images are <strong>Playwright's (local)</strong>; the link only opens the Chromatic dashboard.</li>
+    <li>The link is currently the <strong>build page</strong> (listing all changes), not yet a deep-link to a single component.</li>
+    <li>A UI change may be <strong>intentional</strong> → someone still needs to Accept the new baseline on Chromatic.</li>
+    <li>If Chromatic reports an outdated CLI: upgrade with <code>npm i -D chromatic@latest</code>.</li>
+  </ul>
+</body>
+</html>

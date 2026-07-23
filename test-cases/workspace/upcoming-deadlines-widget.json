@@ -1,0 +1,326 @@
+[
+  {
+    "scenario_id": "TC_UPDDL_001",
+    "tags": "@ui @positive @smoke",
+    "scenario": "Widget renders with header and three tabs for user with Corporate Messenger access",
+    "description": "Given a user with Corporate Messenger access loads Workspace\nWhen the Upcoming Deadlines widget renders\nThen a header \"Upcoming Deadlines\" displays\nAnd three tabs are shown: Lodgements, Annual Statements, and Payments"
+  },
+  {
+    "scenario_id": "TC_UPDDL_002",
+    "tags": "@ui @positive",
+    "scenario": "Lodgements and Annual Statements tabs hidden for user without Corporate Messenger access",
+    "description": "Given a user WITHOUT Corporate Messenger access loads Workspace\nWhen the widget renders\nThen the Lodgements tab is hidden from the tab set\nAnd the Annual Statements tab is hidden from the tab set"
+  },
+  {
+    "scenario_id": "TC_UPDDL_003",
+    "tags": "@ui @gap @negative",
+    "scenario": "Payments tab visibility for user without Corporate Messenger access is undefined by spec",
+    "description": "Given a user WITHOUT Corporate Messenger access loads Workspace\nWhen the widget renders\nThen verify whether the Payments tab is shown or hidden\nAnd flag that the spec does not state an equivalent permission gate for the Payments tab\nAnd confirm actual behaviour with the design/product owner before finalizing this assertion"
+  },
+  {
+    "scenario_id": "TC_UPDDL_004",
+    "tags": "@ui @positive",
+    "scenario": "Lodgements tab row displays required columns",
+    "description": "Given the Lodgements tab is active\nWhen rows render\nThen each row shows Company Name, Due Date, Days Remaining, and Status\nAnd rows are sorted by Days Remaining by default"
+  },
+  {
+    "scenario_id": "TC_UPDDL_005",
+    "tags": "@ui @positive",
+    "scenario": "Annual Statements tab row displays required columns",
+    "description": "Given the Annual Statements tab is active\nWhen rows render\nThen each row shows Company Name, Payment Deadline, Days Remaining, and Status\nAnd rows are sorted by Days Remaining by default"
+  },
+  {
+    "scenario_id": "TC_UPDDL_006",
+    "tags": "@ui @positive",
+    "scenario": "Payments tab row displays required columns and default sort",
+    "description": "Given the Payments tab is active\nWhen rows render\nThen each row shows Company Name, Payment Type, Amount, Payment Deadline, Days Remaining, and Status\nAnd rows are sorted by Days Remaining by default"
+  },
+  {
+    "scenario_id": "TC_UPDDL_007",
+    "tags": "@ui @positive",
+    "scenario": "Payments tab rows can be sorted by Amount",
+    "description": "Given the Payments tab is active\nWhen the user selects sort by Amount\nThen rows re-order by Amount\nAnd the user can switch back to sort by Days Remaining"
+  },
+  {
+    "scenario_id": "TC_UPDDL_008",
+    "tags": "@positive @edge",
+    "scenario": "Lodgements row shows Due soon when annual review date is 3+ days past with outstanding debt and no incoming 480/480F messages",
+    "description": "Given a Lodgements-tab row has an annual review date 3 or more days in the past\nAnd the company has outstanding debt\nAnd no incoming 480 or 480F messages exist\nWhen status is computed\nThen the row displays status \"Due soon\""
+  },
+  {
+    "scenario_id": "TC_UPDDL_009",
+    "tags": "@positive @edge",
+    "scenario": "Lodgements row shows Due within 10 days of deadline",
+    "description": "Given a Lodgements-tab row's Due Date is within 10 days from today\nWhen status is computed\nThen the row displays status \"Due\""
+  },
+  {
+    "scenario_id": "TC_UPDDL_010",
+    "tags": "@positive @edge",
+    "scenario": "Lodgements row shows Overdue once deadline has passed",
+    "description": "Given a Lodgements-tab row's Due Date is in the past\nWhen status is computed\nThen the row displays status \"Overdue\""
+  },
+  {
+    "scenario_id": "TC_UPDDL_011",
+    "tags": "@negative @edge",
+    "scenario": "Lodgements row does not show Due soon when incoming 480/480F message exists despite outstanding debt",
+    "description": "Given a Lodgements-tab row has an annual review date 3 or more days in the past\nAnd the company has outstanding debt\nAnd an incoming 480 or 480F message exists\nWhen status is computed\nThen the row does not display status \"Due soon\""
+  },
+  {
+    "scenario_id": "TC_UPDDL_012",
+    "tags": "@gap @edge",
+    "scenario": "Annual Statements Overdue status applies once payment deadline has passed",
+    "description": "Given an Annual Statements-tab row's Payment Deadline is in the past\nWhen status is computed\nThen the row displays status \"Overdue\""
+  },
+  {
+    "scenario_id": "TC_UPDDL_013",
+    "tags": "@gap @edge @negative",
+    "scenario": "Annual Statements Due soon and Due thresholds are undefined pending source document reconciliation",
+    "description": "Given an Annual Statements-tab row is approaching its Payment Deadline\nWhen status is computed\nThen flag that the exact \"Due soon\" and \"Due\" thresholds are not deterministic per the spec\nAnd confirm the reconciled threshold values with the design/product owner before asserting exact boundary days\nAnd re-test this scenario once AC-07 is finalized"
+  },
+  {
+    "scenario_id": "TC_UPDDL_014",
+    "tags": "@positive @edge",
+    "scenario": "Payments tab Lodgement fee (484/205A) shows Due soon when form created within 28 days of change date",
+    "description": "Given a Payments-tab row is a Lodgement fee of type 484 or 205A\nAnd the form is created\nAnd the form is within 28 days of the change date\nWhen status is computed\nThen the row displays status \"Due soon\""
+  },
+  {
+    "scenario_id": "TC_UPDDL_015",
+    "tags": "@positive @edge",
+    "scenario": "Payments tab Lodgement fee (484/205A) shows Due within 10 days of deadline",
+    "description": "Given a Payments-tab row is a Lodgement fee of type 484 or 205A\nAnd the Payment Deadline is within 10 days from today\nWhen status is computed\nThen the row displays status \"Due\""
+  },
+  {
+    "scenario_id": "TC_UPDDL_016",
+    "tags": "@positive @edge",
+    "scenario": "Payments tab Lodgement fee (484/205A) shows Overdue once deadline has passed",
+    "description": "Given a Payments-tab row is a Lodgement fee of type 484 or 205A\nAnd the Payment Deadline is in the past\nWhen status is computed\nThen the row displays status \"Overdue\""
+  },
+  {
+    "scenario_id": "TC_UPDDL_017",
+    "tags": "@positive @edge",
+    "scenario": "Payments tab Form 388 Financial report shows Due soon within 3 to 4 month window",
+    "description": "Given a Payments-tab row is a Form 388 Financial report\nAnd the Payment Deadline is within a 3 to 4 month window from today\nWhen status is computed\nThen the row displays status \"Due soon\""
+  },
+  {
+    "scenario_id": "TC_UPDDL_018",
+    "tags": "@positive @edge",
+    "scenario": "Payments tab Form 388 Financial report shows Due within 14 days of deadline",
+    "description": "Given a Payments-tab row is a Form 388 Financial report\nAnd the Payment Deadline is within 14 days from today\nWhen status is computed\nThen the row displays status \"Due\""
+  },
+  {
+    "scenario_id": "TC_UPDDL_019",
+    "tags": "@positive @edge",
+    "scenario": "Payments tab Form 388 Financial report shows Overdue once deadline has passed",
+    "description": "Given a Payments-tab row is a Form 388 Financial report\nAnd the Payment Deadline is in the past\nWhen status is computed\nThen the row displays status \"Overdue\""
+  },
+  {
+    "scenario_id": "TC_UPDDL_020",
+    "tags": "@positive @edge",
+    "scenario": "Payments tab pre-authorisation expiry shows Due soon while active and within 15 workdays of expiry",
+    "description": "Given a Payments-tab row is a pre-authorisation expiry\nAnd the authorisation is active\nAnd expiry is within 15 workdays from today\nWhen status is computed\nThen the row displays status \"Due soon\""
+  },
+  {
+    "scenario_id": "TC_UPDDL_021",
+    "tags": "@positive @edge",
+    "scenario": "Payments tab pre-authorisation expiry shows Due within 3 workdays of expiry",
+    "description": "Given a Payments-tab row is a pre-authorisation expiry\nAnd expiry is within 3 workdays from today\nWhen status is computed\nThen the row displays status \"Due\""
+  },
+  {
+    "scenario_id": "TC_UPDDL_022",
+    "tags": "@positive @edge",
+    "scenario": "Payments tab pre-authorisation expiry shows Overdue once expiry has passed",
+    "description": "Given a Payments-tab row is a pre-authorisation expiry\nAnd the expiry date is in the past\nWhen status is computed\nThen the row displays status \"Overdue\""
+  },
+  {
+    "scenario_id": "TC_UPDDL_023",
+    "tags": "@ui @positive",
+    "scenario": "Hover reveals filter button, feedback icons, export icon, and View all",
+    "description": "Given the widget is in its default state\nWhen the user hovers over the widget\nThen the filter button becomes visible\nAnd the thumbs-up and thumbs-down icons become visible\nAnd the export icon becomes visible\nAnd \"View all\" becomes visible where applicable per tab"
+  },
+  {
+    "scenario_id": "TC_UPDDL_024",
+    "tags": "@ui @positive @accessibility",
+    "scenario": "Keyboard focus reveals filter button, feedback icons, export icon, and View all",
+    "description": "Given the widget is in its default state\nWhen the user moves keyboard focus onto the widget\nThen the filter button becomes visible\nAnd the thumbs-up and thumbs-down icons become visible\nAnd the export icon becomes visible\nAnd \"View all\" becomes visible where applicable per tab"
+  },
+  {
+    "scenario_id": "TC_UPDDL_025",
+    "tags": "@ui @positive",
+    "scenario": "Filter button is hidden by default before hover or focus",
+    "description": "Given the widget is in its default state\nAnd the widget has not been hovered or focused\nWhen the widget renders\nThen the filter button is not visible"
+  },
+  {
+    "scenario_id": "TC_UPDDL_026",
+    "tags": "@ui @positive",
+    "scenario": "Filter menu offers Status checkboxes and Due date range on Lodgements tab",
+    "description": "Given the Lodgements tab is active\nAnd the filter icon is clicked\nWhen the filter menu opens\nThen it offers a Status checkbox list with Overdue, Due, and Due soon\nAnd it offers a date-range field labelled \"Due date\"\nAnd the date-range field offers values Anytime, Today, Yesterday, Past 7 days, Past 30 days, and Custom"
+  },
+  {
+    "scenario_id": "TC_UPDDL_027",
+    "tags": "@ui @positive",
+    "scenario": "Filter menu offers Status checkboxes and Payment deadline range on Annual Statements tab",
+    "description": "Given the Annual Statements tab is active\nAnd the filter icon is clicked\nWhen the filter menu opens\nThen it offers a Status checkbox list with Overdue, Due, and Due soon\nAnd it offers a date-range field labelled \"Payment deadline\"\nAnd the date-range field offers values Anytime, Today, Yesterday, Past 7 days, Past 30 days, and Custom"
+  },
+  {
+    "scenario_id": "TC_UPDDL_028",
+    "tags": "@ui @positive",
+    "scenario": "Filter menu offers Status checkboxes, Payment deadline range, and Payment type multi-select on Payments tab",
+    "description": "Given the Payments tab is active\nAnd the filter icon is clicked\nWhen the filter menu opens\nThen it offers a Status checkbox list with Overdue, Due, and Due soon\nAnd it offers a date-range field labelled \"Payment deadline\"\nAnd it offers an additional searchable \"Payment type\" multi-select filter"
+  },
+  {
+    "scenario_id": "TC_UPDDL_029",
+    "tags": "@gap @negative @ui",
+    "scenario": "Filter menu caption text does not match this widget's actual field labels",
+    "description": "Given the filter icon is clicked on any tab\nWhen the filter menu opens\nThen verify the menu caption text\nAnd flag that the caption \"refines the table by Date modified and Document type\" does not match the widget's actual fields Due date, Payment deadline, and Payment type\nAnd confirm the correct caption copy with design before this assertion is finalized"
+  },
+  {
+    "scenario_id": "TC_UPDDL_030",
+    "tags": "@ui @positive",
+    "scenario": "Active filters are visually indicated near the filter icon",
+    "description": "Given one or more filters are active\nWhen the widget renders\nThen an applied-filter indicator displays near the filter icon"
+  },
+  {
+    "scenario_id": "TC_UPDDL_031",
+    "tags": "@ui @positive",
+    "scenario": "Clear filters link resets active filters",
+    "description": "Given one or more filters are active\nWhen the user clicks the \"Clear filters\" link\nThen all active filters are reset\nAnd the applied-filter indicator near the filter icon is removed"
+  },
+  {
+    "scenario_id": "TC_UPDDL_032",
+    "tags": "@ui @positive @negative",
+    "scenario": "Clear filters link is not available when no filters are active",
+    "description": "Given no filters are active\nWhen the widget renders\nThen the \"Clear filters\" link is not shown"
+  },
+  {
+    "scenario_id": "TC_UPDDL_033",
+    "tags": "@ui @positive",
+    "scenario": "View all on Lodgements tab navigates to the Lodgements page",
+    "description": "Given the Lodgements tab is active\nWhen the user clicks \"View all\"\nThen the user navigates to the corresponding Lodgements page"
+  },
+  {
+    "scenario_id": "TC_UPDDL_034",
+    "tags": "@ui @positive",
+    "scenario": "View all on Annual Statements tab navigates to the Annual Statements page",
+    "description": "Given the Annual Statements tab is active\nWhen the user clicks \"View all\"\nThen the user navigates to the corresponding Annual Statements page"
+  },
+  {
+    "scenario_id": "TC_UPDDL_035",
+    "tags": "@ui @negative",
+    "scenario": "No View all link present on Payments tab",
+    "description": "Given the Payments tab is active\nWhen the widget renders\nThen no \"View all\" link is present"
+  },
+  {
+    "scenario_id": "TC_UPDDL_036",
+    "tags": "@gap @negative @ui",
+    "scenario": "Row click destination is not defined by the spec for any tab",
+    "description": "Given a row is displayed on any tab\nWhen the user clicks the row\nThen verify the navigation destination that occurs\nAnd flag that neither source PDF explicitly illustrates the row click destination\nAnd confirm the intended destination with design before finalizing this assertion"
+  },
+  {
+    "scenario_id": "TC_UPDDL_037",
+    "tags": "@ui @positive @edge",
+    "scenario": "Lodgements tab empty state displays correct heading and body",
+    "description": "Given the Lodgements tab has zero matching rows\nWhen it renders\nThen an empty state displays heading \"No upcoming lodgement deadlines\"\nAnd the body text reads \"You currently have no upcoming lodgement deadlines.\""
+  },
+  {
+    "scenario_id": "TC_UPDDL_038",
+    "tags": "@ui @positive @edge",
+    "scenario": "Annual Statements tab empty state displays correct heading and body",
+    "description": "Given the Annual Statements tab has zero matching rows\nWhen it renders\nThen an empty state displays heading \"No upcoming annual statement deadlines\"\nAnd the body text reads \"You currently have no upcoming annual statement deadlines.\""
+  },
+  {
+    "scenario_id": "TC_UPDDL_039",
+    "tags": "@ui @positive @edge",
+    "scenario": "Payments tab empty state displays correct heading and body",
+    "description": "Given the Payments tab has zero matching rows\nWhen it renders\nThen an empty state displays heading \"No upcoming payment deadlines\"\nAnd the body text reads \"You currently have no upcoming payment deadlines.\""
+  },
+  {
+    "scenario_id": "TC_UPDDL_040",
+    "tags": "@positive @edge",
+    "scenario": "Empty state renders correctly after all filters are applied and no rows match",
+    "description": "Given the user has applied filters on any tab\nAnd no rows match the applied filters\nWhen the tab renders\nThen the corresponding empty state heading and body are displayed"
+  },
+  {
+    "scenario_id": "TC_UPDDL_041",
+    "tags": "@ui @positive @smoke",
+    "scenario": "Export icon downloads an Excel file of the currently filtered tab data",
+    "description": "Given the widget is visible on any tab\nAnd one or more filters are applied\nWhen the user clicks the export icon\nThen an Excel file automatically downloads\nAnd the downloaded file contains only that tab's currently filtered data"
+  },
+  {
+    "scenario_id": "TC_UPDDL_042",
+    "tags": "@negative @edge",
+    "scenario": "Export with zero matching rows still produces a valid Excel file",
+    "description": "Given the widget is visible on a tab with zero matching rows\nWhen the user clicks the export icon\nThen an Excel file automatically downloads\nAnd the file contains headers only with no data rows"
+  },
+  {
+    "scenario_id": "TC_UPDDL_043",
+    "tags": "@ui @positive @analytics",
+    "scenario": "Thumbs-up click launches the Pendo feedback flow",
+    "description": "Given the widget is visible\nWhen the user clicks the thumbs-up icon\nThen the Pendo feedback flow launches"
+  },
+  {
+    "scenario_id": "TC_UPDDL_044",
+    "tags": "@ui @positive @analytics",
+    "scenario": "Thumbs-down click launches the Pendo feedback flow",
+    "description": "Given the widget is visible\nWhen the user clicks the thumbs-down icon\nThen the Pendo feedback flow launches"
+  },
+  {
+    "scenario_id": "TC_UPDDL_045",
+    "tags": "@analytics @edge",
+    "scenario": "Pendo feedback flow captures the correct widget and tab context",
+    "description": "Given the widget is visible on a specific tab\nWhen the user clicks thumbs-up or thumbs-down\nThen the Pendo feedback flow launches\nAnd the feedback event payload identifies the Upcoming Deadlines widget and active tab"
+  },
+  {
+    "scenario_id": "TC_UPDDL_046",
+    "tags": "@accessibility @positive",
+    "scenario": "Status badge always pairs a colour indicator with a text label",
+    "description": "Given a status badge is rendered on any tab\nWhen displayed\nThen the badge shows a colour indicator\nAnd the badge shows a text label of \"Overdue\", \"Due\", or \"Due soon\"\nAnd status is never communicated by colour alone, consistent with WCAG 1.4.1"
+  },
+  {
+    "scenario_id": "TC_UPDDL_047",
+    "tags": "@accessibility @edge",
+    "scenario": "Status badge remains distinguishable when viewed in grayscale or by a colour-blind user",
+    "description": "Given a status badge is rendered on any tab\nAnd the page is viewed with a colour-blindness simulation or in grayscale\nWhen the badge is inspected\nThen the text label \"Overdue\", \"Due\", or \"Due soon\" remains legible and distinguishes the status without relying on colour"
+  },
+  {
+    "scenario_id": "TC_UPDDL_048",
+    "tags": "@accessibility",
+    "scenario": "Widget tabs and controls are reachable and operable via keyboard only",
+    "description": "Given the widget is visible\nWhen the user navigates using only the keyboard\nThen the user can move focus between the Lodgements, Annual Statements, and Payments tabs\nAnd the user can activate the filter button, export icon, and thumbs-up/thumbs-down icons using the keyboard"
+  },
+  {
+    "scenario_id": "TC_UPDDL_049",
+    "tags": "@accessibility",
+    "scenario": "Widget tabs expose correct ARIA roles and states to assistive technology",
+    "description": "Given the widget is visible\nWhen inspected with an accessibility tree tool\nThen each tab exposes an appropriate ARIA role\nAnd the active tab exposes an aria-selected state of true\nAnd inactive tabs expose an aria-selected state of false"
+  },
+  {
+    "scenario_id": "TC_UPDDL_050",
+    "tags": "@mobile @ui @positive",
+    "scenario": "Widget renders responsively with tabs accessible on mobile viewport",
+    "description": "Given a user with Corporate Messenger access loads Workspace on a mobile viewport\nWhen the Upcoming Deadlines widget renders\nThen the header \"Upcoming Deadlines\" displays\nAnd the Lodgements, Annual Statements, and Payments tabs are accessible, scrollable, or collapsed into a mobile-appropriate control"
+  },
+  {
+    "scenario_id": "TC_UPDDL_051",
+    "tags": "@mobile @positive",
+    "scenario": "Filter menu is usable on mobile viewport",
+    "description": "Given the widget is visible on a mobile viewport\nWhen the user taps the filter icon\nThen the filter menu opens in a mobile-friendly layout\nAnd the Status checkboxes and date-range field are usable via touch"
+  },
+  {
+    "scenario_id": "TC_UPDDL_052",
+    "tags": "@mobile @positive",
+    "scenario": "Row columns adapt or remain scrollable on narrow mobile widths",
+    "description": "Given the Payments tab is active on a mobile viewport\nWhen rows render\nThen all required columns remain accessible via horizontal scroll or a responsive stacked layout\nAnd no column data is clipped or hidden without a way to access it"
+  },
+  {
+    "scenario_id": "TC_UPDDL_053",
+    "tags": "@negative @edge",
+    "scenario": "Widget handles data load failure gracefully",
+    "description": "Given the Upcoming Deadlines widget attempts to load data\nAnd the backing data request fails\nWhen the widget renders\nThen an error state is displayed instead of a blank or broken widget\nAnd no unhandled exception is thrown in the console"
+  },
+  {
+    "scenario_id": "TC_UPDDL_054",
+    "tags": "@negative @edge",
+    "scenario": "Switching tabs while a filter is applied does not leak filter state across unrelated tabs",
+    "description": "Given a Status filter is applied on the Lodgements tab\nWhen the user switches to the Payments tab\nThen the Payments tab does not automatically inherit the Lodgements filter selection\nAnd the Payments tab shows its own independent filter state"
+  }
+]

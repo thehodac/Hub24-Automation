@@ -1,0 +1,134 @@
+[
+  {
+    "scenario_id": "TC_CWLO_001",
+    "tags": "@ui @positive @smoke",
+    "scenario": "In-progress items render grouped by product category",
+    "description": "Given the user is authenticated and the Workspace page loads\nWhen the Continue Where You Left Off widget renders\nThen in-progress items are grouped by category sections: Trusts, Companies, Funds, and Lodgements"
+  },
+  {
+    "scenario_id": "TC_CWLO_002",
+    "tags": "@ui @edge",
+    "scenario": "Empty category sections are hidden",
+    "description": "Given a category has no in-progress items\nWhen the widget renders\nThen that category section is hidden and no empty category label is shown"
+  },
+  {
+    "scenario_id": "TC_CWLO_003",
+    "tags": "@ui @positive",
+    "scenario": "Item row displays required fields",
+    "description": "Given items render within a category section\nWhen a row displays\nThen it shows the category label, entity/document name, status badge, relative timestamp, and assigned user avatar"
+  },
+  {
+    "scenario_id": "TC_CWLO_004",
+    "tags": "@ui @edge",
+    "scenario": "Missing assigned user shows generic avatar placeholder",
+    "description": "Given the assigned user's name is unavailable\nWhen the item row renders\nThen a generic avatar placeholder is shown\nAnd no broken image or blank space is rendered"
+  },
+  {
+    "scenario_id": "TC_CWLO_005",
+    "tags": "@functional",
+    "scenario": "Clicking a row navigates to the in-progress record with context",
+    "description": "Given an in-progress item row is displayed\nWhen the user clicks it\nThen the user is navigated to the specific record with entity name, document type, workflow step, and pre-filled values preserved"
+  },
+  {
+    "scenario_id": "TC_CWLO_006",
+    "tags": "@negative @edge",
+    "scenario": "Clicking a stale item shows informational message",
+    "description": "Given the target record has been completed, cancelled, or deleted by another user\nWhen the user clicks the row\nThen the user is shown a clear informational message\nAnd the widget refreshes to remove the stale item"
+  },
+  {
+    "scenario_id": "TC_CWLO_007",
+    "tags": "@functional",
+    "scenario": "Items are sorted by most recently accessed within each category",
+    "description": "Given items render within a category section\nWhen the section displays\nThen items are sorted by most recently accessed first"
+  },
+  {
+    "scenario_id": "TC_CWLO_008",
+    "tags": "@functional @edge",
+    "scenario": "Categories are ordered by recency of their most recent item",
+    "description": "Given items span multiple categories\nWhen the widget renders\nThen category sections are ordered by the recency of the most recently accessed item in each section"
+  },
+  {
+    "scenario_id": "TC_CWLO_009",
+    "tags": "@ui @edge",
+    "scenario": "Widget-level empty state shown when no in-progress items exist",
+    "description": "Given the user has no in-progress items across any product category\nWhen the widget loads\nThen an empty state message \"No work in progress. Start a new document or workflow to see it here.\" renders\nAnd a \"Start a new document\" CTA link is provided"
+  },
+  {
+    "scenario_id": "TC_CWLO_010",
+    "tags": "@ui @edge",
+    "scenario": "Skeleton loaders show while items are fetching",
+    "description": "Given the widget is fetching in-progress items\nWhen the page is loading\nThen skeleton loaders display in place of item rows"
+  },
+  {
+    "scenario_id": "TC_CWLO_011",
+    "tags": "@negative",
+    "scenario": "Inline error message shown when data fetch fails",
+    "description": "Given the data fetch fails or times out\nWhen the failure occurs\nThen an inline error message \"Unable to load your recent work. Please refresh.\" renders\nAnd other Workspace widgets are not affected"
+  },
+  {
+    "scenario_id": "TC_CWLO_012",
+    "tags": "@ui @positive",
+    "scenario": "Status badge colours reflect item state",
+    "description": "Given an item has an \"In Progress\" status\nWhen the badge renders\nThen it displays in blue with the text \"In Progress\"\nAnd a \"Pending\" status renders in amber"
+  },
+  {
+    "scenario_id": "TC_CWLO_013",
+    "tags": "@edge",
+    "scenario": "Unrecognised status renders neutral grey badge",
+    "description": "Given a status value is unrecognised\nWhen the item row renders\nThen a neutral grey badge renders with the raw status label"
+  },
+  {
+    "scenario_id": "TC_CWLO_014",
+    "tags": "@functional @edge",
+    "scenario": "Relative timestamps format correctly by recency",
+    "description": "Given an item was last accessed today\nWhen the timestamp renders\nThen it shows \"Today, [H:MM am/pm]\"\nAnd items from the previous day show \"Yesterday, [H:MM am/pm]\"\nAnd items older than 2 days show the absolute date"
+  },
+  {
+    "scenario_id": "TC_CWLO_015",
+    "tags": "@functional",
+    "scenario": "Firm switch refreshes in-progress items",
+    "description": "Given the user switches firms via the account selector\nWhen the switch completes\nThen the widget refreshes to display in-progress items scoped to the newly selected firm"
+  },
+  {
+    "scenario_id": "TC_CWLO_016",
+    "tags": "@functional",
+    "scenario": "Widget reflects updates from other team members within a session",
+    "description": "Given a shared in-progress item is updated by another user during the current session\nWhen the next refresh cycle occurs\nThen the widget reflects the updated status and timestamp\nAnd completed items are removed from the widget"
+  },
+  {
+    "scenario_id": "TC_CWLO_017",
+    "tags": "@ui @positive",
+    "scenario": "View all link navigates to full-screen list view",
+    "description": "Given the number of in-progress items exceeds the visible widget height\nWhen the user clicks \"View all\"\nThen the user is navigated to a full-screen list view of all in-progress items"
+  },
+  {
+    "scenario_id": "TC_CWLO_018",
+    "tags": "@mobile @ui",
+    "scenario": "Entity name and status remain visible on narrow viewport",
+    "description": "Given the widget renders on a narrow viewport\nWhen the row displays\nThen entity name, status badge, and timestamp remain visible\nAnd assigned user avatars may be de-prioritised or moved to a tooltip"
+  },
+  {
+    "scenario_id": "TC_CWLO_019",
+    "tags": "@accessibility",
+    "scenario": "Item rows are focusable with visible focus indicator",
+    "description": "Given a keyboard user navigates the widget\nWhen the user tabs through item rows\nThen each row is focusable via Tab with a visible focus indicator"
+  },
+  {
+    "scenario_id": "TC_CWLO_020",
+    "tags": "@accessibility",
+    "scenario": "Screen reader announces full row context",
+    "description": "Given a screen reader is active\nWhen an item row is announced\nThen it includes product category, entity name, status, and timestamp"
+  },
+  {
+    "scenario_id": "TC_CWLO_021",
+    "tags": "@accessibility",
+    "scenario": "Assigned user avatar carries an aria-label",
+    "description": "Given a user avatar is rendered\nWhen the avatar displays\nThen it carries an aria-label with the assigned user's name"
+  },
+  {
+    "scenario_id": "TC_CWLO_022",
+    "tags": "@gap",
+    "scenario": "No corresponding PRD requirement maps directly to this widget",
+    "description": "Given the Continue Where You Left Off widget as designed\nWhen compared to the PRD requirements table\nThen no explicit requirement defines what constitutes an in-progress item, recency rules, or per-category item caps\nAnd this is flagged as a design coverage gap pending Product/UX resolution"
+  }
+]

@@ -1,0 +1,57 @@
+
+------------------------------------------------------------------------
+axe-core 4.12.1  --  scan summary
+------------------------------------------------------------------------
+violations:   5   (rules that FAILED)
+passes:       4   (rules that PASSED)
+incomplete:   2   (needs real browser, e.g. color-contrast)
+inapplicable: 51   (rules with nothing to check)
+------------------------------------------------------------------------
+
+1. [CRITICAL] rule "button-name"
+   what: Buttons must have discernible text
+   wcag: wcag2a, wcag412
+   docs: https://dequeuniversity.com/rules/axe/4.12/button-name
+   failing elements (1):
+      - selector: #login-button
+        html:     <button id="login-button" type="submit"></button>
+
+2. [SERIOUS] rule "document-title"
+   what: Documents must have <title> element to aid in navigation
+   wcag: wcag2a, wcag242
+   docs: https://dequeuniversity.com/rules/axe/4.12/document-title
+   failing elements (1):
+      - selector: html
+        html:     <html>
+
+3. [SERIOUS] rule "html-has-lang"
+   what: <html> element must have a lang attribute
+   wcag: wcag2a, wcag311
+   docs: https://dequeuniversity.com/rules/axe/4.12/html-has-lang
+   failing elements (1):
+      - selector: html
+        html:     <html>
+
+4. [CRITICAL] rule "image-alt"
+   what: Images must have alternative text
+   wcag: wcag2a, wcag111
+   docs: https://dequeuniversity.com/rules/axe/4.12/image-alt
+   failing elements (2):
+      - selector: img[src$="logo.png"]
+        html:     <img src="/logo.png">
+      - selector: img[src$="icon.png"]
+        html:     <img src="/icon.png">
+
+5. [SERIOUS] rule "link-name"
+   what: Links must have discernible text
+   wcag: wcag2a, wcag244, wcag412
+   docs: https://dequeuniversity.com/rules/axe/4.12/link-name
+   failing elements (1):
+      - selector: a
+        html:     <a href="/help"><img src="/icon.png"></a>
+
+------------------------------------------------------------------------
+Each violation = one axe RULE that failed, listing every element (node)
+that broke it. checkA11y() asserts violations.length === 0, so any of
+the above would FAIL the Playwright test.
+------------------------------------------------------------------------

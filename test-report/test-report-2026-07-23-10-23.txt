@@ -1,0 +1,8 @@
+HUB24 Automation — Test Report
+Generated: 2026-07-23 10:23 (GMT+7)
+
+By test type:
+  - e2e: total 38 | pass 37 | fail 1
+  - other: total 1 | pass 1 | fail 0
+
+TOTAL: 39 | Passed: 38 | Failed: 1

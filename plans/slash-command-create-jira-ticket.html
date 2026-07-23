@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Plan — Slash command: /create-jira-ticket</title>
+  <style>
+    body { font-family: Arial, Helvetica, sans-serif; max-width: 820px; margin: 24px auto; padding: 0 16px; line-height: 1.6; color: #1a1a1a; }
+    h1 { font-size: 22px; border-bottom: 2px solid #ddd; padding-bottom: 8px; }
+    h2 { font-size: 17px; margin-top: 26px; color: #0c447c; }
+    .meta { color: #666; font-size: 14px; }
+    table { border-collapse: collapse; width: 100%; margin: 8px 0; }
+    th, td { border: 1px solid #ddd; padding: 8px 10px; text-align: left; font-size: 14px; vertical-align: top; }
+    th { background: #f4f6f8; }
+    code { background: #f1f1f1; padding: 1px 5px; border-radius: 4px; }
+    ol, ul { padding-left: 22px; }
+    .warn { background: #fff4e5; border-left: 4px solid #ba7517; padding: 8px 12px; }
+  </style>
+</head>
+<body>
+  <h1>Plan — Slash command: /create-jira-ticket</h1>
+  <p class="meta">Author: MPF Developer · Date: 2026-07-03 · Goal: reuse the Jira ticket-creation workflow on demand</p>
+
+  <h2>1. Goal</h2>
+  <p>Create a reusable slash command so that typing <code>/create-jira-ticket</code>
+     (with a short description) makes Claude create a Jira ticket following the team
+     convention — without re-explaining the steps every time.</p>
+
+  <h2>2. Scope</h2>
+  <ul>
+    <li>In scope: one project command file that defines the ticket-creation workflow (type, project, Epic, naming, optional subtask).</li>
+    <li>Out of scope: the automated reporter (already built for test failures); creating a "skill" (not possible in this session).</li>
+  </ul>
+
+  <h2>3. What the command will do</h2>
+  <ol>
+    <li>Take the bug/short description from the command arguments.</li>
+    <li>Create a Jira issue: project <code>NIT</code>, type <code>Bug</code> (default),
+        under Epic <code>NIT-5006</code> (configurable in the command text).</li>
+    <li>Name it <code>&lt;Func Spec&gt; - &lt;short description&gt;</code>.</li>
+    <li>Optionally create a sub-task inside it if asked.</li>
+    <li>Return the created ticket key + link, and remind it can be deleted after testing.</li>
+  </ol>
+
+  <h2>4. Files to create / change</h2>
+  <table>
+    <tr><th>File</th><th>Change</th></tr>
+    <tr><td><code>.claude/commands/create-jira-ticket.md</code></td><td>New — the slash command prompt template</td></tr>
+  </table>
+
+  <h2>5. How to verify</h2>
+  <ul>
+    <li>Type <code>/create-jira-ticket</code> in the chat — the command appears.</li>
+    <li>Run it with a sample description → a ticket is created under the chosen Epic with the right name.</li>
+    <li>Delete the sample ticket afterwards.</li>
+  </ul>
+
+  <h2>6. Risks / notes</h2>
+  <ul>
+    <li class="warn">If Cowork does not surface project slash commands, we switch to a Skill (via Settings &gt; Capabilities).</li>
+    <li>Command creates REAL tickets — keep a clear naming prefix (e.g. [QC-Test]) while testing, delete after.</li>
+    <li>Default Epic/project are written in the command text and can be changed anytime.</li>
+  </ul>
+</body>
+</html>

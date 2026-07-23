@@ -1,0 +1,386 @@
+[
+  {
+    "scenario_id": "TC_SUBNAV_001",
+    "tags": "@ui @positive @smoke",
+    "scenario": "Sub-nav bar visible below top bar on page load",
+    "description": "Given the authenticated user is on any page within NowInfinity\nWhen the page renders\nThen the sub-navigation bar is visible\nAnd it is positioned directly below the top bar\nAnd it is fixed to the top of the viewport"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_002",
+    "tags": "@ui @positive",
+    "scenario": "Sub-nav bar persists across page transitions",
+    "description": "Given the authenticated user is on a page with the sub-navigation bar visible\nWhen the user navigates between product pages causing page transitions and data loads\nThen the sub-navigation bar remains visible at all times\nAnd it does not disappear or flicker during the transition"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_003",
+    "tags": "@ui @positive",
+    "scenario": "Desktop sub-nav items render in correct order",
+    "description": "Given the user is on a desktop viewport and the sub-nav bar is visible\nWhen it renders\nThen nav items display in a single horizontal row\nAnd the order is Documents, Corporate Messenger, Trust Register, Super Comply, ID Verification, Individuals"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_004",
+    "tags": "@ui @edge",
+    "scenario": "Nav items consolidate into hamburger menu instead of wrapping below breakpoint",
+    "description": "Given the user is on a desktop viewport and the sub-nav bar is visible\nWhen the viewport width decreases below the responsive breakpoint\nThen nav items do not wrap to a second line\nAnd they consolidate into the hamburger menu"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_005",
+    "tags": "@gap @edge",
+    "scenario": "Exact pixel breakpoint for hamburger consolidation is undefined",
+    "description": "Given the sub-nav bar is rendering responsively per AC-02\nWhen the viewport width is reduced incrementally to find the consolidation threshold\nThen the exact pixel breakpoint at which items consolidate into the hamburger menu cannot be verified\nAnd this is a gap: the spec does not define the breakpoint value, so this test requires clarification before an exact assertion can be automated"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_006",
+    "tags": "@ui @positive",
+    "scenario": "Admin nav item visible for admin user",
+    "description": "Given the sub-nav bar renders and the user has admin permissions\nWhen it renders\nThen an additional Admin nav item is visible alongside the standard items"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_007",
+    "tags": "@ui @negative",
+    "scenario": "Admin nav item hidden for non-admin user with no reserved space",
+    "description": "Given the sub-nav bar renders and the user does NOT have admin permissions\nWhen it renders\nThen the Admin nav item is not visible\nAnd no placeholder space is reserved for it"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_008",
+    "tags": "@ui @positive @smoke",
+    "scenario": "Current section nav item shows active state",
+    "description": "Given the user navigates to any page within a product section such as Documents\nWhen the page loads\nThen the nav item for the current section is in active/selected visual state\nAnd all other nav items are in default state"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_009",
+    "tags": "@ui @positive",
+    "scenario": "Active state persists across pages within the same section",
+    "description": "Given the user is on a page within the Documents section with the Documents nav item active\nWhen the user navigates to another page within the same Documents section\nThen the Documents nav item remains in active/selected visual state"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_010",
+    "tags": "@ui @positive",
+    "scenario": "Clicking the active nav item opens its dropdown without changing page",
+    "description": "Given a nav item is in active state\nWhen the user clicks it\nThen the dropdown opens showing an active-expanded state\nAnd the page location does NOT change\nAnd within the dropdown the child item matching the current sub-location is shown active"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_011",
+    "tags": "@ui @positive",
+    "scenario": "Hovering another nav item does not close the open dropdown",
+    "description": "Given a dropdown is open for the active nav item and the user hovers a different nav item without clicking\nWhen the user hovers over the different nav item\nThen the open dropdown remains visible\nAnd hovering alone does NOT close or trigger a new dropdown"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_012",
+    "tags": "@ui @positive",
+    "scenario": "Clicking a different nav item with a dropdown swaps the open dropdown",
+    "description": "Given a dropdown is open for the active nav item Documents and the user clicks a different nav item with a dropdown, Corporate Messenger\nWhen the click is registered\nThen the Documents dropdown closes immediately\nAnd the Corporate Messenger dropdown opens\nAnd active state remains on Documents\nAnd Corporate Messenger shows pressed/expanded state, not active location state"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_013",
+    "tags": "@ui @positive @smoke",
+    "scenario": "Clicking a nav item with children opens its dropdown anchored to the item",
+    "description": "Given no dropdowns are open\nWhen the user clicks any nav item with children, such as Documents, Corporate Messenger, Trust Register, Super Comply, ID Verification, or Admin\nThen that dropdown opens anchored to the nav item"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_014",
+    "tags": "@ui @positive @smoke",
+    "scenario": "Clicking Individuals navigates directly without opening a dropdown",
+    "description": "Given no dropdowns are open\nWhen the user clicks Individuals\nThen no dropdown opens\nAnd the user navigates directly to the Individuals page"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_015",
+    "tags": "@ui @positive",
+    "scenario": "Clicking outside an open dropdown closes it without navigating",
+    "description": "Given any dropdown is open\nWhen the user clicks outside the panel and outside the triggering item\nThen the dropdown closes immediately\nAnd no navigation occurs"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_016",
+    "tags": "@ui @positive @accessibility",
+    "scenario": "Pressing ESC closes the open dropdown and returns focus to trigger",
+    "description": "Given any dropdown is open\nWhen the user presses ESC\nThen the dropdown closes immediately\nAnd focus returns to the triggering nav item"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_017",
+    "tags": "@ui @positive",
+    "scenario": "Opening search overlay closes an open sub-nav dropdown",
+    "description": "Given a sub-nav dropdown is open and the global header also offers search, account switcher, and app switcher overlays\nWhen the user triggers the search overlay\nThen the previously open sub-nav dropdown closes\nAnd the search overlay opens\nAnd only one overlay is open at any time across the header"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_018",
+    "tags": "@ui @positive",
+    "scenario": "Opening account switcher closes an open sub-nav dropdown",
+    "description": "Given a sub-nav dropdown is open\nWhen the user triggers the account switcher overlay\nThen the previously open sub-nav dropdown closes\nAnd the account switcher opens as the only open overlay"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_019",
+    "tags": "@ui @positive",
+    "scenario": "Opening app switcher closes an open sub-nav dropdown",
+    "description": "Given a sub-nav dropdown is open\nWhen the user triggers the app switcher overlay\nThen the previously open sub-nav dropdown closes\nAnd the app switcher opens as the only open overlay"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_020",
+    "tags": "@ui @positive @smoke",
+    "scenario": "Selecting a child item closes dropdown and navigates to destination",
+    "description": "Given an open dropdown is visible\nWhen the user selects a child item\nThen the dropdown closes\nAnd the user navigates to that item's destination"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_021",
+    "tags": "@ui @positive @smoke",
+    "scenario": "Documents dropdown renders all expected items",
+    "description": "Given the Documents dropdown has been opened\nWhen it renders\nThen the following items are present: Create a new document, Completed documents, E-signing, Saved documents, Bank accounts, Invoices\nAnd sub-type creation items are present: Standard company, Special purpose company, Public company limited by guarantee, Public company limited by shares, Foreign companies, each with a plus/add affordance\nAnd E-signing shows a pending-count badge"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_022",
+    "tags": "@ui @positive",
+    "scenario": "Clicking a plus/add affordance in Documents dropdown enters creation flow",
+    "description": "Given the Documents dropdown is open showing sub-type creation items with plus/add affordances\nWhen the user clicks a plus/add affordance for a sub-type, such as Standard company\nThen the dropdown closes\nAnd the user enters the corresponding document creation flow for that sub-type"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_023",
+    "tags": "@ui @edge",
+    "scenario": "Documents E-signing pending-count badge reflects zero pending items",
+    "description": "Given the Documents dropdown is open and there are zero pending e-signing items for the user\nWhen it renders\nThen the E-signing item either shows no badge or a badge showing zero, consistently with the product's zero-state convention"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_024",
+    "tags": "@ui @positive @smoke",
+    "scenario": "Corporate Messenger dropdown renders all expected items",
+    "description": "Given the Corporate Messenger dropdown has been opened\nWhen it renders\nThen the following items are present: Companies, Lodgements, Annual statements, Notification centre, Address report, Appoint an agent, Bundle edit, Reminders, Bundle agent appointment, Health centre, ASIC calendar, Other forms, Outgoing correspondence\nAnd Lodgements, Notification centre, and Reminders each show a count badge"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_025",
+    "tags": "@ui @positive @smoke",
+    "scenario": "Trust Register dropdown renders all expected items",
+    "description": "Given the Trust Register dropdown has been opened\nWhen it renders\nThen the following items are present: Trusts, Lodgements, Trust documentation, Establish a trust, Add an existing trust"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_026",
+    "tags": "@ui @positive @smoke",
+    "scenario": "Super Comply dropdown renders all expected items",
+    "description": "Given the Super Comply dropdown has been opened\nWhen it renders\nThen the following items are present: Funds, Funds documentation, Establish a trust, Add an existing fund, Import funds"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_027",
+    "tags": "@ui @positive @smoke",
+    "scenario": "ID Verification dropdown renders all expected items",
+    "description": "Given the ID Verification dropdown has been opened\nWhen it renders\nThen the following items are present: Identity verifications, Add identity verifications"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_028",
+    "tags": "@ui @positive @smoke",
+    "scenario": "Admin dropdown renders all expected items for admin user",
+    "description": "Given the Admin dropdown has been opened by an admin user\nWhen it renders\nThen the following items are present: Legal review, Transactions, Cache cleaner, ASIC console, Registration, Registration success"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_029",
+    "tags": "@ui @negative",
+    "scenario": "Corporate Messenger count badges do not render for zero counts inconsistently",
+    "description": "Given the Corporate Messenger dropdown is open and Lodgements, Notification centre, and Reminders all have zero outstanding counts\nWhen it renders\nThen the count badges are handled consistently, either hidden or showing zero, and never showing a stale non-zero count"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_030",
+    "tags": "@accessibility @positive",
+    "scenario": "Visible focus ring renders when tabbing to a sub-nav item",
+    "description": "Given the user is navigating via keyboard only\nWhen the user tabs to any sub-nav item\nThen a visible focus ring is rendered on that item, satisfying WCAG 2.2 Focus Appearance"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_031",
+    "tags": "@accessibility @positive",
+    "scenario": "Enter opens dropdown and moves focus into it",
+    "description": "Given the user is navigating via keyboard only and has focused a sub-nav item with a dropdown\nWhen the user presses Enter\nThen the dropdown opens\nAnd focus moves into the dropdown"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_032",
+    "tags": "@accessibility @positive",
+    "scenario": "Space opens dropdown and moves focus into it",
+    "description": "Given the user is navigating via keyboard only and has focused a sub-nav item with a dropdown\nWhen the user presses Space\nThen the dropdown opens\nAnd focus moves into the dropdown"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_033",
+    "tags": "@accessibility @positive",
+    "scenario": "ESC closes keyboard-opened dropdown and returns focus to trigger",
+    "description": "Given the user is navigating via keyboard only and a dropdown is open with focus inside it\nWhen the user presses ESC\nThen the dropdown closes\nAnd focus returns to the triggering nav item"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_034",
+    "tags": "@accessibility @positive @smoke",
+    "scenario": "Arrow keys move focus sequentially through open dropdown items",
+    "description": "Given a dropdown is open and the user uses arrow keys\nWhen the user presses the down arrow key repeatedly\nThen focus moves sequentially forward through the menu items\nWhen the user presses the up arrow key\nThen focus moves sequentially backward through the menu items"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_035",
+    "tags": "@accessibility @positive",
+    "scenario": "Enter on a focused dropdown item selects it and navigates",
+    "description": "Given a dropdown is open and a menu item is focused via arrow keys\nWhen the user presses Enter\nThen the focused item is selected\nAnd the dropdown closes\nAnd navigation occurs to that item's destination"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_036",
+    "tags": "@accessibility @positive",
+    "scenario": "Tooltip and accessible name shown for icon-only affordances on hover",
+    "description": "Given the sub-nav bar contains icon-only buttons/affordances such as the plus/add icons in Documents\nWhen the user hovers an icon-only element\nThen a tooltip is displayed\nAnd the element has an accessible name via aria-label"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_037",
+    "tags": "@accessibility @positive",
+    "scenario": "Tooltip and accessible name shown for icon-only affordances on keyboard focus",
+    "description": "Given the sub-nav bar contains icon-only buttons/affordances\nWhen the user keyboard-focuses an icon-only element\nThen a tooltip is displayed\nAnd the element has an accessible name via aria-label"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_038",
+    "tags": "@accessibility @edge",
+    "scenario": "All interactive sub-nav elements expose accessible names",
+    "description": "Given the sub-nav bar and its dropdowns are fully rendered including hamburger menu icon\nWhen an accessibility audit is run against the header region\nThen every interactive element, including icon-only buttons and the hamburger toggle, has a non-empty accessible name\nAnd no axe-core violations of the name-role-value rule are reported"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_039",
+    "tags": "@ui @positive @smoke",
+    "scenario": "Selecting a sub-nav destination updates the URL to a shareable route",
+    "description": "Given the user is authenticated and selects a sub-nav destination, Documents then Saved documents\nWhen the route changes\nThen the browser URL updates to a unique shareable route\nAnd the parent nav item, Documents, remains active"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_040",
+    "tags": "@ui @positive",
+    "scenario": "Sharing a deep link navigates directly with correct active states",
+    "description": "Given a user has copied a shareable sub-nav destination URL such as Documents, Saved documents\nWhen another authenticated user opens that URL directly\nThen the app navigates directly to the same destination\nAnd the correct active states are shown for the parent nav item and child item"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_041",
+    "tags": "@negative @security",
+    "scenario": "Direct URL access to Admin route is denied for non-admin users",
+    "description": "Given a user without admin permissions attempts to directly access an Admin route via URL\nWhen the route is resolved\nThen access is denied at the route level\nAnd the user is redirected appropriately\nAnd the Admin nav item remains hidden"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_042",
+    "tags": "@negative @edge",
+    "scenario": "Direct URL access to a nonexistent sub-nav child route is handled gracefully",
+    "description": "Given the user is authenticated and navigates directly to a deep-link URL for a sub-nav child route that does not exist\nWhen the route is resolved\nThen the user is shown an appropriate not-found or fallback state\nAnd no unhandled application error is thrown"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_043",
+    "tags": "@mobile @positive @smoke",
+    "scenario": "Tapping hamburger icon on mobile opens full-screen nav panel",
+    "description": "Given the user is on a mobile viewport and sub-nav is consolidated into the hamburger menu\nWhen the user taps the hamburger icon\nThen a navigation panel opens with all sub-nav items as a vertical list\nAnd the panel is full-screen on mobile"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_044",
+    "tags": "@mobile @positive",
+    "scenario": "Tapping hamburger icon on tablet opens 320px side panel",
+    "description": "Given the user is on a tablet viewport and sub-nav is consolidated into the hamburger menu\nWhen the user taps the hamburger icon\nThen a navigation panel opens with all sub-nav items as a vertical list\nAnd the panel renders as a 320px side panel on tablet"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_045",
+    "tags": "@mobile @positive",
+    "scenario": "Mobile nav panel includes Admin item for admin users",
+    "description": "Given the user is on a mobile viewport, has admin permissions, and taps the hamburger icon\nWhen the navigation panel opens\nThen the vertical list includes the Admin item in addition to the standard items"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_046",
+    "tags": "@mobile @negative",
+    "scenario": "Mobile nav panel excludes Admin item for non-admin users",
+    "description": "Given the user is on a mobile viewport, does NOT have admin permissions, and taps the hamburger icon\nWhen the navigation panel opens\nThen the vertical list does not include the Admin item"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_047",
+    "tags": "@mobile @positive",
+    "scenario": "Tapping a mobile nav item with children slides in nested view with Back button",
+    "description": "Given the mobile/tablet nav panel is open\nWhen the user taps a nav item with children, such as Documents\nThen a nested view slides in with the Documents child items matching AC-13\nAnd a Back button is shown"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_048",
+    "tags": "@mobile @positive",
+    "scenario": "Nested mobile view for Corporate Messenger matches dropdown contents",
+    "description": "Given the mobile/tablet nav panel is open\nWhen the user taps Corporate Messenger\nThen a nested view slides in with child items matching AC-14\nAnd a Back button is shown"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_049",
+    "tags": "@mobile @positive",
+    "scenario": "Nested mobile view for Trust Register matches dropdown contents",
+    "description": "Given the mobile/tablet nav panel is open\nWhen the user taps Trust Register\nThen a nested view slides in with child items matching AC-15\nAnd a Back button is shown"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_050",
+    "tags": "@mobile @positive",
+    "scenario": "Nested mobile view for Super Comply matches dropdown contents",
+    "description": "Given the mobile/tablet nav panel is open\nWhen the user taps Super Comply\nThen a nested view slides in with child items matching AC-16\nAnd a Back button is shown"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_051",
+    "tags": "@mobile @positive",
+    "scenario": "Nested mobile view for ID Verification matches dropdown contents",
+    "description": "Given the mobile/tablet nav panel is open\nWhen the user taps ID Verification\nThen a nested view slides in with child items matching AC-17\nAnd a Back button is shown"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_052",
+    "tags": "@mobile @positive",
+    "scenario": "Nested mobile view for Admin matches dropdown contents for admin user",
+    "description": "Given the mobile/tablet nav panel is open and the user has admin permissions\nWhen the user taps Admin\nThen a nested view slides in with child items matching AC-18\nAnd a Back button is shown"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_053",
+    "tags": "@mobile @positive",
+    "scenario": "Back button in nested mobile view returns to top-level list",
+    "description": "Given the mobile/tablet nav panel shows a nested view for Documents with a Back button\nWhen the user taps the Back button\nThen the panel returns to the top-level vertical list of sub-nav items"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_054",
+    "tags": "@mobile @positive @smoke",
+    "scenario": "Tapping Individuals on mobile navigates directly and closes panel",
+    "description": "Given the mobile/tablet nav panel is open\nWhen the user taps Individuals\nThen no nested view appears\nAnd the user navigates directly to the Individuals page\nAnd the panel closes"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_055",
+    "tags": "@mobile @edge",
+    "scenario": "Mobile nav panel scrolls vertically when content overflows viewport height",
+    "description": "Given the mobile/tablet nav panel is open and content exceeds viewport height\nWhen the content overflows\nThen vertical scrolling is enabled within the panel\nAnd all items remain reachable by scrolling"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_056",
+    "tags": "@mobile @accessibility",
+    "scenario": "Mobile hamburger toggle has accessible name and visible focus state",
+    "description": "Given the user is on a mobile viewport navigating via keyboard or assistive technology\nWhen the user focuses the hamburger icon\nThen a visible focus indicator is shown\nAnd the icon exposes an accessible name via aria-label"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_057",
+    "tags": "@analytics @positive @smoke",
+    "scenario": "Pendo event emitted when a top-level nav item is clicked",
+    "description": "Given the user interacts with a sub-nav item\nWhen the user clicks a top-level nav item, such as Documents\nThen a Pendo tracking event is emitted\nAnd the event captures the nav item clicked\nAnd the event captures whether navigation occurred"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_058",
+    "tags": "@analytics @positive",
+    "scenario": "Pendo event emitted when a dropdown child item is selected",
+    "description": "Given an open dropdown is visible\nWhen the user selects a child item, such as Saved documents under Documents\nThen a Pendo tracking event is emitted\nAnd the event captures the nav item clicked, Documents\nAnd the event captures the dropdown child item selected, Saved documents\nAnd the event captures that navigation occurred"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_059",
+    "tags": "@analytics @positive",
+    "scenario": "Pendo event emitted when clicking active nav item only opens dropdown without navigation",
+    "description": "Given a nav item is in active state and the user clicks it to open the dropdown without navigating\nWhen the click is registered\nThen a Pendo tracking event is emitted\nAnd the event captures the nav item clicked\nAnd the event captures that no navigation occurred"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_060",
+    "tags": "@analytics @edge",
+    "scenario": "Pendo event emitted when a plus/add affordance is used inside a dropdown",
+    "description": "Given the Documents dropdown is open showing sub-type creation items with plus/add affordances\nWhen the user clicks the plus/add affordance for Standard company\nThen a Pendo tracking event is emitted\nAnd the event captures the nav item clicked, Documents\nAnd the event captures the dropdown child item selected, Standard company add affordance\nAnd the event captures that navigation occurred into the creation flow"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_061",
+    "tags": "@negative @edge",
+    "scenario": "Rapid repeated clicks on the same nav item do not toggle inconsistent dropdown states",
+    "description": "Given no dropdowns are open\nWhen the user rapidly double-clicks a nav item with children\nThen the dropdown reaches a single stable open or closed state\nAnd no duplicate or stuck dropdown panels are rendered"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_062",
+    "tags": "@negative @edge",
+    "scenario": "Clicking a nav item with children while another item's dropdown is animating closed does not open two dropdowns",
+    "description": "Given a dropdown is open and mid-close-transition\nWhen the user clicks a different nav item with children before the close transition completes\nThen only one dropdown is open once transitions settle\nAnd no visual overlap of two open dropdowns occurs"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_063",
+    "tags": "@edge @ui",
+    "scenario": "Sub-nav bar remains fixed to top during long page scroll",
+    "description": "Given the user is on a product page whose content is taller than the viewport\nWhen the user scrolls the page content\nThen the sub-navigation bar remains fixed at the top of the viewport\nAnd it does not scroll out of view"
+  },
+  {
+    "scenario_id": "TC_SUBNAV_064",
+    "tags": "@negative @accessibility",
+    "scenario": "Screen reader announces dropdown expanded/collapsed state",
+    "description": "Given the user is using a screen reader and focuses a nav item with a dropdown\nWhen the user activates the item to open the dropdown\nThen the screen reader announces the expanded state via aria-expanded=true\nWhen the user closes the dropdown\nThen the screen reader announces the collapsed state via aria-expanded=false"
+  }
+]

@@ -1,0 +1,26 @@
+node_modules/
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+.env
+.DS_Store
+*.log
+/test-results/chromatic-archives/
+chromatic.log
+chromatic-build-*.xml
+/.features-gen/
+/playwright/.auth/
+/results/
+
+# BrowserStack SDK logs / temp config
+/log/
+playwright-browserstack-sdk.config.ts
+
+# Bug Report reporter output
+/bug-report/
+/bug-image/
+/bug-video/
+
+# Chromatic build URL captured for the visual report
+.chromatic-build-url

@@ -1,0 +1,188 @@
+[
+  {
+    "scenario_id": "TC_MPHDR_001",
+    "tags": "@ui @positive @smoke",
+    "scenario": "Global navigation bar renders all required elements",
+    "description": "Given the user is authenticated and the Workspace page loads\nWhen the page renders\nThen the global navigation bar shows the NowInfinity logo, search bar, product nav links, notification bell, help icon, account/firm selector, and user avatar"
+  },
+  {
+    "scenario_id": "TC_MPHDR_002",
+    "tags": "@negative @edge",
+    "scenario": "Remaining nav elements render if one element fails to load",
+    "description": "Given one navigation element fails to load\nWhen the page renders\nThen the remaining nav elements still render without layout breakage"
+  },
+  {
+    "scenario_id": "TC_MPHDR_003",
+    "tags": "@ui @positive",
+    "scenario": "Personalised greeting displays the user's first name",
+    "description": "Given the authenticated user's session contains a valid first name\nWhen the header panel loads\nThen a greeting renders as \"Hello [First Name].\""
+  },
+  {
+    "scenario_id": "TC_MPHDR_004",
+    "tags": "@edge",
+    "scenario": "Greeting falls back gracefully when first name is unavailable",
+    "description": "Given the first name is not available in the user profile\nWhen the header panel loads\nThen the greeting falls back to \"Hello.\"\nAnd no blank placeholder or broken markup is rendered"
+  },
+  {
+    "scenario_id": "TC_MPHDR_005",
+    "tags": "@ui @positive",
+    "scenario": "Contextual insight message displays when activity data exists",
+    "description": "Given the system has sufficient user activity and workflow history data\nWhen the header renders\nThen a contextual insight message displays beneath the greeting summarising workload patterns or overdue items"
+  },
+  {
+    "scenario_id": "TC_MPHDR_006",
+    "tags": "@edge",
+    "scenario": "New user without activity data sees no empty message container",
+    "description": "Given the user is new or insufficient activity data exists\nWhen the header renders\nThen the contextual message is omitted or replaced with a generic onboarding prompt\nAnd no empty message container is visible"
+  },
+  {
+    "scenario_id": "TC_MPHDR_007",
+    "tags": "@ui @positive",
+    "scenario": "Quick Actions bar shows 3-5 contextual shortcuts",
+    "description": "Given the system has analysed the user's recent workflow and activity patterns\nWhen the Quick Actions bar renders\nThen 3 to 5 contextual shortcut action buttons display"
+  },
+  {
+    "scenario_id": "TC_MPHDR_008",
+    "tags": "@edge",
+    "scenario": "Default shortcuts shown when user has no workflow history",
+    "description": "Given the user has no workflow history\nWhen the Quick Actions bar renders\nThen a set of platform-default recommended shortcuts is shown\nAnd the bar is never empty"
+  },
+  {
+    "scenario_id": "TC_MPHDR_009",
+    "tags": "@functional",
+    "scenario": "Clicking a Quick Action launches the workflow with pre-filled context",
+    "description": "Given a relevant client/entity context is determinable from session state\nWhen the user selects a shortcut\nThen the corresponding workflow launches immediately with required context fields pre-filled"
+  },
+  {
+    "scenario_id": "TC_MPHDR_010",
+    "tags": "@functional @edge",
+    "scenario": "Quick Action launches cleanly when context cannot be pre-filled",
+    "description": "Given context cannot be pre-filled\nWhen the user selects a shortcut\nThen the workflow launches in a clean, unbroken default state"
+  },
+  {
+    "scenario_id": "TC_MPHDR_011",
+    "tags": "@ui @positive",
+    "scenario": "Start a new document CTA is visible and functional",
+    "description": "Given the header panel is fully rendered\nWhen the user views the header\nThen a \"+ Start a new document\" primary CTA is visible and right-aligned\nAnd clicking it initiates the new document creation flow"
+  },
+  {
+    "scenario_id": "TC_MPHDR_012",
+    "tags": "@ui @positive @smoke",
+    "scenario": "Workload summary stats bar renders three KPI tiles",
+    "description": "Given the user has active workload items across the platform\nWhen the header loads\nThen three KPI tiles render: Deadlines due soon, In progress, and Pending signatures"
+  },
+  {
+    "scenario_id": "TC_MPHDR_013",
+    "tags": "@edge",
+    "scenario": "Zero-count KPI tiles still render",
+    "description": "Given any KPI count is zero\nWhen the header loads\nThen that tile still renders displaying \"0\""
+  },
+  {
+    "scenario_id": "TC_MPHDR_014",
+    "tags": "@functional",
+    "scenario": "Clicking a stat tile navigates to the corresponding widget section",
+    "description": "Given the workload summary stats bar is rendered\nWhen the user clicks the \"Pending signatures\" tile\nThen the page navigates to the Needs Your Attention widget's Signatures tab"
+  },
+  {
+    "scenario_id": "TC_MPHDR_015",
+    "tags": "@ui @positive",
+    "scenario": "Active product nav link is visually highlighted",
+    "description": "Given the user selects a product nav link\nWhen the navigation completes\nThen the active link is visually highlighted to indicate the current product context"
+  },
+  {
+    "scenario_id": "TC_MPHDR_016",
+    "tags": "@functional",
+    "scenario": "Header refreshes with fresh data on return to Workspace",
+    "description": "Given the user returns to the Workspace\nWhen the header re-renders\nThen it shows fresh, up-to-date workload data and stale cached state is never served"
+  },
+  {
+    "scenario_id": "TC_MPHDR_017",
+    "tags": "@negative",
+    "scenario": "Unauthenticated user is redirected to login",
+    "description": "Given an unauthenticated user attempts to access the Workspace\nWhen the request is made\nThen the user is redirected to the login page\nAnd no personalised header content is rendered"
+  },
+  {
+    "scenario_id": "TC_MPHDR_018",
+    "tags": "@negative @edge",
+    "scenario": "Expired session triggers re-authentication prompt",
+    "description": "Given a session expires mid-session\nWhen the expiry is detected\nThen the header triggers a re-authentication prompt rather than rendering blank or broken UI elements"
+  },
+  {
+    "scenario_id": "TC_MPHDR_019",
+    "tags": "@ui @edge",
+    "scenario": "Skeleton loaders display for stat counts and Quick Actions while loading",
+    "description": "Given stat counts or Quick Actions are still loading\nWhen the page renders\nThen skeleton loaders display within the respective header zones\nAnd the greeting and navigation render immediately from cached session data"
+  },
+  {
+    "scenario_id": "TC_MPHDR_020",
+    "tags": "@negative",
+    "scenario": "Graceful error state shown when data fetch fails",
+    "description": "Given a data fetch fails with a network timeout or API error\nWhen the failure occurs\nThen the affected zone renders a graceful error state such as \"\u2014\" for counts\nAnd the header layout is not broken"
+  },
+  {
+    "scenario_id": "TC_MPHDR_021",
+    "tags": "@mobile @ui",
+    "scenario": "Product navigation collapses to hamburger menu on narrow viewport",
+    "description": "Given the header renders at a viewport below 1024px\nWhen the page displays\nThen product navigation links collapse into a hamburger/menu icon"
+  },
+  {
+    "scenario_id": "TC_MPHDR_022",
+    "tags": "@mobile @ui",
+    "scenario": "Quick Actions scroll or stack responsively on narrow viewport",
+    "description": "Given Quick Action shortcuts exceed available horizontal width\nWhen the header renders on a narrow viewport\nThen they scroll horizontally or stack responsively without overflowing"
+  },
+  {
+    "scenario_id": "TC_MPHDR_023",
+    "tags": "@ui @positive",
+    "scenario": "Search bar shows typeahead suggestions",
+    "description": "Given the user focuses the global search bar\nWhen the user types 2 or more characters\nThen typeahead suggestions for matching entities and documents render in a dropdown"
+  },
+  {
+    "scenario_id": "TC_MPHDR_024",
+    "tags": "@edge",
+    "scenario": "Search with zero results shows empty state message",
+    "description": "Given the user submits a search query\nWhen the query returns zero results\nThen an empty state message \"No results found for '[query]'.\" displays"
+  },
+  {
+    "scenario_id": "TC_MPHDR_025",
+    "tags": "@functional",
+    "scenario": "Firm switcher lists all accessible firms and reloads scoped data",
+    "description": "Given the user has access to multiple firms\nWhen the user selects a different firm from the account selector dropdown\nThen the Workspace reloads scoped to the newly selected firm\nAnd header stats, shortcuts, and greeting context refresh accordingly"
+  },
+  {
+    "scenario_id": "TC_MPHDR_026",
+    "tags": "@accessibility",
+    "scenario": "All interactive header elements are keyboard reachable",
+    "description": "Given a keyboard-only user navigates the header\nWhen the user tabs through it\nThen all interactive elements are reachable via Tab key with a visible focus ring"
+  },
+  {
+    "scenario_id": "TC_MPHDR_027",
+    "tags": "@accessibility",
+    "scenario": "Header elements carry ARIA labels and landmark regions",
+    "description": "Given screen reader software is active\nWhen the header renders\nThen all elements carry appropriate ARIA labels, roles, and landmark regions"
+  },
+  {
+    "scenario_id": "TC_MPHDR_028",
+    "tags": "@accessibility",
+    "scenario": "Dynamic stat tile updates are announced via aria-live",
+    "description": "Given stat tile counts update dynamically\nWhen the update occurs\nThen an aria-live region announces the count change to screen readers without disrupting page flow"
+  },
+  {
+    "scenario_id": "TC_MPHDR_029",
+    "tags": "@analytics",
+    "scenario": "Pendo events fire on Quick Action and CTA clicks",
+    "description": "Given telemetry instrumentation is active\nWhen the user clicks a Quick Action shortcut, the CTA, a stat tile, a nav link, or the account switcher\nThen a corresponding Pendo click event is fired"
+  },
+  {
+    "scenario_id": "TC_MPHDR_030",
+    "tags": "@gap",
+    "scenario": "Notification panel interaction model is unspecified",
+    "description": "Given the header shows a notification bell icon\nWhen reviewing the UX specification\nThen no design exists for the notification panel UI, read/unread state, grouping logic, or email preference controls\nAnd this is flagged as a design coverage gap pending Product/UX resolution"
+  },
+  {
+    "scenario_id": "TC_MPHDR_031",
+    "tags": "@gap",
+    "scenario": "Contextual AI insight message has no PRD requirement or data source definition",
+    "description": "Given the header shows a personalised AI-generated contextual message\nWhen reviewing the PRD\nThen no requirement, data source, inference model, or fallback rule is documented for this behaviour\nAnd this is flagged as a design coverage gap pending Product/UX resolution"
+  }
+]

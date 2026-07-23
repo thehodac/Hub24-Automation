@@ -1,0 +1,194 @@
+[
+  {
+    "scenario_id": "TC_ACCSW_001",
+    "tags": "@ui @positive @smoke",
+    "scenario": "Trigger displays current account name with icon",
+    "description": "Given the app header is visible\nWhen the header renders\nThen the account switcher trigger displays the currently selected account name with the angles-up-down icon"
+  },
+  {
+    "scenario_id": "TC_ACCSW_002",
+    "tags": "@ui @positive @edge",
+    "scenario": "Long account name truncates with ellipsis in trigger",
+    "description": "Given the account name exceeds the maximum trigger width\nWhen the header renders\nThen the account name is truncated with an ellipsis in the trigger"
+  },
+  {
+    "scenario_id": "TC_ACCSW_003",
+    "tags": "@ui @positive",
+    "scenario": "Tooltip reveals full account name on trigger hover",
+    "description": "Given the trigger displays a truncated account name\nWhen the user hovers over the account switcher trigger\nThen a tooltip appears\nAnd the tooltip reveals the full account name"
+  },
+  {
+    "scenario_id": "TC_ACCSW_004",
+    "tags": "@ui @positive @smoke",
+    "scenario": "Clicking trigger opens dropdown anchored to trigger",
+    "description": "Given the account switcher is in its default closed state\nWhen the user clicks the account switcher trigger\nThen the dropdown opens anchored to the trigger"
+  },
+  {
+    "scenario_id": "TC_ACCSW_005",
+    "tags": "@ui @positive",
+    "scenario": "Opening account switcher closes other open header overlays",
+    "description": "Given another header overlay such as notifications is currently open\nWhen the user clicks the account switcher trigger\nThen the account switcher dropdown opens\nAnd all other open header overlays close simultaneously"
+  },
+  {
+    "scenario_id": "TC_ACCSW_006",
+    "tags": "@ui @positive @edge",
+    "scenario": "Dropdown width remains consistent with trigger width across states",
+    "description": "Given the account switcher dropdown is open\nWhen the dropdown transitions between its default, search, and filtered states\nThen the dropdown width remains consistent with the trigger width in every state"
+  },
+  {
+    "scenario_id": "TC_ACCSW_007",
+    "tags": "@ui @positive",
+    "scenario": "Dropdown with 5 or fewer accounts lists all accounts without a search input",
+    "description": "Given the account switcher dropdown is open\nAnd the user has 5 or fewer accounts\nWhen the dropdown renders\nThen all available accounts are listed\nAnd no search input is displayed"
+  },
+  {
+    "scenario_id": "TC_ACCSW_008",
+    "tags": "@ui @positive",
+    "scenario": "Active account is visually highlighted when 5 or fewer accounts exist",
+    "description": "Given the account switcher dropdown is open\nAnd the user has 5 or fewer accounts\nWhen the dropdown renders\nThen the active account is visually highlighted in the list"
+  },
+  {
+    "scenario_id": "TC_ACCSW_009",
+    "tags": "@ui @positive",
+    "scenario": "Sticky menu label shows total account count for 5 or fewer accounts",
+    "description": "Given the account switcher dropdown is open\nAnd the user has 5 accounts\nWhen the dropdown renders\nThen the sticky menu label displays the total count as \"Accounts (5)\""
+  },
+  {
+    "scenario_id": "TC_ACCSW_010",
+    "tags": "@ui @positive @smoke",
+    "scenario": "Dropdown with more than 5 accounts shows a Filter accounts search input",
+    "description": "Given the account switcher dropdown is open\nAnd the user has more than 5 accounts\nWhen the dropdown renders\nThen a \"Filter accounts\" search input appears above the scrollable list"
+  },
+  {
+    "scenario_id": "TC_ACCSW_011",
+    "tags": "@ui @positive",
+    "scenario": "Sticky menu label shows total account count for more than 5 accounts",
+    "description": "Given the account switcher dropdown is open\nAnd the user has 24 accounts\nWhen the dropdown renders\nThen the sticky menu label displays the total count as \"Accounts (24)\""
+  },
+  {
+    "scenario_id": "TC_ACCSW_012",
+    "tags": "@ui @positive @edge",
+    "scenario": "Menu label and search input remain sticky while scrolling the account list",
+    "description": "Given the account switcher dropdown is open\nAnd the user has more than 5 accounts\nWhen the user scrolls the account list\nThen the sticky menu label remains fixed in view\nAnd the \"Filter accounts\" search input remains fixed in view"
+  },
+  {
+    "scenario_id": "TC_ACCSW_013",
+    "tags": "@ui @positive",
+    "scenario": "Search filters the account list in real time as the user types",
+    "description": "Given the account switcher search input is visible\nWhen the user types 1 or more characters\nThen the list filters in real time using contains, starts-with, and fuzzy matching\nAnd results update dynamically with each keystroke"
+  },
+  {
+    "scenario_id": "TC_ACCSW_014",
+    "tags": "@ui @positive",
+    "scenario": "Matched search text is visually highlighted in filtered results",
+    "description": "Given the account switcher search input is visible\nWhen the user types a search term that matches part of an account name\nThen the matched text is visually highlighted in the filtered results"
+  },
+  {
+    "scenario_id": "TC_ACCSW_015",
+    "tags": "@negative",
+    "scenario": "Empty state is shown when no accounts match the search term",
+    "description": "Given the account switcher search input is visible\nWhen the user types a search term that matches no accounts\nThen the empty state \"No accounts match your search.\" is displayed"
+  },
+  {
+    "scenario_id": "TC_ACCSW_016",
+    "tags": "@ui @positive",
+    "scenario": "Overflowing account list scrolls vertically within the dropdown",
+    "description": "Given the account switcher dropdown is open\nAnd the account list exceeds the available panel height\nWhen the list overflows the constrained maximum height\nThen the dropdown scrolls vertically"
+  },
+  {
+    "scenario_id": "TC_ACCSW_017",
+    "tags": "@ui @positive @accessibility",
+    "scenario": "Arrow keys navigate the overflowing account list and Enter selects the highlighted account",
+    "description": "Given the account switcher dropdown is open and scrollable\nWhen the user presses the arrow keys\nThen the list highlight moves between accounts\nWhen the user presses Enter\nThen the highlighted account is selected"
+  },
+  {
+    "scenario_id": "TC_ACCSW_018",
+    "tags": "@ui @positive @smoke",
+    "scenario": "Selecting an account from the dropdown updates the active context and trigger label",
+    "description": "Given the account switcher dropdown is open\nWhen the user selects an account\nThen the selected account becomes the active context\nAnd the header trigger updates to display the new account name\nAnd the dropdown closes"
+  },
+  {
+    "scenario_id": "TC_ACCSW_019",
+    "tags": "@ui @positive @smoke",
+    "scenario": "Selecting an account refreshes application data and navigation",
+    "description": "Given the account switcher dropdown is open\nWhen the user selects a different account\nThen application data refreshes to reflect the new context\nAnd navigation refreshes to reflect the new context"
+  },
+  {
+    "scenario_id": "TC_ACCSW_020",
+    "tags": "@ui @edge",
+    "scenario": "Long account name in dropdown list truncates at a two-line maximum with tooltip",
+    "description": "Given an account name exceeds the maximum display width in the dropdown list\nWhen the name overflows the available space\nThen the name is truncated with an ellipsis at the two-line maximum\nAnd a tooltip on hover reveals the full name"
+  },
+  {
+    "scenario_id": "TC_ACCSW_021",
+    "tags": "@ui @positive @accessibility",
+    "scenario": "First ESC press exits the search field without closing the dropdown",
+    "description": "Given the account switcher dropdown is open\nAnd the search input has focus\nWhen the user presses ESC\nThen the search field loses focus\nAnd the dropdown remains open"
+  },
+  {
+    "scenario_id": "TC_ACCSW_022",
+    "tags": "@ui @positive @accessibility",
+    "scenario": "Second ESC press closes the dropdown",
+    "description": "Given the account switcher dropdown is open\nAnd the search field has already lost focus from a prior ESC press\nWhen the user presses ESC again\nThen the dropdown closes"
+  },
+  {
+    "scenario_id": "TC_ACCSW_023",
+    "tags": "@ui @positive",
+    "scenario": "Clicking outside the dropdown closes it immediately",
+    "description": "Given the account switcher dropdown is open\nWhen the user clicks outside the dropdown\nThen the dropdown closes immediately"
+  },
+  {
+    "scenario_id": "TC_ACCSW_024",
+    "tags": "@mobile @positive @smoke",
+    "scenario": "Mobile: tapping the avatar icon-button opens a full-screen consolidated menu",
+    "description": "Given the user is on a mobile viewport\nWhen the user taps the avatar icon-button\nThen a full-screen consolidated sl-menu opens\nAnd the menu shows the user's name, email, and current account as a tappable row"
+  },
+  {
+    "scenario_id": "TC_ACCSW_025",
+    "tags": "@mobile @positive",
+    "scenario": "Mobile: tapping the current account row opens a nested account list sub-view",
+    "description": "Given the mobile full-screen consolidated menu is open\nWhen the user taps the current account row\nThen a nested account list sub-view appears\nAnd the sub-view has a sticky search input and a scrollable account list"
+  },
+  {
+    "scenario_id": "TC_ACCSW_026",
+    "tags": "@mobile @positive",
+    "scenario": "Tablet: tapping the avatar icon-button opens a 320px fixed-width panel",
+    "description": "Given the user is on a tablet viewport\nWhen the user taps the avatar icon-button\nThen a 320px fixed-width panel opens\nAnd the panel shows the same consolidated options as the mobile menu"
+  },
+  {
+    "scenario_id": "TC_ACCSW_027",
+    "tags": "@mobile @positive",
+    "scenario": "Tablet: tapping the current account row shows the same nested account list sub-view",
+    "description": "Given the tablet 320px panel is open\nWhen the user taps the current account row\nThen the same nested account list sub-view appears as on mobile"
+  },
+  {
+    "scenario_id": "TC_ACCSW_028",
+    "tags": "@edge @negative",
+    "scenario": "Single-account user sees no switching action and no search input",
+    "description": "Given the authenticated user has only one account\nWhen the user opens the account switcher\nThen the single account is displayed as the active item\nAnd no switching action is available\nAnd no search input is rendered\nAnd the component renders gracefully"
+  },
+  {
+    "scenario_id": "TC_ACCSW_029",
+    "tags": "@accessibility @positive",
+    "scenario": "Visible WCAG 2.2 AA focus ring appears when tabbing to the trigger",
+    "description": "Given the header is rendered\nWhen a keyboard user tabs to the account switcher trigger\nThen a visible WCAG 2.2 AA focus ring is displayed on the trigger"
+  },
+  {
+    "scenario_id": "TC_ACCSW_030",
+    "tags": "@accessibility @positive",
+    "scenario": "Dropdown opens via Enter or Space when the trigger is focused",
+    "description": "Given the account switcher trigger is focused via keyboard\nWhen the user presses Enter or Space\nThen the dropdown opens"
+  },
+  {
+    "scenario_id": "TC_ACCSW_031",
+    "tags": "@negative @gap @edge",
+    "scenario": "Undefined maximum trigger width pixel value creates ambiguous truncation threshold",
+    "description": "Given AC-01 states the trigger name truncates when it exceeds the maximum trigger width\nAnd the spec does not define the exact pixel or character width threshold\nWhen QA attempts to verify the truncation breakpoint\nThen the expected truncation width is ambiguous and should be clarified with design before automation"
+  },
+  {
+    "scenario_id": "TC_ACCSW_032",
+    "tags": "@analytics @positive",
+    "scenario": "Pendo event fires with account context when a user switches accounts",
+    "description": "Given the account switcher dropdown is open\nWhen the user selects a different account\nThen a Pendo analytics event is fired recording the account-switch action\nAnd the event payload includes the source and destination account context"
+  }
+]

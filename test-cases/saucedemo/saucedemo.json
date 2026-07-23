@@ -1,0 +1,248 @@
+[
+  {
+    "scenario_id": "TC_LOGIN_001",
+    "tags": "@ui @smoke @positive",
+    "scenario": "Login successfully with standard user",
+    "description": "Given I am on the login page\nWhen I enter username \"standard_user\" and password \"secret_sauce\"\nAnd I click the Login button\nThen I should be redirected to the inventory page\nAnd the product list should be visible"
+  },
+  {
+    "scenario_id": "TC_LOGIN_002",
+    "tags": "@ui @negative",
+    "scenario": "Login fails for locked out user",
+    "description": "Given I am on the login page\nWhen I enter username \"locked_out_user\" and password \"secret_sauce\"\nAnd I click the Login button\nThen an error message \"Epic sadface: Sorry, this user has been locked out.\" should appear"
+  },
+  {
+    "scenario_id": "TC_LOGIN_003",
+    "tags": "@ui @negative",
+    "scenario": "Login with empty username shows error",
+    "description": "Given I am on the login page\nWhen I leave the username field empty\nAnd I enter password \"secret_sauce\"\nAnd I click the Login button\nThen an error message \"Epic sadface: Username is required\" should appear"
+  },
+  {
+    "scenario_id": "TC_LOGIN_004",
+    "tags": "@ui @negative",
+    "scenario": "Login with empty password shows error",
+    "description": "Given I am on the login page\nWhen I enter username \"standard_user\"\nAnd I leave the password field empty\nAnd I click the Login button\nThen an error message \"Epic sadface: Password is required\" should appear"
+  },
+  {
+    "scenario_id": "TC_LOGIN_005",
+    "tags": "@ui @negative",
+    "scenario": "Login with invalid credentials shows error",
+    "description": "Given I am on the login page\nWhen I enter username \"invalid_user\" and password \"wrong_pass\"\nAnd I click the Login button\nThen an error message \"Epic sadface: Username and password do not match any user in this service\" should appear"
+  },
+  {
+    "scenario_id": "TC_LOGIN_006",
+    "tags": "@ui @positive",
+    "scenario": "Error message clears when X button is clicked",
+    "description": "Given I am on the login page\nWhen I submit the form with empty credentials\nThen an error message should appear\nWhen I click the X button on the error message\nThen the error message should disappear"
+  },
+  {
+    "scenario_id": "TC_LOGIN_007",
+    "tags": "@ui @performance",
+    "scenario": "Login with performance glitch user succeeds (slow)",
+    "description": "Given I am on the login page\nWhen I enter username \"performance_glitch_user\" and password \"secret_sauce\"\nAnd I click the Login button\nThen I should eventually be redirected to the inventory page (may take up to 10s)"
+  },
+  {
+    "scenario_id": "TC_LOGIN_008",
+    "tags": "@ui @smoke @positive",
+    "scenario": "Logout successfully returns to login page",
+    "description": "Given I am logged in as \"standard_user\"\nWhen I open the burger menu\nAnd I click the Logout button\nThen I should be redirected to the login page\nAnd the Login button should be visible"
+  },
+  {
+    "scenario_id": "TC_INV_001",
+    "tags": "@ui @smoke @positive",
+    "scenario": "Inventory page displays 6 products",
+    "description": "Given I am logged in as \"standard_user\"\nWhen I am on the inventory page\nThen I should see exactly 6 product items"
+  },
+  {
+    "scenario_id": "TC_INV_002",
+    "tags": "@ui @positive",
+    "scenario": "Sort products A to Z",
+    "description": "Given I am on the inventory page\nWhen I select sort option \"Name (A to Z)\"\nThen the product names should be sorted in ascending alphabetical order"
+  },
+  {
+    "scenario_id": "TC_INV_003",
+    "tags": "@ui @positive",
+    "scenario": "Sort products Z to A",
+    "description": "Given I am on the inventory page\nWhen I select sort option \"Name (Z to A)\"\nThen the product names should be sorted in descending alphabetical order"
+  },
+  {
+    "scenario_id": "TC_INV_004",
+    "tags": "@ui @positive",
+    "scenario": "Sort products by price low to high",
+    "description": "Given I am on the inventory page\nWhen I select sort option \"Price (low to high)\"\nThen the product prices should be sorted in ascending order"
+  },
+  {
+    "scenario_id": "TC_INV_005",
+    "tags": "@ui @positive",
+    "scenario": "Sort products by price high to low",
+    "description": "Given I am on the inventory page\nWhen I select sort option \"Price (high to low)\"\nThen the product prices should be sorted in descending order"
+  },
+  {
+    "scenario_id": "TC_INV_006",
+    "tags": "@ui @smoke @positive",
+    "scenario": "Add item to cart shows badge count",
+    "description": "Given I am on the inventory page\nWhen I click \"Add to cart\" on \"Sauce Labs Backpack\"\nThen the cart icon badge should show \"1\""
+  },
+  {
+    "scenario_id": "TC_INV_007",
+    "tags": "@ui @positive",
+    "scenario": "Add multiple items to cart updates badge",
+    "description": "Given I am on the inventory page\nWhen I add \"Sauce Labs Backpack\" and \"Sauce Labs Bike Light\" to cart\nThen the cart icon badge should show \"2\""
+  },
+  {
+    "scenario_id": "TC_INV_008",
+    "tags": "@ui @positive",
+    "scenario": "Remove item from inventory page hides badge",
+    "description": "Given I have added \"Sauce Labs Backpack\" to the cart\nWhen I click \"Remove\" on the same product\nThen the cart icon badge should not be visible"
+  },
+  {
+    "scenario_id": "TC_INV_009",
+    "tags": "@ui @positive",
+    "scenario": "Click product name navigates to detail page",
+    "description": "Given I am on the inventory page\nWhen I click on the name \"Sauce Labs Backpack\"\nThen I should be navigated to the product detail page\nAnd the URL should contain \"inventory-item.html\""
+  },
+  {
+    "scenario_id": "TC_INV_010",
+    "tags": "@ui @positive",
+    "scenario": "Click cart icon navigates to cart page",
+    "description": "Given I am on the inventory page\nWhen I click the cart icon\nThen I should be navigated to the cart page\nAnd the URL should contain \"cart.html\""
+  },
+  {
+    "scenario_id": "TC_CART_001",
+    "tags": "@ui @smoke @positive",
+    "scenario": "Cart page displays added items correctly",
+    "description": "Given I have added \"Sauce Labs Backpack\" to the cart\nWhen I navigate to the cart page\nThen I should see \"Sauce Labs Backpack\" listed in the cart\nAnd the item name, description, and price should be correct"
+  },
+  {
+    "scenario_id": "TC_CART_002",
+    "tags": "@ui @positive",
+    "scenario": "Remove item from cart page",
+    "description": "Given I have \"Sauce Labs Backpack\" in the cart\nWhen I click \"Remove\" on the cart page\nThen the item should be removed from the cart\nAnd the cart badge should not be visible"
+  },
+  {
+    "scenario_id": "TC_CART_003",
+    "tags": "@ui @positive",
+    "scenario": "Continue Shopping button returns to inventory",
+    "description": "Given I am on the cart page\nWhen I click \"Continue Shopping\"\nThen I should be returned to the inventory page"
+  },
+  {
+    "scenario_id": "TC_CART_004",
+    "tags": "@ui @smoke @positive",
+    "scenario": "Checkout button navigates to checkout step 1",
+    "description": "Given I have at least one item in the cart\nWhen I click \"Checkout\"\nThen I should be navigated to the checkout information page\nAnd the URL should contain \"checkout-step-one.html\""
+  },
+  {
+    "scenario_id": "TC_CART_005",
+    "tags": "@ui @positive",
+    "scenario": "Empty cart shows no items",
+    "description": "Given I am logged in as \"standard_user\" and have not added any items\nWhen I navigate to the cart page\nThen the cart should be empty with no items listed"
+  },
+  {
+    "scenario_id": "TC_CART_006",
+    "tags": "@ui @positive",
+    "scenario": "Cart persists after page reload",
+    "description": "Given I have added \"Sauce Labs Backpack\" to the cart\nWhen I reload the page\nThen the cart badge should still show \"1\"\nAnd the item should still be in the cart"
+  },
+  {
+    "scenario_id": "TC_CHK_001",
+    "tags": "@ui @smoke @positive",
+    "scenario": "Proceed to step 2 with valid info",
+    "description": "Given I am on checkout step 1\nWhen I enter First Name \"John\", Last Name \"Doe\", Zip \"10001\"\nAnd I click \"Continue\"\nThen I should be redirected to checkout step 2\nAnd the URL should contain \"checkout-step-two.html\""
+  },
+  {
+    "scenario_id": "TC_CHK_002",
+    "tags": "@ui @negative",
+    "scenario": "Checkout fails with empty first name",
+    "description": "Given I am on checkout step 1\nWhen I leave First Name empty and fill Last Name and Zip\nAnd I click \"Continue\"\nThen an error \"Error: First Name is required\" should appear"
+  },
+  {
+    "scenario_id": "TC_CHK_003",
+    "tags": "@ui @negative",
+    "scenario": "Checkout fails with empty last name",
+    "description": "Given I am on checkout step 1\nWhen I fill First Name, leave Last Name empty, fill Zip\nAnd I click \"Continue\"\nThen an error \"Error: Last Name is required\" should appear"
+  },
+  {
+    "scenario_id": "TC_CHK_004",
+    "tags": "@ui @negative",
+    "scenario": "Checkout fails with empty zip code",
+    "description": "Given I am on checkout step 1\nWhen I fill First Name and Last Name, leave Zip empty\nAnd I click \"Continue\"\nThen an error \"Error: Postal Code is required\" should appear"
+  },
+  {
+    "scenario_id": "TC_CHK_005",
+    "tags": "@ui @positive",
+    "scenario": "Cancel on step 1 returns to cart",
+    "description": "Given I am on checkout step 1\nWhen I click \"Cancel\"\nThen I should be returned to the cart page"
+  },
+  {
+    "scenario_id": "TC_CHK_006",
+    "tags": "@ui @positive",
+    "scenario": "Cancel on step 2 returns to inventory",
+    "description": "Given I am on checkout step 2 (order overview)\nWhen I click \"Cancel\"\nThen I should be returned to the inventory page"
+  },
+  {
+    "scenario_id": "TC_CHK_007",
+    "tags": "@ui @positive",
+    "scenario": "Order total is correctly calculated on step 2",
+    "description": "Given I have added items totalling a known price\nWhen I reach checkout step 2\nThen the item total and grand total should be correctly calculated and displayed"
+  },
+  {
+    "scenario_id": "TC_CHK_008",
+    "tags": "@ui @positive",
+    "scenario": "Back Home button on confirmation returns to inventory",
+    "description": "Given I have completed a checkout and see the confirmation page\nWhen I click \"Back Home\"\nThen I should be returned to the inventory page\nAnd the cart badge should not be visible"
+  },
+  {
+    "scenario_id": "TC_CHK_009",
+    "tags": "@ui @positive",
+    "scenario": "Order summary shows all price components on step 2",
+    "description": "Given I am on checkout step 2\nWhen I view the order overview\nThen I should see the item list, subtotal, tax, and total price all visible"
+  },
+  {
+    "scenario_id": "TC_CHK_010",
+    "tags": "@ui @smoke @positive @e2e",
+    "scenario": "Complete full checkout flow - finish button",
+    "description": "Given I am on checkout step 2 with valid items\nWhen I click \"Finish\"\nThen I should see the order confirmation screen"
+  },
+  {
+    "scenario_id": "TC_CHK_011",
+    "tags": "@ui @smoke @positive @e2e",
+    "scenario": "Order confirmation shows success message",
+    "description": "Given I have completed the checkout flow\nWhen I see the confirmation page\nThen a success header and confirmation text should be visible"
+  },
+  {
+    "scenario_id": "TC_NAV_001",
+    "tags": "@ui @positive",
+    "scenario": "Burger menu opens and closes",
+    "description": "Given I am logged in and on any page\nWhen I click the burger menu icon\nThen the side menu should open with options: All Items, About, Logout, Reset App State\nWhen I click X to close\nThen the menu should close"
+  },
+  {
+    "scenario_id": "TC_NAV_002",
+    "tags": "@ui @positive",
+    "scenario": "Reset App State clears cart",
+    "description": "Given I have items in my cart\nWhen I open the burger menu and click \"Reset App State\"\nThen the cart badge should disappear\nAnd all \"Add to cart\" buttons should be reset"
+  },
+  {
+    "scenario_id": "TC_NAV_003",
+    "tags": "@ui @positive",
+    "scenario": "All Items menu link returns to inventory",
+    "description": "Given I am on a page other than inventory\nWhen I open the burger menu and click \"All Items\"\nThen I should be navigated back to the inventory page"
+  },
+  {
+    "scenario_id": "TC_GAP_001",
+    "tags": "@ui @gap",
+    "scenario": "problem_user broken images / form bugs (spec gap - not fully specified)",
+    "description": "Given I am logged in as \"problem_user\"\nWhen I browse the inventory and checkout\nThen broken images and form bugs are expected but exact acceptance criteria are NOT defined in the spec"
+  },
+  {
+    "scenario_id": "TC_GAP_002",
+    "tags": "@ui @gap",
+    "scenario": "error_user action-specific error behaviours (spec gap)",
+    "description": "Given I am logged in as \"error_user\"\nWhen I perform add-to-cart / checkout actions\nThen specific error behaviours occur but are NOT defined in the spec"
+  },
+  {
+    "scenario_id": "TC_GAP_003",
+    "tags": "@visual @gap",
+    "scenario": "visual_user visual differences need screenshot comparison (Chromatic)",
+    "description": "Given I am logged in as \"visual_user\"\nWhen I view the inventory page\nThen visual differences require a screenshot/visual regression check (Chromatic), not a functional assertion"
+  }
+]

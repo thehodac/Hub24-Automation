@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Bug Report → Jira workflow — HUB24</title>
+<style>
+  body { font-family: Arial, Helvetica, sans-serif; max-width: 920px; margin: 24px auto; padding: 0 18px; line-height: 1.6; color: #2C2C2A; }
+  h1 { font-size: 23px; border-bottom: 2px solid #ddd; padding-bottom: 8px; }
+  h2 { font-size: 17px; margin-top: 30px; color: #0c447c; }
+  .meta { color: #666; font-size: 14px; }
+  table { border-collapse: collapse; width: 100%; margin: 10px 0; }
+  th, td { border: 1px solid #ddd; padding: 8px 10px; text-align: left; font-size: 14px; vertical-align: top; }
+  th { background: #f4f6f8; }
+  code { background: #f1f1f1; padding: 1px 5px; border-radius: 4px; font-size: 13px; }
+  pre { background: #1e1e1e; color: #e6e6e6; padding: 12px 14px; border-radius: 6px; overflow-x: auto; font-size: 13px; }
+  ul, ol { padding-left: 22px; }
+  .tag { display: inline-block; font-size: 12px; padding: 1px 7px; border-radius: 10px; }
+  .fail { background: #FAECE7; color: #993C1D; border: 1px solid #D85A30; }
+  .pass { background: #E1F5EE; color: #0F6E56; border: 1px solid #1D9E75; }
+  .diagram { border: 1px solid #eee; border-radius: 8px; padding: 8px; margin: 12px 0; }
+</style>
+</head>
+<body>
+  <h1>Bug Report → Jira workflow (HUB24)</h1>
+  <p class="meta">Automation: Playwright + custom reporter. Updated: 2026-07-09 · Jira project: NIT · Bug epic: NIT-5006</p>
+
+  <p>A custom reporter (<code>reporters/bug-report.ts</code> + <code>reporters/jira.ts</code>) automatically
+  generates a bug report and syncs the Jira ticket after each test run.</p>
+
+  <div class="diagram">
+  <svg viewBox="0 0 860 690" xmlns="http://www.w3.org/2000/svg" width="100%" role="img" font-family="Arial, sans-serif">
+    <title>Test fail to Jira workflow</title>
+    <defs>
+      <marker id="ah" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+        <path d="M0,0 L7,3 L0,6 Z" fill="#888780"/>
+      </marker>
+    </defs>
+    <rect x="600" y="16" width="14" height="14" rx="3" fill="#FAECE7" stroke="#D85A30"/>
+    <text x="620" y="27" font-size="12" fill="#5F5E5A">FAIL path</text>
+    <rect x="700" y="16" width="14" height="14" rx="3" fill="#E1F5EE" stroke="#1D9E75"/>
+    <text x="720" y="27" font-size="12" fill="#5F5E5A">PASS on re-run</text>
+
+    <rect x="310" y="24" width="240" height="44" rx="8" fill="#F1EFE8" stroke="#B4B2A9"/>
+    <text x="430" y="43" font-size="14" font-weight="700" text-anchor="middle" fill="#2C2C2A">Run tests</text>
+    <text x="430" y="59" font-size="11" text-anchor="middle" fill="#888780">e2e · api · a11y · chromatic</text>
+
+    <polygon points="430,84 505,116 430,148 355,116" fill="#E6F1FB" stroke="#185FA5"/>
+    <text x="430" y="120" font-size="13" font-weight="700" text-anchor="middle" fill="#2C2C2A">Result?</text>
+    <line x1="430" y1="68" x2="430" y2="84" stroke="#888780" marker-end="url(#ah)"/>
+
+    <polyline points="355,116 220,116 220,150" fill="none" stroke="#888780" marker-end="url(#ah)"/>
+    <text x="250" y="110" font-size="11" font-weight="700" fill="#993C1D">FAIL</text>
+    <polyline points="505,116 640,116 640,150" fill="none" stroke="#888780" marker-end="url(#ah)"/>
+    <text x="560" y="110" font-size="11" font-weight="700" fill="#0F6E56">PASS</text>
+
+    <rect x="40" y="150" width="360" height="44" rx="8" fill="#FAECE7" stroke="#D85A30"/>
+    <text x="58" y="169" font-size="13" font-weight="700" fill="#2C2C2A">1 · Console summary</text>
+    <text x="58" y="185" font-size="11" fill="#888780">Total · Passed · Failed</text>
+    <rect x="40" y="208" width="360" height="44" rx="8" fill="#FAECE7" stroke="#D85A30"/>
+    <text x="58" y="227" font-size="13" font-weight="700" fill="#2C2C2A">2 · Bug report .docx (per issue)</text>
+    <text x="58" y="243" font-size="11" fill="#888780">bug-report/&lt;cat&gt;/[FAIL][ISSUE-NN]</text>
+    <rect x="40" y="266" width="360" height="44" rx="8" fill="#FAECE7" stroke="#D85A30"/>
+    <text x="58" y="285" font-size="13" font-weight="700" fill="#2C2C2A">3 · Screenshot + Video</text>
+    <text x="58" y="301" font-size="11" fill="#888780">bug-image/&lt;cat&gt; · bug-video/&lt;cat&gt;</text>
+    <rect x="40" y="324" width="360" height="44" rx="8" fill="#FAECE7" stroke="#D85A30"/>
+    <text x="58" y="343" font-size="13" font-weight="700" fill="#2C2C2A">4 · API evidence</text>
+    <text x="58" y="359" font-size="11" fill="#888780">request/response → docx + PNG</text>
+    <rect x="40" y="382" width="360" height="44" rx="8" fill="#FAECE7" stroke="#D85A30"/>
+    <text x="58" y="401" font-size="13" font-weight="700" fill="#2C2C2A">5 · History + stable ISSUE id</text>
+    <text x="58" y="417" font-size="11" fill="#888780">fail/pass dates, VN time</text>
+    <rect x="40" y="440" width="360" height="48" rx="8" fill="#FAECE7" stroke="#D85A30" stroke-width="2"/>
+    <text x="58" y="460" font-size="13" font-weight="700" fill="#2C2C2A">6 · Jira: create ticket → "New"</text>
+    <text x="58" y="477" font-size="11" fill="#888780">Epic→Bug · Story→Bug-Fix Sub-task · [Bug] · P1–P4</text>
+    <line x1="220" y1="194" x2="220" y2="208" stroke="#888780" marker-end="url(#ah)"/>
+    <line x1="220" y1="252" x2="220" y2="266" stroke="#888780" marker-end="url(#ah)"/>
+    <line x1="220" y1="310" x2="220" y2="324" stroke="#888780" marker-end="url(#ah)"/>
+    <line x1="220" y1="368" x2="220" y2="382" stroke="#888780" marker-end="url(#ah)"/>
+    <line x1="220" y1="426" x2="220" y2="440" stroke="#888780" marker-end="url(#ah)"/>
+
+    <rect x="460" y="150" width="360" height="44" rx="8" fill="#E1F5EE" stroke="#1D9E75"/>
+    <text x="478" y="169" font-size="13" font-weight="700" fill="#2C2C2A">1 · Rename [FAIL] → [PASS]</text>
+    <text x="478" y="185" font-size="11" fill="#888780">keep all content</text>
+    <rect x="460" y="208" width="360" height="44" rx="8" fill="#E1F5EE" stroke="#1D9E75"/>
+    <text x="478" y="227" font-size="13" font-weight="700" fill="#2C2C2A">2 · Append PASS history</text>
+    <text x="478" y="243" font-size="11" fill="#888780">fail date · pass date</text>
+    <rect x="460" y="266" width="360" height="48" rx="8" fill="#E1F5EE" stroke="#1D9E75" stroke-width="2"/>
+    <text x="478" y="286" font-size="13" font-weight="700" fill="#2C2C2A">3 · Jira: transition → "Done"</text>
+    <text x="478" y="303" font-size="11" fill="#888780">find ticket by label</text>
+    <line x1="640" y1="194" x2="640" y2="208" stroke="#888780" marker-end="url(#ah)"/>
+    <line x1="640" y1="252" x2="640" y2="266" stroke="#888780" marker-end="url(#ah)"/>
+
+    <rect x="40" y="520" width="780" height="140" rx="10" fill="#F1EFE8" stroke="#B4B2A9"/>
+    <text x="58" y="546" font-size="13" font-weight="700" fill="#2C2C2A">Config — .env toggles</text>
+    <text x="58" y="572" font-size="12" fill="#5F5E5A">JIRA_CREATE_TICKETS = true → enable Jira integration (create ticket + change status)</text>
+    <text x="58" y="594" font-size="12" fill="#5F5E5A">JIRA_PARENT_KEY → parent to attach to (Epic ⇒ Bug, Story ⇒ Sub-task)</text>
+    <text x="58" y="616" font-size="12" fill="#5F5E5A">JIRA_ISSUE_TYPE=Bug · JIRA_SUBTASK_TYPE=Bug Fixing (in-sprint) Sub-task</text>
+    <text x="58" y="638" font-size="12" fill="#5F5E5A">JIRA_PASS_TRANSITION=Done · deduplicate by label (no duplicate tickets)</text>
+  </svg>
+  </div>
+
+  <h2>1. When a test FAILS</h2>
+  <ol>
+    <li>Print a summary to the console: <code>Total · Passed · Failed</code>.</li>
+    <li>Export <strong>one .docx file per issue</strong>: <code>bug-report/&lt;type&gt;/[FAIL][ISSUE-NN] &lt;Func Spec&gt; - &lt;title&gt;.docx</code>. ISSUE-NN is stable and numbered separately per type.</li>
+    <li>Save the <strong>screenshot</strong> → <code>bug-image/&lt;type&gt;/</code> and the <strong>video</strong> → <code>bug-video/&lt;type&gt;/</code>.</li>
+    <li><strong>API</strong> tests (no browser): attach request/response via <code>attachApiEvidence()</code> → shown in the docx + <strong>rendered to PNG</strong>.</li>
+    <li>Write the <strong>Change history</strong> (Vietnam time GMT+7) into the docx, adding a line for each run. The history is stored in the file only, not pushed to Jira.</li>
+    <li>Create a <strong>Jira ticket</strong> with status <span class="tag fail">New</span>: if the parent is an Epic ⇒ create a <strong>Bug</strong>; if the parent is a Story ⇒ create a <strong>"Bug Fixing (in-sprint) Sub-task"</strong>. Title <code>[Bug] &lt;Func Spec&gt; - &lt;title&gt;</code>, attach screenshot + video, automatically apply a <strong>severity label P1–P4</strong> (see section 3b), deduplicate by label.</li>
+  </ol>
+
+  <h2>2. When re-run and the test PASSES</h2>
+  <ol>
+    <li>Change the file prefix <code>[FAIL]</code> → <code>[PASS]</code> (docx, png, webm), <strong>keeping all content intact</strong>.</li>
+    <li>Add a history line: which date it failed, which date it passed.</li>
+    <li>Find the ticket by label and <strong>transition it to</strong> <span class="tag pass">Done</span>.</li>
+  </ol>
+
+  <h2>3. Configuration (.env)</h2>
+  <table>
+    <tr><th>Variable</th><th>Meaning</th><th>Default</th></tr>
+    <tr><td><code>JIRA_CREATE_TICKETS</code></td><td>Enable/disable the entire Jira integration</td><td><code>false</code></td></tr>
+    <tr><td><code>JIRA_BASE_URL</code> / <code>JIRA_EMAIL</code> / <code>JIRA_API_TOKEN</code></td><td>Atlassian connection (DO NOT commit)</td><td>—</td></tr>
+    <tr><td><code>JIRA_PROJECT_KEY</code></td><td>Project</td><td><code>NIT</code></td></tr>
+    <tr><td><code>JIRA_PARENT_KEY</code></td><td>Parent ticket to attach to (takes priority over EPIC). Epic ⇒ Bug, Story ⇒ Sub-task</td><td>fallback <code>JIRA_EPIC_KEY</code></td></tr>
+    <tr><td><code>JIRA_ISSUE_TYPE</code></td><td>Type when the parent is an Epic</td><td><code>Bug</code></td></tr>
+    <tr><td><code>JIRA_SUBTASK_TYPE</code></td><td>Type when the parent is a Story</td><td><code>Bug Fixing (in-sprint) Sub-task</code></td></tr>
+    <tr><td><code>JIRA_TITLE_PREFIX</code></td><td>Ticket title prefix</td><td><code>[Bug]</code></td></tr>
+    <tr><td><code>JIRA_PASS_TRANSITION</code></td><td>Status to transition to when the test passes</td><td><code>Done</code></td></tr>
+  </table>
+
+  <h2>3b. Severity (labels P1–P4)</h2>
+  <p>Each bug is automatically tagged with a <strong>Jira severity label</strong> (matching the QA/QC documentation standard), inferred from the test type / tag; it is also written into the .docx. This is an <em>initial guess</em> — QC re-confirms if needed.</p>
+  <table>
+    <tr><th>Test type / tag</th><th>Label</th></tr>
+    <tr><td>tag <code>@security</code></td><td><code>P1-blocker</code></td></tr>
+    <tr><td>e2e / api / accessibility / tag <code>@smoke</code></td><td><code>P2-critical</code></td></tr>
+    <tr><td>default</td><td><code>P3-major</code></td></tr>
+    <tr><td>chromatic (visual)</td><td><code>P4-minor</code></td></tr>
+  </table>
+
+  <h2>4. Output folder structure</h2>
+  <pre>bug-report/  &lt;type&gt;/[FAIL|PASS][ISSUE-NN] &lt;Func Spec&gt; - &lt;title&gt;.docx
+             &lt;type&gt;/.history/ISSUE-NN.json      (stores history + details)
+bug-image/   &lt;type&gt;/[FAIL|PASS][ISSUE-NN] ... .png
+bug-video/   &lt;type&gt;/[FAIL|PASS][ISSUE-NN] ... .webm
+
+&lt;type&gt; = e2e | api | accessibility | chromatic | UI ...</pre>
+
+  <h2>5. Run commands</h2>
+  <pre>npm run test:e2e       # regression / e2e
+npm run test:api       # API
+npm run test:a11y      # accessibility
+npm run test:visual    # chromatic / visual
+
+# Run a specific file:
+npx playwright test tests/e2e/&lt;file&gt;.spec.ts --project=e2e</pre>
+
+  <h2>6. Notes</h2>
+  <ul>
+    <li>"Func Spec" is taken from the outermost <code>describe()</code> — name the describe after the functional spec.</li>
+    <li>Tickets are deduplicated by label: the same test that is still open will not create a new ticket. A ticket already <code>Done</code> does not count as open → if it fails again, a new ticket is created.</li>
+    <li>The history evidence (fail/pass dates) stays in the file only, and is not added to the Jira ticket.</li>
+    <li>The demo files <code>tests/**/_demo-fail*.spec.ts</code> are only for testing the workflow — delete them when running for real.</li>
+    <li>Secrets stay in <code>.env</code> only (already gitignored); do not commit tokens.</li>
+  </ul>
+</body>
+</html>

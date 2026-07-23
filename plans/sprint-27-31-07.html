@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Plan — Sprint 27–31 Jul (rows 38–43)</title>
+  <style>
+    body { font-family: Arial, Helvetica, sans-serif; max-width: 900px; margin: 24px auto; padding: 0 16px; line-height: 1.6; color: #1a1a1a; }
+    h1 { font-size: 22px; border-bottom: 2px solid #ddd; padding-bottom: 8px; }
+    h2 { font-size: 17px; margin-top: 28px; color: #0c447c; }
+    h3 { font-size: 15px; margin-top: 20px; color: #222; }
+    .meta { color: #666; font-size: 14px; }
+    table { border-collapse: collapse; width: 100%; margin: 8px 0; }
+    th, td { border: 1px solid #ddd; padding: 8px 10px; text-align: left; font-size: 14px; vertical-align: top; }
+    th { background: #f4f6f8; }
+    code { background: #f1f1f1; padding: 1px 5px; border-radius: 4px; }
+    ol, ul { padding-left: 22px; }
+    .phase { font-weight: bold; color: #0c447c; }
+    .dod { background: #f6fbf6; border-left: 3px solid #3a9d3a; padding: 6px 12px; margin: 6px 0; }
+  </style>
+</head>
+<body>
+  <h1>Plan — Sprint 27–31 Jul 2026 (backlog rows 38–43)</h1>
+  <p class="meta">Author: Thong Ho · Date: 2026-07-20 · Scope: "Sprint - 27-31/7" section · Related: NITRO/NIT</p>
+
+  <h2>1. Goal</h2>
+  <p>Turn on and prove two more ticket destinations — <strong>Azure DevOps</strong> and
+  <strong>Basecamp</strong> — so a project on either tool gets auto-created bug work items /
+  to-dos and can receive its test cases, exactly like the Asana flow. Each task goes through
+  the same lifecycle: <span class="phase">research → update the flow diagram → test → document
+  the result → secure (validate &amp; sign-off) the proven flow</span>.</p>
+
+  <h2>2. Scope</h2>
+  <table>
+    <tr><th>Row</th><th>Task</th><th>Est</th><th>Tool</th></tr>
+    <tr><td>38</td><td>Azure DevOps — enable auto-create work items (code ready, turn on)</td><td>1d</td><td>Azure DevOps REST API</td></tr>
+    <tr><td>39</td><td>Publish test cases to Azure DevOps</td><td>1d</td><td>Claude Code + Azure API</td></tr>
+    <tr><td>40</td><td>Demo &amp; validation guideline — Azure (document + video)</td><td>0.5d</td><td>—</td></tr>
+    <tr><td>41</td><td>Basecamp — enable auto-create to-dos (code ready, turn on)</td><td>1d</td><td>Basecamp API</td></tr>
+    <tr><td>42</td><td>Publish test cases to Basecamp</td><td>1d</td><td>Claude Code + Basecamp API</td></tr>
+    <tr><td>43</td><td>Demo &amp; validation guideline — Basecamp (document + video)</td><td>0.5d</td><td>—</td></tr>
+  </table>
+  <ul>
+    <li><strong>In scope:</strong> the 6 rows above, proven on the SauceDemo sample project.</li>
+    <li><strong>Out of scope:</strong> HUB24-specific execution (blocked on the HUB24 env); Bamboo CI (row 32, previous sprint); new reporter features.</li>
+  </ul>
+
+  <h2>3. Schedule — what &amp; when</h2>
+  <table>
+    <tr><th>Day</th><th>Focus</th><th>Main output</th></tr>
+    <tr><td>Mon 27/7</td><td>Row 38 — Azure enable + test</td><td>Auto-created Azure work item from a failing test, verified</td></tr>
+    <tr><td>Tue 28/7</td><td>Row 39 — publish test cases to Azure</td><td>Approved test cases created/attached on Azure Boards</td></tr>
+    <tr><td>Wed 29/7</td><td>Row 40 (0.5) Azure guideline · start Row 41 Basecamp enable</td><td>Azure guideline doc + video; Basecamp config started</td></tr>
+    <tr><td>Thu 30/7</td><td>Finish Row 41 Basecamp enable + test · start Row 42 publish</td><td>Auto-created Basecamp to-do, verified</td></tr>
+    <tr><td>Fri 31/7</td><td>Finish Row 42 publish · Row 43 (0.5) Basecamp guideline + team validation</td><td>Test cases on Basecamp; guideline + video; sign-off</td></tr>
+  </table>
+
+  <h2>4. Per-task approach (Didier's 5 phases each)</h2>
+
+  <h3>Row 38 — Azure DevOps: enable auto-create work items</h3>
+  <ol>
+    <li><span class="phase">Research:</span> confirm the Azure reporter is wired (<code>reporters/azuredevops.ts</code>); identify the <code>.env</code> vars (<code>AZURE_DEVOPS_ORG</code>, <code>AZURE_DEVOPS_PROJECT</code>, <code>AZURE_DEVOPS_PAT</code>, <code>AZURE_DEVOPS_CREATE_TICKETS</code>) and how to get the PAT.</li>
+    <li><span class="phase">Diagram:</span> add Azure DevOps as a bug destination on the auto-ticket sub-process diagram.</li>
+    <li><span class="phase">Test:</span> fill <code>.env</code> → run <code>node scripts/check-ticket-env.mjs</code> → run a failing test → a Bug work item appears on the right Azure Boards project.</li>
+    <li><span class="phase">Document:</span> capture evidence (work item created, dedup on re-run, state → Closed on pass).</li>
+    <li><span class="phase">Secure the flow:</span> verify content (title prefix, Environment/Device, params without password, clear error); mark row 38 Done.</li>
+  </ol>
+  <p class="dod"><strong>Done when:</strong> failing test → Azure work item created · re-run → no duplicate · test passes → work item Closed · content verified.</p>
+
+  <h3>Row 39 — Publish test cases to Azure DevOps</h3>
+  <ol>
+    <li><span class="phase">Research:</span> confirm the Azure target (org/project + link from the user) and the 2 files (Excel <code>.xlsx</code> + JSON).</li>
+    <li><span class="phase">Diagram:</span> update the "Publishing test cases" step to include Azure DevOps as a destination.</li>
+    <li><span class="phase">Test:</span> publish an approved sample set to Azure (ASK for destination + link first — side-effectful) → verify the item + both files appear.</li>
+    <li><span class="phase">Document:</span> save evidence; the repo copy stays source of truth.</li>
+    <li><span class="phase">Secure the flow:</span> confirm the confirmation gate (never auto-publish without destination + link); mark Done.</li>
+  </ol>
+  <p class="dod"><strong>Done when:</strong> approved test cases published to the agreed Azure location with both files, after explicit user confirmation.</p>
+
+  <h3>Row 40 — Demo &amp; validation guideline (Azure)</h3>
+  <ol>
+    <li><span class="phase">Research:</span> list what to show (failing test → Azure work item → publish test cases) + the audience.</li>
+    <li><span class="phase">Diagram:</span> reuse the sub-process diagrams as the storyboard.</li>
+    <li><span class="phase">Build:</span> short guideline doc + a video walkthrough of the Azure flow.</li>
+    <li><span class="phase">Test:</span> dry-run the guideline so someone else can follow it.</li>
+    <li><span class="phase">Secure the flow:</span> capture sign-off; mark Done.</li>
+  </ol>
+  <p class="dod"><strong>Done when:</strong> Azure guideline doc + recording exist, dry-run passes, sign-off captured.</p>
+
+  <h3>Row 41 — Basecamp: enable auto-create to-dos</h3>
+  <ol>
+    <li><span class="phase">Research:</span> confirm the Basecamp reporter is wired (<code>reporters/basecamp.ts</code>); identify the <code>.env</code> vars (<code>BASECAMP_TOKEN</code>, <code>BASECAMP_ACCOUNT_ID</code>, <code>BASECAMP_PROJECT_ID</code>, <code>BASECAMP_TODOLIST_ID</code>, <code>BASECAMP_CREATE_TICKETS</code>).</li>
+    <li><span class="phase">Diagram:</span> add Basecamp as a bug destination on the auto-ticket diagram.</li>
+    <li><span class="phase">Test:</span> fill <code>.env</code> → run <code>node scripts/check-ticket-env.mjs</code> → run a failing test → a to-do appears in the right Basecamp to-do list.</li>
+    <li><span class="phase">Document:</span> capture evidence (to-do created, dedup, completed on pass).</li>
+    <li><span class="phase">Secure the flow:</span> verify content; mark row 41 Done.</li>
+  </ol>
+  <p class="dod"><strong>Done when:</strong> failing test → Basecamp to-do created · re-run → no duplicate · test passes → to-do completed · content verified.</p>
+
+  <h3>Row 42 — Publish test cases to Basecamp</h3>
+  <ol>
+    <li><span class="phase">Research:</span> confirm the Basecamp target (account/project + link) and the 2 files.</li>
+    <li><span class="phase">Diagram:</span> update the "Publishing test cases" step to include Basecamp.</li>
+    <li><span class="phase">Test:</span> publish an approved sample set to Basecamp (ASK for destination + link first) → verify the to-do/message + both files appear.</li>
+    <li><span class="phase">Document:</span> save evidence; repo copy stays source of truth.</li>
+    <li><span class="phase">Secure the flow:</span> confirm the confirmation gate; mark Done.</li>
+  </ol>
+  <p class="dod"><strong>Done when:</strong> approved test cases published to the agreed Basecamp location with both files, after explicit user confirmation.</p>
+
+  <h3>Row 43 — Demo &amp; validation guideline (Basecamp)</h3>
+  <ol>
+    <li><span class="phase">Research:</span> list what to show (failing test → Basecamp to-do → publish test cases) + audience.</li>
+    <li><span class="phase">Diagram:</span> reuse the sub-process diagrams as the storyboard.</li>
+    <li><span class="phase">Build:</span> short guideline doc + video walkthrough of the Basecamp flow.</li>
+    <li><span class="phase">Test:</span> dry-run the guideline.</li>
+    <li><span class="phase">Secure the flow:</span> run the team validation, capture sign-off; mark Done.</li>
+  </ol>
+  <p class="dod"><strong>Done when:</strong> Basecamp guideline doc + recording exist, dry-run passes, team validates &amp; signs off.</p>
+
+  <h2>5. Files to create / change</h2>
+  <table>
+    <tr><th>File</th><th>Change</th></tr>
+    <tr><td><code>.env</code></td><td>Azure + Basecamp vars (user fills; not committed)</td></tr>
+    <tr><td><code>docs/qc-subprocess-diagrams.html</code></td><td>Add Azure + Basecamp as bug destinations</td></tr>
+    <tr><td><code>docs/auto-bug-ticket-workflow.html</code></td><td>Document Azure + Basecamp results + evidence</td></tr>
+    <tr><td><code>docs/demo-guideline-azure.(md/docx)</code> + video</td><td>Row 40</td></tr>
+    <tr><td><code>docs/demo-guideline-basecamp.(md/docx)</code> + video</td><td>Row 43</td></tr>
+  </table>
+
+  <h2>6. How to verify</h2>
+  <ul>
+    <li>Rows 38 &amp; 41: <code>node scripts/check-ticket-env.mjs</code> → destination ready; failing test → work item / to-do; re-run → no dupe; pass → closed / completed.</li>
+    <li>Rows 39 &amp; 42: the Azure / Basecamp target shows the item + both files.</li>
+    <li>Rows 40 &amp; 43: a teammate follows the guideline unaided; sign-off recorded.</li>
+  </ul>
+
+  <h2>7. Risks / dependencies</h2>
+  <ul>
+    <li>Azure needs org + project + PAT; Basecamp needs account + token + project + to-do list id (user-provided) and network allow-listing.</li>
+    <li>Publishing (rows 39 &amp; 42) is side-effectful — confirm destination + link before running.</li>
+    <li>All rows run on the SauceDemo sample; HUB24 execution stays blocked until the HUB24 env is provisioned.</li>
+    <li>Sheet fix: rows 38 &amp; 41 currently show Output "Asana tasks" / Tool "Asana API" (copy-paste) — should read Azure / Basecamp.</li>
+  </ul>
+
+  <h2>8. Approval</h2>
+  <p>Per the planning workflow, this plan is presented for approval before implementation.
+  No code changes until approved.</p>
+</body>
+</html>

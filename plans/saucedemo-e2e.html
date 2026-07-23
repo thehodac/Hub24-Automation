@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Plan — SauceDemo E2E automation (demo)</title>
+  <style>
+    body { font-family: Arial, Helvetica, sans-serif; max-width: 860px; margin: 24px auto; padding: 0 16px; line-height: 1.6; color: #1a1a1a; }
+    h1 { font-size: 22px; border-bottom: 2px solid #ddd; padding-bottom: 8px; }
+    h2 { font-size: 17px; margin-top: 28px; color: #0c447c; }
+    .meta { color: #666; font-size: 14px; }
+    table { border-collapse: collapse; width: 100%; margin: 8px 0; }
+    th, td { border: 1px solid #ddd; padding: 8px 10px; text-align: left; font-size: 14px; vertical-align: top; }
+    th { background: #f4f6f8; }
+    code { background: #f1f1f1; padding: 1px 5px; border-radius: 4px; font-size: 13px; }
+    ol, ul { padding-left: 22px; }
+    .tag { font-size: 12px; color: #555; }
+  </style>
+</head>
+<body>
+  <h1>Plan — SauceDemo E2E automation (demo for Kat)</h1>
+  <p class="meta">Author: Thong Ho · Date: 2026-07-10 · Source: Confluence "Saucedemo_TestCase" (36 test cases) · Related: e2e demo for Kat/Paulo</p>
+
+  <h2>1. Goal</h2>
+  <p>Automate the 36 test cases of <code>saucedemo.com</code> (5 modules) with Playwright + Page Object Model,
+  runnable with a single command <code>npm run test:saucedemo</code> to record a demo video of the <strong>e2e test run</strong>.
+  This suite is <strong>independent of the HUB24 environment</strong> (no HUB24 login needed, no test-env access that is currently blocked).</p>
+
+  <h2>2. Scope</h2>
+  <ul>
+    <li><strong>In scope:</strong> 36 test cases — Login (8), Inventory (10), Cart (6), Checkout (11), Navigation (3). The tests are written to <em>pass</em> against the site's real behavior.</li>
+    <li><strong>In scope:</strong> page objects for SauceDemo, dedicated fixtures, a dedicated Playwright project, an npm script.</li>
+    <li><strong>Out of scope:</strong> problem_user / error_user / visual_user (noted as a Risk in the test case page) — not done in this demo version.</li>
+    <li><strong>Out of scope:</strong> deliberately creating a failing bug (use the existing <code>_demo-fail*</code> files when needing to demo Jira ticket creation). This suite aims for 100% pass.</li>
+  </ul>
+
+  <h2>3. Step-by-step approach</h2>
+  <ol>
+    <li>Create page objects in <code>pages/saucedemo/</code> (extend <code>BasePage</code>, locators in the constructor, prefer <code>data-test</code>).</li>
+    <li>Create dedicated fixtures <code>pages/saucedemo/fixtures.ts</code> injecting the page objects (specs do not use <code>new</code>).</li>
+    <li>Write 5 specs by module in <code>tests/saucedemo/</code>, each scenario mapping to one test case (TC_ID noted in the test title).</li>
+    <li>Add the <code>saucedemo</code> project to <code>playwright.config.ts</code> (baseURL = saucedemo, not dependent on <code>setup</code>, no storageState) and have the default projects skip this folder.</li>
+    <li>Add the <code>test:saucedemo</code> script to <code>package.json</code>.</li>
+    <li>Do a trial run, adjust the selectors to match the site, ensure 100% pass.</li>
+  </ol>
+
+  <h2>4. Files to create / change</h2>
+  <table>
+    <tr><th>File</th><th>Change</th></tr>
+    <tr><td><code>pages/saucedemo/LoginPage.ts</code></td><td>New — login, error message, X-clear, logout. <span class="tag">TC_LOGIN_001–008</span></td></tr>
+    <tr><td><code>pages/saucedemo/InventoryPage.ts</code></td><td>New — list 6 products, sort, add/remove, badge, open detail, open cart. <span class="tag">TC_INV_001–010</span></td></tr>
+    <tr><td><code>pages/saucedemo/CartPage.ts</code></td><td>New — view item, remove, continue shopping, checkout, empty, reload. <span class="tag">TC_CART_001–006</span></td></tr>
+    <tr><td><code>pages/saucedemo/CheckoutPage.ts</code></td><td>New — step1 form + validate, step2 totals/summary, finish, confirmation, cancel, back home. <span class="tag">TC_CHK_001–011</span></td></tr>
+    <tr><td><code>pages/saucedemo/MenuPage.ts</code></td><td>New — burger menu open/close, Reset App State, All Items. <span class="tag">TC_NAV_001–003</span></td></tr>
+    <tr><td><code>pages/saucedemo/fixtures.ts</code></td><td>New — export <code>test</code>/<code>expect</code> that inject the 5 page objects.</td></tr>
+    <tr><td><code>tests/saucedemo/login.spec.ts</code></td><td>New — 8 tests.</td></tr>
+    <tr><td><code>tests/saucedemo/inventory.spec.ts</code></td><td>New — 10 tests.</td></tr>
+    <tr><td><code>tests/saucedemo/cart.spec.ts</code></td><td>New — 6 tests.</td></tr>
+    <tr><td><code>tests/saucedemo/checkout.spec.ts</code></td><td>New — 11 tests.</td></tr>
+    <tr><td><code>tests/saucedemo/navigation.spec.ts</code></td><td>New — 3 tests.</td></tr>
+    <tr><td><code>playwright.config.ts</code></td><td>Edit — add the <code>saucedemo</code> project; add <code>/saucedemo/</code> to the NON_DEFAULT list.</td></tr>
+    <tr><td><code>package.json</code></td><td>Edit — add the script <code>"test:saucedemo": "playwright test --project=saucedemo"</code>.</td></tr>
+  </table>
+
+  <h2>5. How to verify</h2>
+  <ul>
+    <li><code>npm run test:saucedemo</code> → 36 tests <strong>pass</strong> (chromium).</li>
+    <li><code>npm run test:saucedemo -- --headed</code> to record a demo video for Kat (seeing the browser act).</li>
+    <li><code>npx playwright show-report</code> to view the HTML report.</li>
+    <li>No Jira ticket created (since everything passes).</li>
+  </ul>
+
+  <h2>6. Risks / notes</h2>
+  <ul>
+    <li>Separate project, <strong>does not touch</strong> HUB24 (BASE_URL, storageState, auth.setup) — safe.</li>
+    <li>SauceDemo uses <code>data-test</code> which is very stable → durable selectors.</li>
+    <li>TC_LOGIN_007 (performance_glitch_user) runs slowly, up to ~10s → increase the timeout just for that test.</li>
+    <li>TC_CHK_007 (tax/total): assert item total + tax + total &gt; 0 and total = subtotal + tax, instead of hardcoding the amount.</li>
+    <li>This is a public sample site; running it many times does not affect HUB24 data.</li>
+  </ul>
+</body>
+</html>

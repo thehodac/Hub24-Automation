@@ -1,0 +1,230 @@
+[
+  {
+    "scenario_id": "TC_LAUNCH_001",
+    "tags": "@ui @positive @smoke",
+    "scenario": "Personalised greeting with overdue message displays on load",
+    "description": "Given a user loads the Workspace page with an active session\nWhen the Launchpad renders\nThen a personalised greeting displays the user's first name\nAnd the greeting includes a dynamic overdue-item message such as \"Hello Craig, You usually prepare annual statements around this time of year, and you have 3 items overdue this week\"\nAnd a \"Start a task\" label appears above a row of Quick Action shortcut buttons"
+  },
+  {
+    "scenario_id": "TC_LAUNCH_002",
+    "tags": "@ui @positive",
+    "scenario": "Corporate Messenger entitled user sees ASIC form defaults",
+    "description": "Given a user entitled to Corporate Messenger loads the Workspace page\nWhen the Launchpad widget loads its default Quick Actions\nThen the default set includes Trust Distribution Resolution/Minutes, Standard Company, Discretionary Trust, ASIC Form 484 (Change of Address), and ASIC Form 362 (Nominate a Registered Agent)"
+  },
+  {
+    "scenario_id": "TC_LAUNCH_003",
+    "tags": "@ui @positive",
+    "scenario": "Non-Corporate-Messenger user sees non-ASIC defaults",
+    "description": "Given a user NOT entitled to Corporate Messenger loads the Workspace page\nWhen the Launchpad widget loads its default Quick Actions\nThen the default set instead includes Trust Distribution Resolution/Minutes, Standard Company, Discretionary Trust, Division 7A Loan, and Investment Strategy\nAnd no ASIC-form shortcuts are shown"
+  },
+  {
+    "scenario_id": "TC_LAUNCH_004",
+    "tags": "@ui @positive @smoke",
+    "scenario": "Clicking a Quick Action launches mapped workflow pre-filled",
+    "description": "Given the Launchpad is in its default non-edit state\nWhen the user clicks a Quick Action button\nThen the mapped workflow launches via Forms Intent Mapping\nAnd the associated document/form is pre-filled"
+  },
+  {
+    "scenario_id": "TC_LAUNCH_005",
+    "tags": "@ui @positive",
+    "scenario": "Quick Action pre-fills client-file context when available",
+    "description": "Given the Launchpad is in its default state\nAnd client-file context is available for the current session\nWhen the user clicks a Quick Action button\nThen the mapped workflow launches\nAnd required context fields are pre-filled per the PRD's \"Workflow shortcuts\" requirement"
+  },
+  {
+    "scenario_id": "TC_LAUNCH_006",
+    "tags": "@ui @negative @edge @gap",
+    "scenario": "Quick Action click with no client-file context available",
+    "description": "Given the Launchpad is in its default state\nAnd no client-file context is available for the current session\nWhen the user clicks a Quick Action button\nThen the mapped workflow launches via Forms Intent Mapping\nAnd the form opens without pre-filled client context\nAnd no error is shown to the user"
+  },
+  {
+    "scenario_id": "TC_LAUNCH_007",
+    "tags": "@ui @positive @smoke",
+    "scenario": "Create a new document navigates to full documents list",
+    "description": "Given the Launchpad is in its default state\nWhen the user clicks \"+ Create a new document\"\nThen the user is navigated to the full documents/forms list"
+  },
+  {
+    "scenario_id": "TC_LAUNCH_008",
+    "tags": "@ui @positive @smoke",
+    "scenario": "Start identity verification navigates to IDV start page",
+    "description": "Given the Launchpad is in its default state\nWhen the user clicks \"Start identity verification\"\nThen the user is navigated to the Identity Verification start page"
+  },
+  {
+    "scenario_id": "TC_LAUNCH_009",
+    "tags": "@ui @positive",
+    "scenario": "Edit pencil icon appears on hover with pointer input",
+    "description": "Given desktop/pointer input is detected\nWhen the user hovers over the \"Quick Actions\" area\nThen an edit (pencil) icon appears beside the label"
+  },
+  {
+    "scenario_id": "TC_LAUNCH_010",
+    "tags": "@ui @positive",
+    "scenario": "Edit pencil icon hides when pointer leaves area",
+    "description": "Given desktop/pointer input is detected\nAnd the edit (pencil) icon is currently visible from a hover\nWhen the pointer leaves the Quick Actions area\nThen the edit (pencil) icon is hidden"
+  },
+  {
+    "scenario_id": "TC_LAUNCH_011",
+    "tags": "@ui @mobile @positive",
+    "scenario": "Edit pencil icon always visible on tablet/touch input",
+    "description": "Given tablet/touch input is detected with no hover capability\nWhen the Launchpad renders\nThen the edit (pencil) icon is always visible\nAnd the icon is not hover-gated"
+  },
+  {
+    "scenario_id": "TC_LAUNCH_012",
+    "tags": "@ui @positive @smoke",
+    "scenario": "Clicking edit icon enters Customise/Edit mode with chevrons",
+    "description": "Given the edit icon is visible\nWhen the user clicks the edit icon\nThen the Launchpad enters Customise/Edit mode\nAnd every Quick Action button displays a chevron indicator marking it as replaceable"
+  },
+  {
+    "scenario_id": "TC_LAUNCH_013",
+    "tags": "@ui @mobile @positive",
+    "scenario": "Tapping edit icon enters Edit mode on tablet",
+    "description": "Given tablet/touch input is detected\nAnd the edit (pencil) icon is visible\nWhen the user taps the edit icon\nThen the Launchpad enters Customise/Edit mode\nAnd every Quick Action button displays a chevron indicator"
+  },
+  {
+    "scenario_id": "TC_LAUNCH_014",
+    "tags": "@ui @positive @smoke",
+    "scenario": "Clicking a Quick Action in edit mode opens Replace panel",
+    "description": "Given edit mode is active\nWhen the user clicks a Quick Action button\nThen a \"Replace Quick Action\" panel opens\nAnd the panel contains a searchable autocomplete field\nAnd the panel contains a categorised menu including groups such as \"COMPANY FORMATIONS\" and \"TRUSTS\" with selectable documents/workflows"
+  },
+  {
+    "scenario_id": "TC_LAUNCH_015",
+    "tags": "@ui @negative",
+    "scenario": "Replace panel shows no-match message for unmatched search",
+    "description": "Given the Replace Quick Action panel is open\nWhen the user types a search term matching no documents\nThen the panel displays \"No documents match your search.\""
+  },
+  {
+    "scenario_id": "TC_LAUNCH_016",
+    "tags": "@ui @edge",
+    "scenario": "Search term with only whitespace shows no-match message",
+    "description": "Given the Replace Quick Action panel is open\nWhen the user types a search term consisting only of whitespace characters\nThen the panel displays \"No documents match your search.\""
+  },
+  {
+    "scenario_id": "TC_LAUNCH_017",
+    "tags": "@ui @positive",
+    "scenario": "Search autocomplete filters matching documents as user types",
+    "description": "Given the Replace Quick Action panel is open\nWhen the user types a search term matching one or more documents\nThen the autocomplete field and categorised menu update to show only matching documents"
+  },
+  {
+    "scenario_id": "TC_LAUNCH_018",
+    "tags": "@ui @positive @edge",
+    "scenario": "Document already assigned to another Quick Action shown disabled",
+    "description": "Given the Replace Quick Action panel is open\nAnd a document is already assigned to another active Quick Action\nWhen the list renders\nThen that document remains visible in the list\nAnd it is shown disabled\nAnd it cannot be re-selected\nAnd duplicate shortcuts are prevented"
+  },
+  {
+    "scenario_id": "TC_LAUNCH_019",
+    "tags": "@ui @positive @smoke",
+    "scenario": "Selecting an available document updates button label immediately without Save",
+    "description": "Given the Replace Quick Action panel is open\nWhen the user selects an available document\nThen the corresponding button's label updates immediately\nAnd no separate \"Save\" action is required\nAnd the change persists for that user"
+  },
+  {
+    "scenario_id": "TC_LAUNCH_020",
+    "tags": "@ui @positive",
+    "scenario": "Exit edit mode by clicking edit icon again",
+    "description": "Given edit mode is active\nWhen the user clicks the edit icon again\nThen Edit mode exits\nAnd the Launchpad returns to its default state"
+  },
+  {
+    "scenario_id": "TC_LAUNCH_021",
+    "tags": "@ui @positive",
+    "scenario": "Exit edit mode by clicking outside Quick Actions area",
+    "description": "Given edit mode is active\nWhen the user clicks outside the Quick Actions area\nThen Edit mode exits\nAnd the Launchpad returns to its default state"
+  },
+  {
+    "scenario_id": "TC_LAUNCH_022",
+    "tags": "@ui @positive @accessibility",
+    "scenario": "Exit edit mode by pressing Esc",
+    "description": "Given edit mode is active\nWhen the user presses Esc\nThen Edit mode exits\nAnd the Launchpad returns to its default state"
+  },
+  {
+    "scenario_id": "TC_LAUNCH_023",
+    "tags": "@ui @mobile @positive",
+    "scenario": "Exit edit mode by tapping edit icon again on tablet",
+    "description": "Given tablet/touch input is detected\nAnd edit mode is active\nWhen the user taps the edit icon again\nThen Edit mode exits\nAnd the Launchpad returns to its default state"
+  },
+  {
+    "scenario_id": "TC_LAUNCH_024",
+    "tags": "@ui @mobile @edge",
+    "scenario": "Start a Task row overflows with horizontal scroll on tablet width",
+    "description": "Given viewport is tablet width\nAnd the Start a Task button row exceeds available width\nWhen the row renders\nThen buttons overflow with horizontal scroll\nAnd buttons do not wrap\nAnd buttons do not truncate"
+  },
+  {
+    "scenario_id": "TC_LAUNCH_025",
+    "tags": "@accessibility @gap",
+    "scenario": "Keyboard-only user can tab through Quick Action buttons with visible focus",
+    "description": "Given a keyboard-only user is navigating the Launchpad\nWhen they tab through the Quick Action buttons\nThen each Quick Action button receives a visible focus indicator\nAnd each Quick Action button is operable via Enter or Space\nAnd this fulfils the WCAG 2.2 focus-visible baseline pending explicit UX confirmation"
+  },
+  {
+    "scenario_id": "TC_LAUNCH_026",
+    "tags": "@accessibility @gap",
+    "scenario": "Keyboard-only user can operate edit icon and Replace panel controls",
+    "description": "Given a keyboard-only user is navigating the Launchpad\nWhen they tab to the edit icon\nThen the edit icon receives a visible focus indicator\nAnd the edit icon is operable via Enter or Space\nWhen they tab into the Replace Quick Action search field and menu items\nThen the search field and each menu item receive a visible focus indicator\nAnd each menu item is operable via Enter or Space"
+  },
+  {
+    "scenario_id": "TC_LAUNCH_027",
+    "tags": "@accessibility @gap",
+    "scenario": "Focus order through Launchpad widget is logical and documented",
+    "description": "Given a keyboard-only user is navigating the Launchpad\nWhen they tab sequentially through the greeting banner, Quick Action buttons, edit icon, and Replace Quick Action autocomplete/menu\nThen focus moves in a logical, predictable order\nAnd this baseline is flagged as pending explicit UX/ARIA confirmation since neither source PDF specifies keyboard interaction or ARIA labelling for these elements"
+  },
+  {
+    "scenario_id": "TC_LAUNCH_028",
+    "tags": "@ui @positive @analytics",
+    "scenario": "Pendo event fires when a Quick Action shortcut is clicked",
+    "description": "Given the Launchpad is in its default state\nAnd Pendo analytics tracking is enabled\nWhen the user clicks a Quick Action button\nThen a Pendo analytics event is recorded for the Quick Action click\nAnd the event includes the shortcut/document identifier"
+  },
+  {
+    "scenario_id": "TC_LAUNCH_029",
+    "tags": "@ui @positive @analytics",
+    "scenario": "Pendo event fires when a Quick Action is replaced in edit mode",
+    "description": "Given edit mode is active\nAnd Pendo analytics tracking is enabled\nWhen the user selects a replacement document in the Replace Quick Action panel\nThen a Pendo analytics event is recorded for the shortcut replacement\nAnd the event includes the old and new document identifiers"
+  },
+  {
+    "scenario_id": "TC_LAUNCH_030",
+    "tags": "@ui @positive @analytics",
+    "scenario": "Pendo event fires when Create a new document or Start identity verification is clicked",
+    "description": "Given the Launchpad is in its default state\nAnd Pendo analytics tracking is enabled\nWhen the user clicks \"+ Create a new document\" or \"Start identity verification\"\nThen a Pendo analytics event is recorded identifying which action was taken"
+  },
+  {
+    "scenario_id": "TC_LAUNCH_031",
+    "tags": "@ui @positive",
+    "scenario": "Customised Quick Action selection persists after logout/login",
+    "description": "Given a user has replaced a Quick Action shortcut\nWhen they log out\nAnd they log back in\nThen their customised shortcut selection persists per-user"
+  },
+  {
+    "scenario_id": "TC_LAUNCH_032",
+    "tags": "@ui @edge @negative",
+    "scenario": "Persisted customisation is scoped to the individual user, not shared",
+    "description": "Given User A has replaced a Quick Action shortcut\nWhen User B logs into the same Workspace on the same device\nThen User B sees their own default or previously customised Quick Actions\nAnd User A's customisation does not appear for User B"
+  },
+  {
+    "scenario_id": "TC_LAUNCH_033",
+    "tags": "@ui @negative",
+    "scenario": "Replace Quick Action list excludes documents tied to unavailable feature",
+    "description": "Given a user lacks access to a feature associated with a given document such as ASIC Forms without Corporate Messenger entitlement\nWhen the Replace Quick Action list is built\nThen documents tied to that feature are excluded from the selectable list for that user"
+  },
+  {
+    "scenario_id": "TC_LAUNCH_034",
+    "tags": "@ui @edge @negative",
+    "scenario": "Default Quick Actions never include entitlement-restricted documents",
+    "description": "Given a user lacks Corporate Messenger entitlement\nWhen the Launchpad renders default Quick Actions\nThen no ASIC-form shortcuts appear among the defaults\nAnd the Replace Quick Action panel also excludes ASIC-form documents for that user"
+  },
+  {
+    "scenario_id": "TC_LAUNCH_035",
+    "tags": "@ui @edge @gap",
+    "scenario": "Default shortcut mapping depends on external Forms Intent Mapping configuration",
+    "description": "Given the Forms Intent Mapping spreadsheet defines the default shortcut-to-workflow mapping\nAnd this spreadsheet is an external content/config dependency not included in the provided design package\nWhen the Launchpad loads default Quick Actions\nThen the rendered defaults match the currently configured Forms Intent Mapping\nAnd this dependency is flagged for explicit confirmation before release"
+  },
+  {
+    "scenario_id": "TC_LAUNCH_036",
+    "tags": "@ui @negative @edge",
+    "scenario": "Overdue-item count of zero displays an appropriate greeting variant",
+    "description": "Given a user loads the Workspace page with an active session\nAnd the user has zero overdue items this week\nWhen the Launchpad renders\nThen the personalised greeting displays the user's first name\nAnd the greeting does not display a false overdue-item count"
+  },
+  {
+    "scenario_id": "TC_LAUNCH_037",
+    "tags": "@mobile @ui @positive",
+    "scenario": "Launchpad renders correctly on tablet viewport in default state",
+    "description": "Given a user loads the Workspace page on a tablet-width viewport\nWhen the Launchpad renders in its default state\nThen the greeting, Start a task label, and Quick Action buttons all display correctly\nAnd the always-visible edit icon is shown per touch-input behaviour"
+  },
+  {
+    "scenario_id": "TC_LAUNCH_038",
+    "tags": "@edge @negative",
+    "scenario": "Replace Quick Action panel search is case-insensitive",
+    "description": "Given the Replace Quick Action panel is open\nWhen the user types a search term in a different case than the stored document name\nThen matching documents are still returned\nAnd the panel does not incorrectly display \"No documents match your search.\""
+  }
+]

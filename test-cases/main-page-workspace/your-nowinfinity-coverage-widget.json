@@ -1,0 +1,134 @@
+[
+  {
+    "scenario_id": "TC_COVERAGE_001",
+    "tags": "@ui @positive @smoke",
+    "scenario": "Donut chart renders with coverage percentage",
+    "description": "Given an authorised user loads the Workspace page\nWhen the Your NowInfinity Coverage widget renders\nThen a donut/ring chart displays a percentage value\nAnd the label \"of its capability in active use\" appears beneath the percentage"
+  },
+  {
+    "scenario_id": "TC_COVERAGE_002",
+    "tags": "@functional @edge",
+    "scenario": "Coverage percentage is a rounded whole number",
+    "description": "Given the coverage percentage is calculated\nWhen it is displayed\nThen it is shown as a whole number rounded to the nearest integer with no decimal places"
+  },
+  {
+    "scenario_id": "TC_COVERAGE_003",
+    "tags": "@ui @positive",
+    "scenario": "Chart segments render with correct colour-coded classifications",
+    "description": "Given the chart renders with product segment data\nWhen the donut chart displays\nThen each product category shows as a colour-coded arc: Strong usage (darkest blue), Growing usage (medium blue), Explore next (lighter blue), Recommended (lightest blue/outline)"
+  },
+  {
+    "scenario_id": "TC_COVERAGE_004",
+    "tags": "@ui @edge",
+    "scenario": "Single active category still renders full chart",
+    "description": "Given only one product category is active\nWhen the donut chart renders\nThen the active segment is shown\nAnd the remaining inactive arc is shown in neutral grey"
+  },
+  {
+    "scenario_id": "TC_COVERAGE_005",
+    "tags": "@ui @positive",
+    "scenario": "Legend displays all four classification entries",
+    "description": "Given the widget renders\nWhen the legend displays\nThen it shows four entries: Strong usage, Growing usage, Explore next, and Recommended, each with a product name"
+  },
+  {
+    "scenario_id": "TC_COVERAGE_006",
+    "tags": "@ui @positive",
+    "scenario": "Clicking a legend item highlights the corresponding chart segment",
+    "description": "Given the legend is rendered\nWhen the user clicks a legend item\nThen the corresponding segment in the donut chart is visually highlighted"
+  },
+  {
+    "scenario_id": "TC_COVERAGE_007",
+    "tags": "@functional",
+    "scenario": "Clicking a legend product navigates to the relevant product area",
+    "description": "Given a legend item's associated product is shown\nWhen the user clicks it\nThen the user is navigated to the relevant product area or discovery flow for that product"
+  },
+  {
+    "scenario_id": "TC_COVERAGE_008",
+    "tags": "@functional",
+    "scenario": "Firm switch refreshes coverage data",
+    "description": "Given the user switches firms via the account selector\nWhen the switch completes\nThen the widget refreshes to display coverage data for the newly selected firm"
+  },
+  {
+    "scenario_id": "TC_COVERAGE_009",
+    "tags": "@edge",
+    "scenario": "Zero usage firm shows 0% and neutral ring",
+    "description": "Given a firm has zero usage across all products\nWhen the widget loads\nThen the percentage displays \"0%\"\nAnd the donut chart renders as a full neutral-grey ring with an appropriate empty state message"
+  },
+  {
+    "scenario_id": "TC_COVERAGE_010",
+    "tags": "@functional",
+    "scenario": "Explore next navigation avoids broken or unauthorised pages",
+    "description": "Given a product is classified as \"Explore next\"\nWhen the user clicks the legend item\nThen the user is navigated to information or an onboarding flow for that product, not a broken or unauthorised page"
+  },
+  {
+    "scenario_id": "TC_COVERAGE_011",
+    "tags": "@negative @edge",
+    "scenario": "Recommended product without access leads to informational page",
+    "description": "Given a product is classified as \"Recommended\"\nAnd the user does not have access to it\nWhen the user clicks the legend item\nThen navigation leads to an informational page rather than an error or access-denied screen"
+  },
+  {
+    "scenario_id": "TC_COVERAGE_012",
+    "tags": "@ui @edge",
+    "scenario": "Skeleton loader shown while coverage data is fetching",
+    "description": "Given the widget is fetching coverage data\nWhen the page is loading\nThen a skeleton loader or animated placeholder ring is displayed in place of the chart"
+  },
+  {
+    "scenario_id": "TC_COVERAGE_013",
+    "tags": "@negative",
+    "scenario": "Inline error message shown when coverage data fetch fails",
+    "description": "Given the data fetch fails or times out\nWhen the failure occurs\nThen an inline error message \"Unable to load coverage data. Please refresh.\" renders\nAnd other Workspace widgets are not affected"
+  },
+  {
+    "scenario_id": "TC_COVERAGE_014",
+    "tags": "@functional @gap",
+    "scenario": "Role-based visibility for non-Partner/Admin users is undefined",
+    "description": "Given a standard user who is not Partner or Admin loads the Workspace\nWhen the Coverage widget would render\nThen the role-based visibility rule (read-only view vs hidden) must be explicitly defined and consistently applied\nAnd this is flagged as a design coverage gap pending Product/UX resolution"
+  },
+  {
+    "scenario_id": "TC_COVERAGE_015",
+    "tags": "@mobile @ui",
+    "scenario": "Chart scales proportionally on narrow viewport",
+    "description": "Given the widget renders at a reduced viewport width\nWhen the donut chart displays\nThen it scales proportionally without being cropped or overflowing the widget boundary"
+  },
+  {
+    "scenario_id": "TC_COVERAGE_016",
+    "tags": "@mobile @ui",
+    "scenario": "Legend reflows beneath the chart on narrow viewport",
+    "description": "Given the legend cannot fit beside the chart on a narrow viewport\nWhen the widget renders\nThen the legend displays beneath the chart in a vertical list layout"
+  },
+  {
+    "scenario_id": "TC_COVERAGE_017",
+    "tags": "@accessibility",
+    "scenario": "Donut chart has an accessible text alternative",
+    "description": "Given a screen reader is active\nWhen the donut chart renders\nThen it is accompanied by an aria-label or visually hidden description conveying the percentage and product breakdown"
+  },
+  {
+    "scenario_id": "TC_COVERAGE_018",
+    "tags": "@accessibility",
+    "scenario": "Legend items are keyboard focusable",
+    "description": "Given a keyboard user navigates the widget\nWhen the user tabs through the legend\nThen each legend item is focusable via Tab key with a visible focus indicator"
+  },
+  {
+    "scenario_id": "TC_COVERAGE_019",
+    "tags": "@accessibility",
+    "scenario": "Chart segments have non-colour visual distinction",
+    "description": "Given chart segments are differentiated by colour\nWhen the chart renders\nThen a non-colour visual distinction such as pattern, label, or tooltip is also provided to meet WCAG 1.4.1"
+  },
+  {
+    "scenario_id": "TC_COVERAGE_020",
+    "tags": "@analytics",
+    "scenario": "Pendo impression event fires with coverage data",
+    "description": "Given the Coverage widget renders with data\nWhen the render completes\nThen a Pendo impression event is fired recording the firm's coverage percentage and product classifications"
+  },
+  {
+    "scenario_id": "TC_COVERAGE_021",
+    "tags": "@analytics",
+    "scenario": "Pendo event fires on legend item click",
+    "description": "Given a legend item links to a product\nWhen the user clicks it\nThen a Pendo event is fired capturing the product name and classification (Explore next / Recommended)"
+  },
+  {
+    "scenario_id": "TC_COVERAGE_022",
+    "tags": "@gap",
+    "scenario": "Coverage calculation methodology is undefined",
+    "description": "Given the widget displays a coverage percentage such as \"58%\"\nWhen reviewing PRD and UX specification\nThen no definition exists for how capability is measured or classification thresholds are determined\nAnd this is flagged as a design coverage gap pending Product/UX resolution"
+  }
+]

@@ -1,0 +1,170 @@
+[
+  {
+    "scenario_id": "TC_LODGE_001",
+    "tags": "@ui @positive @smoke",
+    "scenario": "Pipeline-stage count tiles render across the top of the widget",
+    "description": "Given the user is authenticated and the Workspace page loads\nWhen the Lodgements Status widget renders\nThen a row of pipeline-stage tiles displays: Draft, Awaiting sign, Signed, Funding, Transmitted, Lodged, and Rejected, each with a label, count, and icon"
+  },
+  {
+    "scenario_id": "TC_LODGE_002",
+    "tags": "@edge",
+    "scenario": "Zero-count stage tiles still render",
+    "description": "Given any stage has a count of zero\nWhen the widget renders\nThen the tile still displays \"0\" and is never hidden"
+  },
+  {
+    "scenario_id": "TC_LODGE_003",
+    "tags": "@ui @positive",
+    "scenario": "Clicking a stage tile filters the Recent Lodgements table",
+    "description": "Given the widget is rendered\nWhen the user clicks the \"Rejected\" stage tile\nThen the Recent Lodgements table filters to show only lodgements in that pipeline stage\nAnd the active tile is visually highlighted"
+  },
+  {
+    "scenario_id": "TC_LODGE_004",
+    "tags": "@ui @positive",
+    "scenario": "Clear filter affordance resets the table",
+    "description": "Given a stage filter is active\nWhen the user activates \"Clear filter\"\nThen the table returns to showing all recent lodgements unfiltered"
+  },
+  {
+    "scenario_id": "TC_LODGE_005",
+    "tags": "@ui @positive",
+    "scenario": "Recent Lodgements table shows required columns",
+    "description": "Given the Recent Lodgements section renders\nWhen the table displays\nThen it shows Entity, Lodgement Type, Last Updated, and Status columns"
+  },
+  {
+    "scenario_id": "TC_LODGE_006",
+    "tags": "@functional",
+    "scenario": "Default table sort is by Last Updated descending",
+    "description": "Given the table is in its default unfiltered state\nWhen the table renders\nThen rows are sorted by Last Updated descending, most recently updated first"
+  },
+  {
+    "scenario_id": "TC_LODGE_007",
+    "tags": "@ui @positive",
+    "scenario": "Status badges render with correct colour coding",
+    "description": "Given a lodgement row renders\nWhen the Status badge displays\nThen it reflects the pipeline stage with the correct colour: Rejected (red), Transmitted (teal/green), Pending (amber), Draft (grey), Signed (blue), Lodged (green), Awaiting sign (amber)"
+  },
+  {
+    "scenario_id": "TC_LODGE_008",
+    "tags": "@edge",
+    "scenario": "Unrecognised status renders neutral grey badge",
+    "description": "Given a status value is unrecognised\nWhen the row renders\nThen a neutral grey badge renders with the raw status label"
+  },
+  {
+    "scenario_id": "TC_LODGE_009",
+    "tags": "@functional",
+    "scenario": "Widget includes lodgements across all transaction types",
+    "description": "Given the widget loads\nWhen lodgements are aggregated\nThen it includes Advice fee consent, Rollover out, Rollover in, Pay anyone, and Agile submissions"
+  },
+  {
+    "scenario_id": "TC_LODGE_010",
+    "tags": "@functional @edge",
+    "scenario": "Advice fee consent statuses map correctly",
+    "description": "Given a lodgement's type is Advice fee consent\nWhen its status is rendered\nThen it is one of: Denied, Expired, Awaiting submission, Upcoming, Processing, Consent pending, In review, Completed, Cancelled"
+  },
+  {
+    "scenario_id": "TC_LODGE_011",
+    "tags": "@functional",
+    "scenario": "Clicking a lodgement row navigates to the specific record",
+    "description": "Given a lodgement row is displayed\nWhen the user clicks it\nThen the user is navigated directly to the specific lodgement record for that entity and type"
+  },
+  {
+    "scenario_id": "TC_LODGE_012",
+    "tags": "@negative @edge",
+    "scenario": "Clicking a deleted lodgement shows informational message",
+    "description": "Given the lodgement record no longer exists or has been deleted\nWhen the user clicks the row\nThen an informational message is shown\nAnd the widget refreshes to remove the stale row"
+  },
+  {
+    "scenario_id": "TC_LODGE_013",
+    "tags": "@ui @positive",
+    "scenario": "Recent Lodgements section can be collapsed and expanded",
+    "description": "Given the Recent Lodgements section header is visible\nWhen the user clicks it\nThen the table collapses to show only the section header\nAnd clicking again expands the table to render all rows"
+  },
+  {
+    "scenario_id": "TC_LODGE_014",
+    "tags": "@ui @edge",
+    "scenario": "Pipeline tiles remain visible when table is collapsed",
+    "description": "Given the Recent Lodgements section is collapsed\nWhen the widget displays\nThen the pipeline-stage count tiles above remain visible"
+  },
+  {
+    "scenario_id": "TC_LODGE_015",
+    "tags": "@ui @positive",
+    "scenario": "View all lodgements link navigates to full-screen view",
+    "description": "Given the number of recent lodgement rows exceeds the visible table limit\nWhen the user clicks \"View all lodgements\"\nThen the user is navigated to a full-screen lodgements list view"
+  },
+  {
+    "scenario_id": "TC_LODGE_016",
+    "tags": "@functional @edge",
+    "scenario": "Full-screen view honours the active stage filter",
+    "description": "Given a stage filter is active\nWhen the user clicks \"View all lodgements\"\nThen the full-screen view opens pre-filtered to the active stage"
+  },
+  {
+    "scenario_id": "TC_LODGE_017",
+    "tags": "@edge",
+    "scenario": "No lodgements shows all-zero tiles and empty table state",
+    "description": "Given the firm has no lodgements at any pipeline stage\nWhen the widget loads\nThen all stage tiles display \"0\"\nAnd the table renders \"No recent lodgements found.\""
+  },
+  {
+    "scenario_id": "TC_LODGE_018",
+    "tags": "@edge",
+    "scenario": "Filtered empty state shows stage-specific message",
+    "description": "Given a stage filter is applied that returns zero matching lodgements\nWhen the table renders\nThen it shows \"No lodgements in [stage name] status.\""
+  },
+  {
+    "scenario_id": "TC_LODGE_019",
+    "tags": "@ui @edge",
+    "scenario": "Skeleton loaders show while data is fetching",
+    "description": "Given the widget is fetching data\nWhen the page is loading\nThen skeleton loaders display in place of the stage tiles and table rows"
+  },
+  {
+    "scenario_id": "TC_LODGE_020",
+    "tags": "@negative",
+    "scenario": "Inline error message shown when data fetch fails",
+    "description": "Given the data fetch fails or times out\nWhen the failure occurs\nThen an inline error message \"Unable to load lodgements data. Please refresh.\" renders\nAnd other Workspace widgets are not affected"
+  },
+  {
+    "scenario_id": "TC_LODGE_021",
+    "tags": "@functional",
+    "scenario": "Firm switch refreshes stage counts and table rows",
+    "description": "Given the user switches firms\nWhen the switch completes\nThen the widget refreshes to display lodgement data for the newly selected firm"
+  },
+  {
+    "scenario_id": "TC_LODGE_022",
+    "tags": "@mobile @ui",
+    "scenario": "Pipeline tiles scroll or wrap on narrow viewport",
+    "description": "Given the widget renders on a narrow viewport\nWhen the pipeline-stage tiles display\nThen they scroll horizontally or wrap into a two-row grid without overflowing"
+  },
+  {
+    "scenario_id": "TC_LODGE_023",
+    "tags": "@mobile @ui",
+    "scenario": "Recent Lodgements table prioritises key columns on narrow viewport",
+    "description": "Given the Recent Lodgements table renders on a narrow viewport\nWhen the table displays\nThen it prioritises Entity, Status, and Last Updated columns\nAnd non-essential columns collapse or are accessible via horizontal scroll"
+  },
+  {
+    "scenario_id": "TC_LODGE_024",
+    "tags": "@accessibility",
+    "scenario": "All interactive elements are keyboard reachable",
+    "description": "Given a keyboard user navigates the widget\nWhen the user tabs through it\nThen stage tiles, table rows, the collapse toggle, and \"View all\" link are all reachable via Tab with visible focus indicators"
+  },
+  {
+    "scenario_id": "TC_LODGE_025",
+    "tags": "@accessibility",
+    "scenario": "Status badges convey status via text as well as colour",
+    "description": "Given a status badge is rendered\nWhen it displays\nThen it conveys status via a text label as well as colour, never by colour alone"
+  },
+  {
+    "scenario_id": "TC_LODGE_026",
+    "tags": "@accessibility",
+    "scenario": "Collapse toggle exposes aria-expanded state",
+    "description": "Given the collapse/expand toggle renders\nWhen its state changes\nThen it carries aria-expanded=\"true\" or aria-expanded=\"false\" to communicate state to screen readers"
+  },
+  {
+    "scenario_id": "TC_LODGE_027",
+    "tags": "@gap",
+    "scenario": "No direct PRD requirement maps to the Lodgements Status widget",
+    "description": "Given the Lodgements Status widget as designed\nWhen compared to the PRD requirements table\nThen the closest match, Practice management flags, has TBD acceptance criteria and a narrower scope\nAnd this is flagged as a design coverage gap pending Product/UX resolution"
+  },
+  {
+    "scenario_id": "TC_LODGE_028",
+    "tags": "@gap",
+    "scenario": "Recent Lodgements section scope (recency window, row cap, sort) is undefined",
+    "description": "Given the Recent Lodgements section is shown\nWhen reviewing the PRD\nThen no definition exists for the recency window, maximum rows, firm-wide vs assigned-only scope, or sort order\nAnd this is flagged as a design coverage gap pending Product/UX resolution"
+  }
+]

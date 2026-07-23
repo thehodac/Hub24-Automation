@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Plan — Outstanding Signatures Widget test-case regenerate</title>
+  <style>
+    body { font-family: Arial, Helvetica, sans-serif; max-width: 820px; margin: 24px auto; padding: 0 16px; line-height: 1.6; color: #1a1a1a; }
+    h1 { font-size: 22px; border-bottom: 2px solid #ddd; padding-bottom: 8px; }
+    h2 { font-size: 17px; margin-top: 28px; color: #0c447c; }
+    .meta { color: #666; font-size: 14px; }
+    table { border-collapse: collapse; width: 100%; margin: 8px 0; }
+    th, td { border: 1px solid #ddd; padding: 8px 10px; text-align: left; font-size: 14px; }
+    th { background: #f4f6f8; }
+    code { background: #f1f1f1; padding: 1px 5px; border-radius: 4px; }
+    ol, ul { padding-left: 22px; }
+  </style>
+</head>
+<body>
+  <h1>Plan — Outstanding Signatures Widget test-case regenerate</h1>
+  <p class="meta">Author: automated QA pipeline (Claude) · Date: 2026-07-10 · Related page: Confluence PN1 pageId 2157281404 (spec) / 2155184202 (test cases)</p>
+
+  <h2>1. Goal</h2>
+  <p>Regenerate the full test-case set for the "Workspace | Outstanding Signatures Widget" functional
+  spec, since the spec (pageId 2157281404) was modified after the existing test-case page
+  (pageId 2155184202) was last generated. Cover all 15 acceptance criteria plus the two flagged
+  design/entitlement gaps, and publish the set to Confluence and to local repo files.</p>
+
+  <h2>2. Scope</h2>
+  <ul>
+    <li>In scope: designing Gherkin-style test cases (positive, negative, edge, accessibility,
+      mobile, analytics/Pendo, gap) covering AC-01..AC-15; overwriting Confluence page 2155184202
+      body (table + JSON export); overwriting the two local test-case artifact files for this widget.</li>
+    <li>Out of scope: modifying the functional spec page (2157281404); notifying/messaging anyone;
+      changing any other widget's test cases; implementing the widget itself.</li>
+  </ul>
+
+  <h2>3. Step-by-step approach</h2>
+  <ol>
+    <li>Read the existing Confluence test-case page (2155184202) and existing local
+      outstanding-signatures-widget.json/.feature files to understand prior structure/tagging style.</li>
+    <li>Design a new, comprehensive scenario list (TC_OUTSIG_001...NNN) covering every AC at least
+      once, including the two @gap candidates (Corporate Messenger entitlement gate parity with
+      Lodgements Status; unconfirmed row click-through destination page).</li>
+    <li>Update Confluence page 2155184202 via updateConfluencePage (markdown format) with the
+      Test Case Table + JSON Export sections, mirrored exactly.</li>
+    <li>Write local files: test-cases/workspace/outstanding-signatures-widget.json (pretty JSON
+      array) and .feature (Gherkin feature file), matching the Confluence content.</li>
+    <li>Report scenario count, Confluence URL, and file-write confirmation.</li>
+  </ol>
+
+  <h2>4. Files to create / change</h2>
+  <table>
+    <tr><th>File</th><th>Change</th></tr>
+    <tr><td><code>plans/outstanding-signatures-widget-regen.html</code></td><td>This plan (new)</td></tr>
+    <tr><td><code>test-cases/workspace/outstanding-signatures-widget.json</code></td><td>Overwrite with regenerated scenario array</td></tr>
+    <tr><td><code>test-cases/workspace/outstanding-signatures-widget.feature</code></td><td>Overwrite with regenerated Gherkin feature file</td></tr>
+    <tr><td>Confluence page 2155184202</td><td>Overwrite body (table + JSON export) via updateConfluencePage</td></tr>
+  </table>
+
+  <h2>5. How to verify</h2>
+  <ul>
+    <li>Every AC-01..AC-15 maps to at least one TC_OUTSIG_### scenario.</li>
+    <li>Both @gap candidates (entitlement gate, click-through destination) appear as distinct scenarios.</li>
+    <li>JSON array in Confluence page and in the local .json file are identical in content.</li>
+    <li>Local .feature file scenario count matches the JSON/table row count.</li>
+    <li>Confluence page renders without markdown errors (spot-check via getConfluencePage after update).</li>
+  </ul>
+
+  <h2>6. Risks / notes</h2>
+  <ul>
+    <li>This is a non-interactive automated pipeline run — no human is available mid-run to approve
+      the plan interactively, so the plan is recorded here for traceability and the work proceeds
+      per the fully-specified task instructions supplied to this run.</li>
+    <li>Functional spec page (2157281404) is read-only for this task; must not be modified.</li>
+  </ul>
+</body>
+</html>

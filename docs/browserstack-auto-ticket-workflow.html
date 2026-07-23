@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>BrowserStack → automatic ticket creation workflow (cross-browser)</title>
+<style>
+  body { font-family: Arial, Helvetica, sans-serif; max-width: 920px; margin: 24px auto; padding: 0 18px; line-height: 1.6; color: #2C2C2A; }
+  h1 { font-size: 22px; border-bottom: 2px solid #ddd; padding-bottom: 8px; }
+  h2 { font-size: 17px; margin-top: 28px; color: #0c447c; }
+  .meta { color: #666; font-size: 14px; }
+  table { border-collapse: collapse; width: 100%; margin: 10px 0; }
+  th, td { border: 1px solid #ddd; padding: 8px 10px; text-align: left; font-size: 14px; vertical-align: top; }
+  th { background: #f4f6f8; }
+  code { background: #f1f1f1; padding: 1px 5px; border-radius: 4px; font-size: 13px; }
+  pre { background: #1e1e1e; color: #e6e6e6; padding: 12px 14px; border-radius: 6px; overflow-x: auto; font-size: 13px; }
+  ul, ol { padding-left: 22px; }
+  .note { background:#fff8e1; border:1px solid #f0d98a; padding:8px 12px; border-radius:6px; }
+</style>
+</head>
+<body>
+  <h1>BrowserStack → automatic ticket creation workflow (Cross-browser)</h1>
+  <p class="meta">Updated: 2026-07-16 · Command: <code>npm run test:browserstack</code> (or run automatically in CloudBees)</p>
+
+  <p>Goal: run the test suite on <strong>real browsers</strong> in BrowserStack (multiple OS/browser). When a test
+  <strong>fails</strong> → <strong>automatically create a Jira ticket</strong> with the prefix <strong><code>[BrowserStack-Bug]</code></strong>,
+  whose description contains a <strong>direct link to the session</strong> of that test so the developer knows exactly where the error is.</p>
+
+  <h2>1. Running</h2>
+  <pre>npm run test:browserstack</pre>
+  <p>Required in <code>.env</code> (running locally) or secrets (CloudBees):</p>
+  <pre>BROWSERSTACK_USERNAME=...        # BrowserStack account
+BROWSERSTACK_ACCESS_KEY=...      # access key
+JIRA_CREATE_TICKETS=true         # enable ticket creation (+ JIRA_BASE_URL/EMAIL/API_TOKEN/PROJECT_KEY/PARENT_KEY)
+BUG_CATEGORY_OVERRIDE=browserstack   # force the ticket to type "browserstack" -> [BrowserStack-Bug]</pre>
+
+  <h2>2. How it works</h2>
+  <ol>
+    <li>The <strong>BrowserStack SDK</strong> (<code>browserstack-node-sdk</code>) runs the specified specs on real browsers in BrowserStack's cloud. Each test = a separate <em>session</em>.</li>
+    <li>After each test, the <code>captureBsSession(test)</code> hook calls BrowserStack's <code>getSessionDetails</code> API to get the <strong>session's dashboard URL</strong>, and attaches it to the test (annotation <code>browserstack-url</code>).</li>
+    <li>Test <strong>fails</strong> → the <strong>bug-report reporter</strong> reads that URL + gathers the evidence, and calls <code>createBugTickets</code>.</li>
+    <li>Because <code>BUG_CATEGORY_OVERRIDE=browserstack</code>, every ticket from this run carries the <em>browserstack</em> type → prefix <code>[BrowserStack-Bug]</code>, and the description has the line <code>BrowserStack session: &lt;url&gt;</code>.</li>
+  </ol>
+  <p class="note"><strong>Why <code>getSessionDetails</code> is needed:</strong> the local reporter does not know the session ID in the cloud. BrowserStack lets you retrieve session information via an "executor" (a no-op <code>page.evaluate</code> with a special JSON command), which returns <code>browser_url</code> = the dashboard link for the exact session.</p>
+
+  <h2>3. Which specs run on BrowserStack</h2>
+  <p>Defined by <code>playwright.bs.config.ts</code> (<code>testMatch</code>): the <strong>UI</strong> and <strong>accessibility</strong> specs
+  (<code>tests/UI/**</code>, <code>tests/accessibility/**</code>). The real OS/browser come from <code>browserstack.yml</code> (the <code>platforms</code> section).</p>
+
+  <h2>4. What the created ticket contains</h2>
+  <ul>
+    <li><strong>Title:</strong> <code>[BrowserStack-Bug] &lt;Func Spec&gt; - &lt;test&gt;</code></li>
+    <li><strong>Description:</strong> Reason / Failed step / Steps / Actual / Expected + the line <strong><code>BrowserStack session: https://automate.browserstack.com/...</code></strong></li>
+    <li><strong>Evidence:</strong> image + video (like e2e/api).</li>
+    <li><strong>Labels:</strong> <code>automation</code>, <code>autobug-&lt;hash&gt;</code> (deduplication), + severity label.</li>
+    <li><strong>Deduplication + auto-close:</strong> an open ticket already exists for that test → skip; the test passes again → move to Done.</li>
+  </ul>
+
+  <h2>5. Related files</h2>
+  <table>
+    <tr><th>File</th><th>Role</th></tr>
+    <tr><td><code>playwright.bs.config.ts</code></td><td>Dedicated config for BrowserStack; already wires up <code>./reporters/bug-report.ts</code> to create tickets.</td></tr>
+    <tr><td><code>browserstack.yml</code></td><td>List of real OS/browser + build/project name on the BrowserStack dashboard.</td></tr>
+    <tr><td><code>utils/browserstack.ts</code></td><td><code>bsSessionUrl()</code> gets the session link; <code>captureBsSession(test)</code> attaches an afterEach hook.</td></tr>
+    <tr><td><code>tests/UI/*.spec.ts</code>, <code>tests/accessibility/*.spec.ts</code></td><td>Each spec calls <code>captureBsSession(test)</code> at the top of the file (no-op when running locally).</td></tr>
+    <tr><td><code>reporters/bug-report.ts</code></td><td>Reads the <code>browserstack-url</code> annotation, adds it to the bug; <code>BUG_CATEGORY_OVERRIDE</code> forces the type.</td></tr>
+    <tr><td><code>reporters/jira.ts</code> · <code>reporters/asana.ts</code></td><td>Add the "BrowserStack session: &lt;url&gt;" line + prefix <code>[BrowserStack-Bug]</code>.</td></tr>
+  </table>
+
+  <h2>6. On CloudBees</h2>
+  <p>The step <strong>"Cross-browser on BrowserStack (auto-create tickets)"</strong> in <code>.cloudbees/workflows/test.yaml</code>:</p>
+  <ul>
+    <li>Uses the <code>node:20-bookworm</code> image (BrowserStack runs the browsers in the cloud, so no local browser install is needed).</li>
+    <li>Env: <code>BROWSERSTACK_USERNAME/ACCESS_KEY</code>, the <code>JIRA_*</code> variables, <code>JIRA_CREATE_TICKETS=true</code>, and <code>BUG_CATEGORY_OVERRIDE=browserstack</code>.</li>
+    <li>Has <code>continue-on-error: true</code> → a test failure does not block the other steps.</li>
+    <li>Runs <code>npm run test:browserstack</code>.</li>
+  </ul>
+  <p><strong>Secrets to declare on CloudBees:</strong> <code>BROWSERSTACK_USERNAME</code>, <code>BROWSERSTACK_ACCESS_KEY</code>, and the <code>JIRA_*</code> set (already present).</p>
+
+  <h2>7. Quick troubleshooting</h2>
+  <ul>
+    <li><strong>No ticket created:</strong> missing <code>JIRA_CREATE_TICKETS=true</code>/secrets, or the test did not fail, or a duplicate ticket already exists.</li>
+    <li><strong>Ticket has no [BrowserStack-Bug] prefix:</strong> missing <code>BUG_CATEGORY_OVERRIDE=browserstack</code> in the step's env.</li>
+    <li><strong>No "BrowserStack session" line:</strong> the <code>captureBsSession</code> hook was not called in the spec, or <code>getSessionDetails</code> did not return a URL (not running on BrowserStack).</li>
+    <li><strong>Step is slow/hangs:</strong> normal because of the real cloud connection; if it hangs for a long time, check the BrowserStack account + whether <code>browserstack.yml</code> is valid.</li>
+  </ul>
+</body>
+</html>

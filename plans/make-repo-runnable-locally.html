@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Plan — Make the repo runnable on the local machine</title>
+  <style>
+    body { font-family: Arial, Helvetica, sans-serif; max-width: 860px; margin: 24px auto; padding: 0 16px; line-height: 1.6; color: #1a1a1a; }
+    h1 { font-size: 22px; border-bottom: 2px solid #ddd; padding-bottom: 8px; }
+    h2 { font-size: 17px; margin-top: 28px; color: #0c447c; }
+    .meta { color: #666; font-size: 14px; }
+    table { border-collapse: collapse; width: 100%; margin: 8px 0; }
+    th, td { border: 1px solid #ddd; padding: 8px 10px; text-align: left; font-size: 14px; vertical-align: top; }
+    th { background: #f4f6f8; }
+    code { background: #f1f1f1; padding: 1px 5px; border-radius: 4px; }
+    ol, ul { padding-left: 22px; }
+    .warn { font-size: 13px; background: #FFF3CD; border-left: 3px solid #e0a800; padding: 8px 12px; margin: 10px 0; }
+    .note { font-size: 13px; background: #f4f6f8; border-left: 3px solid #b4b2a9; padding: 8px 12px; margin: 10px 0; }
+    .out { color: #777; }
+  </style>
+</head>
+<body>
+  <h1>Plan — Make the repo runnable on the local machine</h1>
+  <p class="meta">Author: Claude (Cowork) · Date: 2026-07-23 · Related: local dev setup, no dedicated ticket</p>
+
+  <h2>1. Goal</h2>
+  <p>Get <code>Hub24-Automation</code> to a state where it demonstrably <strong>runs end-to-end on this
+  machine</strong> — dependencies installed, Playwright browsers installed, config sane, VS Code's
+  Playwright Test extension can discover/run tests, and the SauceDemo suite passes green as proof.
+  This does <strong>not</strong> unblock real HUB24 testing — that still needs <code>BASE_URL</code> +
+  test credentials from Dev/Infra (backlog row 8), which is outside what a repo/config fix can solve.</p>
+
+  <h2>2. Scope</h2>
+  <ul>
+    <li><strong>In scope:</strong> verifying/installing Node deps + Playwright browsers, sanity-checking
+      <code>.env</code> against what can actually run today, fixing one live safety issue found during the
+      check (below), and proving the framework runs via the SauceDemo demo suite.</li>
+    <li><strong>Out of scope:</strong> writing real HUB24 page objects/tests (blocked on the env);
+      enabling Asana/Azure/Basecamp ticket destinations (separate backlog rows); changing CI
+      (CloudBees/GitHub Actions/Bamboo); guessing or inventing a HUB24 <code>BASE_URL</code>/credentials.</li>
+  </ul>
+
+  <h2>3. What the read-only check already found</h2>
+  <ul>
+    <li><code>node_modules</code> already populated (incl. <code>playwright</code>, <code>chromatic</code>,
+      <code>browserstack-node-sdk</code>, <code>tsc</code>) — <code>npm install</code> has already been run
+      on this machine.</li>
+    <li>Existing Chromatic snapshots under <code>tests/chromatic/*-snapshots/</code> are named
+      <code>*-win32.png</code> — confirms Playwright has already run successfully on this Windows
+      machine before (browsers were installed and worked at least once).</li>
+    <li><code>.env</code> exists and already has real values filled: <code>CHROMATIC_PROJECT_TOKEN</code>,
+      <code>BROWSERSTACK_USERNAME</code>/<code>ACCESS_KEY</code>, and a real <code>JIRA_API_TOKEN</code> +
+      email — <code>node scripts/check-ticket-env.mjs</code> would report Jira as "ready".</li>
+    <li><code>BASE_URL</code> is still the placeholder <code>https://playwright.dev</code> — real HUB24
+      execution stays blocked, unchanged from before.</li>
+  </ul>
+
+  <div class="warn">
+    <strong>⚠ Safety issue found:</strong> <code>.env</code> currently has <code>JIRA_CREATE_TICKETS=true</code>
+    with a real token, and the <code>bug-report.ts</code> reporter is wired into <em>every</em> test run
+    (not just <code>test:e2e</code>). That means <strong>any failing test right now — including a demo/exploratory
+    run — creates a real bug ticket in the live NIT Jira project</strong>. This is the exact risk the
+    2026-07-13 "Cowork → Claude Code" migration plan already flagged and decided to turn off for local runs;
+    it looks like <code>.env</code> was never flipped back. Recommend setting it to <code>false</code> before
+    any local run in this session, and only setting it back to <code>true</code> intentionally.
+  </div>
+
+  <h2>4. Step-by-step approach</h2>
+  <ol>
+    <li><strong>Fix the safety issue:</strong> edit <code>.env</code> → <code>JIRA_CREATE_TICKETS=false</code>.
+      No other values touched (secrets stay as-is; file stays gitignored/uncommitted).</li>
+    <li><strong>Verify toolchain versions</strong> in a real terminal on this machine (VS Code's integrated
+      terminal is fine): <code>node -v</code> (expect ≥22), <code>git --version</code>.</li>
+    <li><strong>Install Playwright browsers:</strong> <code>npx playwright install</code> — confirms/repairs
+      the Chromium/Firefox/WebKit binaries this machine needs.</li>
+    <li><strong>Sanity-check the project compiles:</strong> <code>npx tsc --noEmit</code> and
+      <code>npx playwright test --list</code> (should list tests with no config errors).</li>
+    <li><strong>Prove it runs end-to-end:</strong> run the safe demo suite —
+      <code>npm run test:saucedemo:demo</code> (headed, slowed down, against the public saucedemo.com,
+      not HUB24) — and confirm it passes.</li>
+    <li><strong>Confirm VS Code integration:</strong> open the Testing sidebar (Playwright Test extension)
+      and confirm it lists the same tests / can run one.</li>
+    <li><strong>Re-run the ticket-env check</strong> (<code>node scripts/check-ticket-env.mjs</code>) to
+      confirm it now reports "no destination enabled" (expected, since Jira was just turned off) — proving
+      the safety fix took effect.</li>
+  </ol>
+
+  <h2>5. Files to create / change</h2>
+  <table>
+    <tr><th>File</th><th>Change</th></tr>
+    <tr><td><code>plans/make-repo-runnable-locally.html</code></td><td><strong>New</strong> — this plan.</td></tr>
+    <tr><td><code>.env</code></td><td><strong>Edit</strong> — <code>JIRA_CREATE_TICKETS</code>: <code>true</code> → <code>false</code>. Everything else unchanged (gitignored, not committed).</td></tr>
+  </table>
+  <div class="note">No test files, page objects, <code>playwright.config.ts</code>, or CI files are touched.
+  This is a local-environment + one-flag safety fix, not a feature/config change to the framework itself.</div>
+
+  <h2>6. How to verify</h2>
+  <ul>
+    <li><code>node -v</code> → v22.x or higher</li>
+    <li><code>npx playwright --version</code> → succeeds after <code>npx playwright install</code></li>
+    <li><code>npx playwright test --list</code> → lists tests, no errors</li>
+    <li><code>npm run test:saucedemo:demo</code> → all steps pass (headed run against saucedemo.com)</li>
+    <li>VS Code Testing sidebar shows the same tests and can run one</li>
+    <li><code>node scripts/check-ticket-env.mjs</code> → "No destination enabled" (Jira now off)</li>
+  </ul>
+
+  <h2>7. Risks / notes</h2>
+  <ul>
+    <li><strong>Environment separation:</strong> this Cowork session reaches your files through a device
+      bridge and does not have a terminal on your actual Windows OS — installs / browser downloads /
+      <code>npm run</code> commands have to be run by you, in a real terminal on this machine (VS Code's
+      integrated terminal works). I'll hand you the exact commands rather than claim to have run them myself.</li>
+    <li><strong>Real HUB24 execution is still blocked</strong> on <code>BASE_URL</code> + test credentials
+      from Dev/Infra (backlog row 8) — nothing in this plan changes that; "runnable" here means the framework
+      + demo suite, not the real HUB24 app.</li>
+    <li><code>.env</code> holds live secrets (Jira token, BrowserStack key, Asana token) — I will not print
+      or repeat these values anywhere; treat the existing Jira token as sensitive and rotate it if it was ever
+      shared outside a secure channel.</li>
+    <li>If you'd rather keep <code>JIRA_CREATE_TICKETS=true</code> (e.g. you want to intentionally test the
+      Jira reporter against a real failure), say so and I'll skip step 1 — but then a failing SauceDemo test
+      in step 5 will file a real NIT ticket.</li>
+  </ul>
+
+  <h2>8. Approval</h2>
+  <p>Per the planning workflow, this plan is presented for approval before any change is made.
+  No file is edited until you confirm.</p>
+</body>
+</html>
